@@ -1,12 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
+import MainNavigation from './navigation/MainNavigation';
+
 const App = () => {
-  return (
-    <View style={styles.screen}>
-      <Text>Hello</Text>
-    </View>
-  );
+  return <MainNavigation />;
 };
 
 const styles = StyleSheet.create({
