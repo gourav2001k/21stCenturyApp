@@ -5,6 +5,12 @@ const Profile = props => {
   return (
     <View style={styles.screen}>
       <Text>This is Profile Screen!!!</Text>
+      <Button
+        title="Login Page"
+        onPress={() => {
+          props.navigation.navigate('Login');
+        }}
+      />
     </View>
   );
 };
