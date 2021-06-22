@@ -22,6 +22,18 @@ const MealsStack = () => {
   return (
     <Stack.Navigator
       screenOptions={({navigation, route}) => ({
+        headerLeft: () => (
+          <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
+            <Item
+              title="Menu"
+              iconName="ios-menu"
+              onPress={() => {
+                navigation.toggleDrawer();
+              }}
+              color={Colors.vividSkyBlue}
+            />
+          </HeaderButtons>
+        ),
         headerRight: () => (
           <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
             <Item
@@ -35,7 +47,7 @@ const MealsStack = () => {
           </HeaderButtons>
         ),
         // headerStyle: {backgroundColor: 'rgba(0,0,0,0.1)'},
-        headerTitleStyle: {color: Colors.tuftsBlue},
+        // headerTitleStyle: {color: Colors.tuftsBlue},
       })}>
       <Stack.Screen name="Meals" component={Meals} />
       <Stack.Screen name="MealDetails" component={MealDetails} />
@@ -45,7 +57,21 @@ const MealsStack = () => {
 
 const OrderStack = () => {
   return (
-    <Stack.Navigator screenOptions={({navigation, route}) => ({})}>
+    <Stack.Navigator
+      screenOptions={({navigation, route}) => ({
+        headerLeft: () => (
+          <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
+            <Item
+              title="Menu"
+              iconName="ios-menu"
+              onPress={() => {
+                navigation.toggleDrawer();
+              }}
+              color={Colors.vividSkyBlue}
+            />
+          </HeaderButtons>
+        ),
+      })}>
       <Stack.Screen name="Orders" component={Orders} />
       <Stack.Screen name="OrderDetails" component={OrderDetails} />
     </Stack.Navigator>
@@ -54,7 +80,21 @@ const OrderStack = () => {
 
 const ProfileStack = () => {
   return (
-    <Stack.Navigator screenOptions={({navigation, route}) => ({})}>
+    <Stack.Navigator
+      screenOptions={({navigation, route}) => ({
+        headerLeft: () => (
+          <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
+            <Item
+              title="Menu"
+              iconName="ios-menu"
+              onPress={() => {
+                navigation.toggleDrawer();
+              }}
+              color={Colors.vividSkyBlue}
+            />
+          </HeaderButtons>
+        ),
+      })}>
       <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
