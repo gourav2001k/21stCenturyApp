@@ -71,7 +71,7 @@ const Meals = props => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text>Sorry No Meals in This Category!!!</Text>
+          <Text>Currently No Meal is available for {currentCategory}!!!</Text>
         </View>
       ) : null}
     </View>

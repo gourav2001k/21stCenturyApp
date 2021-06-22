@@ -20,6 +20,9 @@ const CategoryList = props => {
     {id: 1, name: 'Cake'},
     {id: 2, name: 'Biscuits'},
     {id: 3, name: 'Pastries'},
+    {id: 4, name: 'Snacks'},
+    {id: 5, name: 'Chocolates'},
+    {id: 6, name: 'Breads'},
   ];
   return (
     <View style={styles.container}>
