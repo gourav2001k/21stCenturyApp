@@ -20,7 +20,7 @@ const MealCard = props => {
   const {available, discount, category, rating, name, imageURL, variants} =
     props.meal;
   const Openable = () => {
-    props.navigation.navigate('MealDetails');
+    props.navigation.navigate('MealDetails', {mealDetail: props.meal});
   };
   return (
     <View style={styles.mainContainer}>
@@ -43,7 +43,7 @@ const MealCard = props => {
                 backgroundColor: 'rgba(0,65,255,0.1)',
               }}
               textStyle={{
-                fontSize: 15,
+                fontSize: 18,
                 color: Colors.blueJeans,
               }}
             />
@@ -55,7 +55,7 @@ const MealCard = props => {
                 backgroundColor: 'rgba(0,65,255,0.1)',
               }}
               textStyle={{
-                fontSize: 15,
+                fontSize: 18,
                 color: Colors.blueJeans,
               }}
             />
