@@ -31,24 +31,33 @@ const MealCard = props => {
             name={name}
             discount={discount}
             available={available}
+            rating={rating}
           />
           <View style={styles.textContainer}>
             <CategoryTile text="Veg" />
             <CategoryTile
               text={category}
               containerStyle={{
-                borderColor: Colors.frenchViolet,
-                backgroundColor: 'rgba(127,0,255,0.1)',
+                marginHorizontal: 10,
+                borderColor: Colors.blueJeans,
+                backgroundColor: 'rgba(0,65,255,0.1)',
               }}
-              textStyle={{color: Colors.frenchViolet}}
+              textStyle={{
+                fontSize: 15,
+                color: Colors.blueJeans,
+              }}
             />
             <CategoryTile
-              text="Rs123"
+              text={`Rs ${variants['1 lbs'].price}`}
               containerStyle={{
-                borderColor: Colors.frenchViolet,
-                backgroundColor: 'rgba(127,0,255,0.1)',
+                marginHorizontal: 10,
+                borderColor: Colors.blueJeans,
+                backgroundColor: 'rgba(0,65,255,0.1)',
               }}
-              textStyle={{color: Colors.frenchViolet}}
+              textStyle={{
+                fontSize: 15,
+                color: Colors.blueJeans,
+              }}
             />
           </View>
         </View>

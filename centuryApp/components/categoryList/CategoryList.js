@@ -7,6 +7,7 @@ import {
   Dimensions,
   FlatList,
 } from 'react-native';
+import Colors from '../../constants/Colors';
 
 import CategoryTile from '../CategoryTile';
 
@@ -26,12 +27,35 @@ const CategoryList = props => {
         horizontal={true}
         data={List}
         renderItem={({item}) => {
-          return (
+          return item.name === props.currentCategory ? (
             <CategoryTile
               text={item.name}
               button
-              containerStyle={{marginHorizontal: 10}}
-              textStyle={{fontSize: 15}}
+              containerStyle={{
+                marginHorizontal: 10,
+                borderColor: Colors.blueJeans,
+                backgroundColor: Colors.blueJeans,
+              }}
+              textStyle={{
+                fontSize: 15,
+                color: 'white',
+              }}
+              setCurrentCategory={props.setCurrentCategory}
+            />
+          ) : (
+            <CategoryTile
+              text={item.name}
+              button
+              containerStyle={{
+                marginHorizontal: 10,
+                borderColor: Colors.blueJeans,
+                backgroundColor: 'rgba(0,65,255,0.1)',
+              }}
+              textStyle={{
+                fontSize: 15,
+                color: Colors.blueJeans,
+              }}
+              setCurrentCategory={props.setCurrentCategory}
             />
           );
         }}

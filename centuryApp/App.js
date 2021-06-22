@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-import MainNavigation from './navigation/MainNavigation';
+import AppNavigator from './navigation/AppNavigator';
 
 const App = () => {
-  return <MainNavigation />;
+  return <AppNavigator />;
 };
 
 const styles = StyleSheet.create({

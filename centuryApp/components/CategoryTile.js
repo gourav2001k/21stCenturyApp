@@ -17,7 +17,7 @@ const CategoryTile = props => {
       {props.button ? (
         <Button
           title={props.text}
-          onPress={() => console.log('hey')}
+          onPress={() => props.setCurrentCategory(props.text)}
           type="clear"
           titleStyle={{...styles.textContainer, ...props.textStyle}}
         />
