@@ -14,23 +14,14 @@ import Orders from '../screens/Orders';
 import OrderDetails from '../screens/OrderDetails';
 import Profile from '../screens/Profile';
 
+import Colors from '../constants/Colors';
+
 const Stack = createStackNavigator();
 
 const MealsStack = () => {
   return (
     <Stack.Navigator
       screenOptions={({navigation, route}) => ({
-        // headerLeft: () => (
-        //   <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
-        //     <Item
-        //       title="Menu"
-        //       iconName="ios-menu"
-        //       onPress={() => {
-        //         navigation.toggleDrawer();
-        //       }}
-        //     />
-        //   </HeaderButtons>
-        // ),
         headerRight: () => (
           <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
             <Item
@@ -39,9 +30,12 @@ const MealsStack = () => {
               onPress={() => {
                 navigation.navigate('Cart');
               }}
+              color={Colors.vividSkyBlue}
             />
           </HeaderButtons>
         ),
+        // headerStyle: {backgroundColor: 'rgba(0,0,0,0.1)'},
+        headerTitleStyle: {color: Colors.tuftsBlue},
       })}>
       <Stack.Screen name="Meals" component={Meals} />
       <Stack.Screen name="MealDetails" component={MealDetails} />
@@ -51,20 +45,7 @@ const MealsStack = () => {
 
 const OrderStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={({navigation, route}) => ({
-        // headerLeft: () => (
-        //   <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
-        //     <Item
-        //       title="Menu"
-        //       iconName="ios-menu"
-        //       onPress={() => {
-        //         navigation.toggleDrawer();
-        //       }}
-        //     />
-        //   </HeaderButtons>
-        // ),
-      })}>
+    <Stack.Navigator screenOptions={({navigation, route}) => ({})}>
       <Stack.Screen name="Orders" component={Orders} />
       <Stack.Screen name="OrderDetails" component={OrderDetails} />
     </Stack.Navigator>
@@ -73,20 +54,7 @@ const OrderStack = () => {
 
 const ProfileStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={({navigation, route}) => ({
-        // headerLeft: () => (
-        //   <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
-        //     <Item
-        //       title="Menu"
-        //       iconName="ios-menu"
-        //       onPress={() => {
-        //         navigation.toggleDrawer();
-        //       }}
-        //     />
-        //   </HeaderButtons>
-        // ),
-      })}>
+    <Stack.Navigator screenOptions={({navigation, route}) => ({})}>
       <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
@@ -95,14 +63,18 @@ const BottomTab = createMaterialBottomTabNavigator();
 
 const MealsTab = () => {
   return (
-    <BottomTab.Navigator>
+    <BottomTab.Navigator
+      shifting={true}
+      activeColor={Colors.tuftsBlue}
+      inactiveColor="rgba(0,0,0,0.2)">
       <BottomTab.Screen
         name="Meals"
         component={MealsStack}
         options={{
           tabBarIcon: ({color}) => (
-            <Ionicons size={23} color="white" name="fast-food-outline" />
+            <Ionicons size={23} color={color} name="fast-food-outline" />
           ),
+          tabBarColor: 'white',
         }}
       />
       <BottomTab.Screen
@@ -110,8 +82,9 @@ const MealsTab = () => {
         component={OrderStack}
         options={{
           tabBarIcon: ({color}) => (
-            <Ionicons size={23} color="white" name="ios-restaurant" />
+            <Ionicons size={23} color={color} name="ios-restaurant" />
           ),
+          tabBarColor: 'white',
         }}
       />
       <BottomTab.Screen
@@ -119,8 +92,9 @@ const MealsTab = () => {
         component={ProfileStack}
         options={{
           tabBarIcon: ({color}) => (
-            <FontAwesome size={23} color="white" name="user" />
+            <FontAwesome size={23} color={color} name="user" />
           ),
+          tabBarColor: 'white',
         }}
       />
     </BottomTab.Navigator>
