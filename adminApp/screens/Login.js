@@ -1,10 +1,14 @@
 /* eslint-disable */
 import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, ImageBackground, Dimensions, StyleSheet} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import {showMessage} from 'react-native-flash-message';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+
+import Logo from '../assets/logo.png';
+
+const height = Dimensions.get('screen').height;
+const width = Dimensions.get('screen').width;
 
 const Login = props => {
   const [phone, setPhone] = useState();
@@ -66,19 +70,6 @@ const Login = props => {
     try {
       await confirmed.confirm(OTP);
       var user = auth().currentUser;
-      var userDB = await firestore().collection('users').doc(user.uid).get();
-      userDB = userDB.data();
-      if (!userDB) {
-        await auth().currentUser.updateProfile({
-          photoURL: 'images/blankProfile.png',
-        });
-        await firestore().collection('users').doc(user.uid).set({
-          cart: {},
-          token: '',
-          isComplete: false,
-        });
-        console.log('Data Writen successfully');
-      }
       props.navigation.replace('Home');
     } catch (error) {
       console.log(error);
@@ -93,13 +84,21 @@ const Login = props => {
 
   return (
     <View style={styles.screen}>
+      <ImageBackground
+        source={Logo}
+        style={{
+          width: (2 * width) / 3,
+          height: width / 3,
+          marginBottom: 50,
+        }}
+      />
       <Input
         placeholder="10 digit number"
         keyboardType="phone-pad"
         maxLength={10}
         onChangeText={numParser}
         value={phone}
-        editable={!confirmed}
+        editable={!isOTP}
         leftIcon={{type: 'Ionicons', name: 'call'}}
       />
       {isOTP ? (

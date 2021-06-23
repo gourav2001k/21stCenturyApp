@@ -11,6 +11,7 @@ import MealDetails from '../screens/MealDetails';
 import Orders from '../screens/Orders';
 import OrderDetails from '../screens/OrderDetails';
 import Profile from '../screens/Profile';
+import AddMeal from '../screens/AddMeal';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ const MealsStack = () => {
     <Stack.Navigator>
       <Stack.Screen name="Meals" component={Meals} />
       <Stack.Screen name="MealDetails" component={MealDetails} />
+      <Stack.Screen name="Add Meal" component={AddMeal} />
     </Stack.Navigator>
   );
 };
