@@ -9,4 +9,8 @@ export default {
   mediumTurquoise: '#64dfdf',
   turquoise: '#72efdd',
   aquaMarine: '#80ffdb',
+  lightBackground: 'rgba(0,0,0,0.6)',
+  darkBackground: 'rgba(28, 49, 51,0.8)',
+  counterBackground: 'rgba(0,0,0,0.2)',
+  menuBackground: 'rgba(10,10,10,0.2)',
 };

@@ -4,6 +4,7 @@ import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import AppLoading from '../hooks/AppLoading';
 
 import CategoryList from '../components/categoryList/CategoryList';
 import MealCard from '../components/mealCard/MealCard';
@@ -40,14 +41,19 @@ const Meals = props => {
       console.log(err);
     }
   };
-  if (!isLoading || allMeal === undefined) {
-    fetchItems();
+
+  if (!isLoading) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Loading....</Text>
-      </View>
+      <AppLoading
+        fetchItems={fetchItems}
+        onFinish={() => {
+          setIsLoading(true);
+        }}
+        onError={console.warn}
+      />
     );
   }
+
   var currentMeal = 0;
   return (
     <View style={styles.screen}>

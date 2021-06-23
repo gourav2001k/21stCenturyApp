@@ -12,6 +12,7 @@ import MealImage from './MealImage';
 import Colors from '../../constants/Colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CategoryTile from '../CategoryTile';
+import {showMessage} from 'react-native-flash-message';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -20,7 +21,13 @@ const MealCard = props => {
   const {available, discount, category, rating, name, imageURL, variants} =
     props.meal;
   const Openable = () => {
-    props.navigation.navigate('MealDetails', {mealDetail: props.meal});
+    available
+      ? props.navigation.navigate('MealDetails', {mealDetail: props.meal})
+      : showMessage({
+          message: 'SOLD OUT !!!!!',
+          description: 'Meal not available',
+          type: 'danger',
+        });
   };
   return (
     <View style={styles.mainContainer}>

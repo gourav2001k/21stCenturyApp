@@ -17,10 +17,9 @@ const CartButton = props => {
       const cart = await firestore().collection('users').doc(userID).get();
       const cartItems = cart.data().cart;
       cartItems[mealID] = props.finalOrder;
-      console.log(cart.data());
-      //   await firestore().collection('users').doc(userID).update({
-      //     cart: cartItems,
-      //   });
+      await firestore().collection('users').doc(userID).update({
+        cart: cartItems,
+      });
       showMessage({
         message: 'Added To Cart',
         description: 'Item added to cart successfully!!!!',
