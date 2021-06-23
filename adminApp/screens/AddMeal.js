@@ -6,19 +6,10 @@ import {
   StyleSheet,
   Image,
   FlatList,
-  Dimensions,
 } from 'react-native';
-import {
-  Input,
-  Button,
-  Overlay,
-  ListItem,
-  CheckBox,
-} from 'react-native-elements';
+import {Input, Button, Overlay, ListItem} from 'react-native-elements';
 import {FAB, Colors} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
@@ -27,9 +18,9 @@ import {ActivityIndicator} from 'react-native-paper';
 import {Formik} from 'formik';
 import MealValidator from '../validators/MealValidator';
 import {showMessage} from 'react-native-flash-message';
-
-const height = Dimensions.get('screen').height;
-const width = Dimensions.get('screen').width;
+import OverlayComp from '../components/AddVariant';
+import UpdateComp from '../components/UpdateVariant';
+import varTile from '../components/VariantTile';
 
 const AddMeal = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -49,142 +40,18 @@ const AddMeal = props => {
 
   // Overlay (Add New)
   const [visible, setVisible] = useState(false);
-
   const toggleOverlay = () => {
     setVisible(!visible);
   };
 
-  const OverlayComp = () => {
-    const [variantName, setVariantName] = useState();
-    const [variantPrice, setVariantPrice] = useState();
-    const priceHandler = txt => {
-      setVariantPrice(txt.replace(/[^0-9]/g, ''));
-    };
-    const Save = () => {
-      var id = makeID(6);
-      var newEntry = {};
-      newEntry[id] = {name: variantName, price: variantPrice, available: true};
-      setVariants({...variants, ...newEntry});
-      toggleOverlay();
-    };
-    return (
-      <View style={{width: (2 * width) / 3}}>
-        <Input
-          value={variantName}
-          onChangeText={txt => {
-            setVariantName(txt);
-          }}
-          placeholder="Enter Variant Name"
-          label="Name"
-        />
-        <Input
-          value={variantPrice}
-          placeholder="Enter Price"
-          onChangeText={priceHandler}
-          keyboardType="phone-pad"
-          label="Price"
-        />
-        <Button raised={true} title="Add Variant" onPress={Save} />
-      </View>
-    );
-  };
-
   const [update, setUpdate] = useState(false);
   const [idx, setIDX] = useState();
-
   const toggleUpdate = () => {
     setUpdate(!update);
   };
 
-  const UpdateComp = () => {
-    const [variantName, setVariantName] = useState(variants[idx].name);
-    const [variantPrice, setVariantPrice] = useState(variants[idx].price);
-    const [available, setAvailable] = useState(variants[idx].available);
-    const priceHandler = txt => {
-      setVariantPrice(txt.replace(/[^0-9]/g, ''));
-    };
-    const Save = () => {
-      var newEntry = {};
-      newEntry[idx] = {
-        name: variantName,
-        price: variantPrice,
-        available: available,
-      };
-      setVariants({...variants, ...newEntry});
-      toggleUpdate();
-    };
-    return (
-      <View style={{width: (2 * width) / 3}}>
-        <CheckBox
-          center
-          iconRight={true}
-          title="Availablity"
-          checked={available}
-          onPress={() => {
-            setAvailable(old => !old);
-          }}
-        />
-        <Input
-          value={variantName}
-          onChangeText={txt => {
-            setVariantName(txt);
-          }}
-          placeholder="Enter Variant Name"
-          label="Name"
-        />
-        <Input
-          value={variantPrice}
-          placeholder="Enter Price"
-          onChangeText={priceHandler}
-          keyboardType="phone-pad"
-          label="Price"
-        />
-        <Button raised={true} title="Update" onPress={Save} />
-      </View>
-    );
-  };
-
   // Variants
   const [variants, setVariants] = useState();
-
-  const varTile = (item, obj) => {
-    return (
-      <ListItem.Swipeable
-        leftContent={
-          obj[item].available ? (
-            <Button
-              title=" Available"
-              icon={<Feather name="check" size={24} color="white" />}
-              buttonStyle={{minHeight: '100%'}}
-            />
-          ) : (
-            <Button
-              title=" Not Available"
-              icon={<Entypo name="cross" size={24} color="white" />}
-              buttonStyle={{minHeight: '100%'}}
-            />
-          )
-        }
-        rightContent={
-          <Button
-            title=" Update"
-            icon={<FontAwesome name="gear" size={24} color="white" />}
-            buttonStyle={{minHeight: '100%'}}
-            onPress={() => {
-              setIDX(item);
-              toggleUpdate();
-            }}
-          />
-        }>
-        <ListItem.Title style={{paddingRight: 80}}>
-          {obj[item].name}
-        </ListItem.Title>
-        <ListItem.Subtitle style={{paddingLeft: 80}}>
-          ₹ {obj[item].price}
-        </ListItem.Subtitle>
-      </ListItem.Swipeable>
-    );
-  };
 
   var db = firestore();
 
@@ -261,9 +128,11 @@ const AddMeal = props => {
       <Text style={styles.text}>Variants</Text>
       {variants ? (
         <FlatList
-          keyExtractor={item => item.item}
+          keyExtractor={idx => idx}
           data={Object.keys(variants)}
-          renderItem={item => varTile(item.item, variants)}
+          renderItem={item =>
+            varTile(item.item, variants, setIDX, toggleUpdate)
+          }
         />
       ) : (
         <Text
@@ -394,10 +263,15 @@ const AddMeal = props => {
         onPress={toggleOverlay}
       />
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        <OverlayComp />
+        <OverlayComp setVariants={setVariants} toggleOverlay={toggleOverlay} />
       </Overlay>
       <Overlay isVisible={update} onBackdropPress={toggleUpdate}>
-        <UpdateComp />
+        <UpdateComp
+          setVariants={setVariants}
+          variants={variants}
+          toggleUpdate={toggleUpdate}
+          idx={idx}
+        />
       </Overlay>
     </View>
   );
