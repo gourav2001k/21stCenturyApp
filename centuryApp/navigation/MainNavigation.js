@@ -9,8 +9,12 @@ const Stack = createStackNavigator();
 
 const MainNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="MealsNavigator" component={MealsNavigator} />
+    <Stack.Navigator screenOptions={{headerShown: true}}>
+      <Stack.Screen
+        name="MealsNavigator"
+        component={MealsNavigator}
+        options={{headerShown: false}}
+      />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Cart" component={Cart} />
     </Stack.Navigator>

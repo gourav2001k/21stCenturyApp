@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
 
 import AboutMeal from './AboutMeal';
 import DetailImage from './DetailImage';
+import PriceMenu from './menuTab/PriceMenu';
 import CategoryTile from '../CategoryTile';
 import RatingTile from './RatingTile';
 import CartButton from './CartButton';
@@ -22,9 +23,13 @@ const MealDetailCard = props => {
     description,
     mealID,
   } = props.mealDetail;
+
+  Object.keys(variants).map(dat => {
+    variants[dat]['quantity'] = 0;
+  });
+
   const [finalOrder, setFinalOrder] = useState({
-    quantity: 0,
-    price: 100,
+    ...variants,
   });
 
   return (
@@ -33,6 +38,11 @@ const MealDetailCard = props => {
       <View style={{height: height / 9}}>
         <AboutMeal name={name} description={description} />
       </View>
+      <PriceMenu
+        setFinalOrder={setFinalOrder}
+        is2pound
+        finalOrder={finalOrder}
+      />
       <View style={styles.categoryContainer}>
         <CategoryTile text={category} />
       </View>
@@ -50,6 +60,8 @@ const MealDetailCard = props => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+
     backgroundColor: 'white',
     // height: height,
     width: width,
