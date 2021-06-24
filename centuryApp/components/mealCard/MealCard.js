@@ -10,7 +10,6 @@ import {
 
 import MealImage from './MealImage';
 import Colors from '../../constants/Colors';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import CategoryTile from '../CategoryTile';
 import {showMessage} from 'react-native-flash-message';
 
@@ -18,8 +17,22 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const MealCard = props => {
-  const {available, discount, category, rating, name, imageURL, variants} =
-    props.meal;
+  const {
+    available,
+    discount,
+    category,
+    rating,
+    name,
+    imageURL,
+    variants,
+    time,
+  } = props.meal;
+
+  var renderPrice = Infinity;
+  Object.keys(variants).map(dat => {
+    renderPrice = Math.min(renderPrice, variants[dat].price);
+  });
+
   const Openable = () => {
     available
       ? props.navigation.navigate('MealDetails', {mealDetail: props.meal})
@@ -29,6 +42,7 @@ const MealCard = props => {
           type: 'danger',
         });
   };
+
   return (
     <View style={styles.mainContainer}>
       <TouchableNativeFeedback onPress={Openable}>
@@ -39,9 +53,9 @@ const MealCard = props => {
             discount={discount}
             available={available}
             rating={rating}
+            time={time}
           />
           <View style={styles.textContainer}>
-            <CategoryTile text="Veg" />
             <CategoryTile
               text={category}
               containerStyle={{
@@ -55,7 +69,7 @@ const MealCard = props => {
               }}
             />
             <CategoryTile
-              text={`Rs ${variants['1 lbs'].price}`}
+              text={`Rs ${renderPrice}`}
               containerStyle={{
                 marginHorizontal: 10,
                 borderColor: Colors.blueJeans,

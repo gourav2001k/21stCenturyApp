@@ -11,6 +11,7 @@ import {
 import AvailableImage from './AvailableImage';
 import DiscountImage from './DiscountImage';
 import RatingTile from './RatingTile';
+import TimePatch from './TimePatch';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -21,12 +22,19 @@ const MealImage = props => {
       source={{uri: props.imageURL}}
       style={{
         ...styles.bgImage,
-        justifyContent: props.discount === 0 ? 'flex-end' : 'space-between',
       }}>
       {props.available ? (
-        props.discount === 0 ? null : (
-          <DiscountImage value={props.discount} />
-        )
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: props.discount === 0 ? 'flex-end' : 'space-between',
+            marginTop: 5,
+          }}>
+          {props.discount === 0 ? null : (
+            <DiscountImage value={props.discount} />
+          )}
+          <TimePatch time={props.time} />
+        </View>
       ) : null}
       {props.available ? null : <AvailableImage />}
       <View style={styles.titleContainer}>

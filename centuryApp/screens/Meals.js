@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
@@ -14,11 +14,14 @@ const width = Dimensions.get('screen').width;
 const Meals = props => {
   const [allMeal, setAllMeal] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [currentCategory, setCurrentCategory] = useState('All Meal');
+  const [currentCategory, setCurrentCategory] = useState('Cake');
 
   const fetchItems = async () => {
     try {
       const fetchMeals = await firestore().collection('meals').get();
+      // fetchMeals.forEach(doc => {
+      //   console.log(doc.data());
+      // });
       const imageStore = storage().ref();
       const tempAllMeal = [];
 
@@ -40,7 +43,6 @@ const Meals = props => {
       console.log(err);
     }
   };
-
   if (!isLoading) {
     return (
       <AppLoading
@@ -79,6 +81,13 @@ const Meals = props => {
           <Text>Currently No Meal is available for {currentCategory}!!!</Text>
         </View>
       ) : null}
+      {/* <Button
+        title="refresh"
+        onPress={() => {
+          setIsLoading(false);
+          console.log('he');
+        }}
+      /> */}
     </View>
   );
 };
