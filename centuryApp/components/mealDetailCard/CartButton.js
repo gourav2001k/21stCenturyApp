@@ -10,13 +10,21 @@ import {Button, Icon} from 'react-native-elements';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const CartButton = props => {
+const CartButton = ({mealID, finalOrder}) => {
+  var orderForCart = {};
+  var tempName;
+
+  Object.keys(finalOrder).map(dat => {
+    tempName = `${mealID}_${dat}`;
+    orderForCart[tempName] = {...finalOrder[dat], mealID: mealID};
+  });
+
   const userID = auth().currentUser.uid;
-  const addToCart = async mealID => {
+  const addToCart = async () => {
     try {
       const cart = await firestore().collection('users').doc(userID).get();
-      const cartItems = cart.data().cart;
-      cartItems[mealID] = props.finalOrder;
+      var cartItems = cart.data().cart;
+      cartItems = {...cartItems, ...orderForCart};
       await firestore().collection('users').doc(userID).update({
         cart: cartItems,
       });
@@ -39,7 +47,7 @@ const CartButton = props => {
       <Button
         title="Add to Cart"
         onPress={() => {
-          addToCart(props.mealID);
+          addToCart();
         }}
         icon={<Icon name="cart" type="ionicon" size={20} color="red" />}
         buttonStyle={styles.button}

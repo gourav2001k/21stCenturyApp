@@ -105,7 +105,7 @@ const MealsTab = () => {
   return (
     <BottomTab.Navigator
       shifting={true}
-      activeColor={Colors.tuftsBlue}
+      // activeColor={Colors.tuftsBlue}
       inactiveColor="rgba(0,0,0,0.2)">
       <BottomTab.Screen
         name="Meals"
@@ -114,7 +114,7 @@ const MealsTab = () => {
           tabBarIcon: ({color}) => (
             <Ionicons size={23} color={color} name="fast-food-outline" />
           ),
-          tabBarColor: 'white',
+          tabBarColor: 'hsla(35, 90%, 45%, 1)',
         }}
       />
       <BottomTab.Screen
@@ -124,7 +124,7 @@ const MealsTab = () => {
           tabBarIcon: ({color}) => (
             <Ionicons size={23} color={color} name="ios-restaurant" />
           ),
-          tabBarColor: 'white',
+          tabBarColor: 'hsla(42, 100%, 43%, 1)',
         }}
       />
       <BottomTab.Screen
@@ -134,7 +134,7 @@ const MealsTab = () => {
           tabBarIcon: ({color}) => (
             <FontAwesome size={23} color={color} name="user" />
           ),
-          tabBarColor: 'white',
+          tabBarColor: '#006400',
         }}
       />
     </BottomTab.Navigator>

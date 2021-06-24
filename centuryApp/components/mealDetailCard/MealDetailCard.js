@@ -28,31 +28,35 @@ const MealDetailCard = props => {
     variants[dat]['quantity'] = 0;
   });
 
+  const [check, setCheck] = useState(false);
   const [finalOrder, setFinalOrder] = useState({
     ...variants,
   });
 
+  console.log(finalOrder);
   return (
     <View style={styles.container}>
       <DetailImage imageURL={imageURL} />
       <View style={{height: height / 9}}>
         <AboutMeal name={name} description={description} />
       </View>
-      <PriceMenu
-        setFinalOrder={setFinalOrder}
-        is2pound
-        finalOrder={finalOrder}
-      />
+      <View
+        style={{
+          alignItems: 'center',
+        }}>
+        <PriceMenu
+          setFinalOrder={setFinalOrder}
+          finalOrder={finalOrder}
+          check={check}
+          setCheck={setCheck}
+        />
+      </View>
       <View style={styles.categoryContainer}>
         <CategoryTile text={category} />
       </View>
       <RatingTile value={rating} />
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <CartButton
-          navigation={props.navigation}
-          mealID={mealID}
-          finalOrder={finalOrder}
-        />
+        <CartButton mealID={mealID} finalOrder={finalOrder} />
       </View>
     </View>
   );
@@ -63,8 +67,6 @@ const styles = StyleSheet.create({
     flex: 1,
 
     backgroundColor: 'white',
-    // height: height,
-    width: width,
   },
   categoryContainer: {
     flexDirection: 'row',

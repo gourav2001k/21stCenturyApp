@@ -16,13 +16,12 @@ const width = Dimensions.get('screen').width;
 
 const CategoryList = props => {
   const List = [
-    {id: 0, name: 'All Meal'},
-    {id: 1, name: 'Cake'},
-    {id: 2, name: 'Biscuits'},
-    {id: 3, name: 'Pastries'},
-    {id: 4, name: 'Snacks'},
-    {id: 5, name: 'Chocolates'},
-    {id: 6, name: 'Breads'},
+    {id: 0, name: 'Cake'},
+    {id: 1, name: 'Biscuits'},
+    {id: 2, name: 'Pastries'},
+    {id: 3, name: 'Snacks'},
+    {id: 4, name: 'Chocolates'},
+    {id: 5, name: 'Breads'},
   ];
   return (
     <View style={styles.container}>
@@ -34,16 +33,11 @@ const CategoryList = props => {
             <CategoryTile
               text={item.name}
               button
-              containerStyle={{
-                marginHorizontal: 10,
-                borderColor: Colors.blueJeans,
-                backgroundColor: Colors.blueJeans,
-              }}
+              containerStyle={styles.categoryContainer}
               textStyle={{
                 fontSize: 15,
-                color: 'white',
               }}
-              setCurrentCategory={props.setCurrentCategory}
+              onPress={() => props.setCurrentCategory(item.name)}
             />
           ) : (
             <CategoryTile
@@ -56,9 +50,9 @@ const CategoryList = props => {
               }}
               textStyle={{
                 fontSize: 15,
-                color: Colors.blueJeans,
+                color: Colors['Orange Pantone'],
               }}
-              setCurrentCategory={props.setCurrentCategory}
+              onPress={() => props.setCurrentCategory(item.name)}
             />
           );
         }}
@@ -77,6 +71,11 @@ const styles = StyleSheet.create({
     width: width,
     overflow: 'scroll',
     backgroundColor: 'rgba(255,255,255,0.8)',
+  },
+  categoryContainer: {
+    marginHorizontal: 10,
+    borderColor: Colors.blueJeans,
+    backgroundColor: Colors.blueJeans,
   },
 });
 

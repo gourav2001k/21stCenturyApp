@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 
 import DetailCounter from './DetailCounter';
@@ -9,55 +9,30 @@ import Colors from '../../../constants/Colors';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const PriceMenu = props => {
-  const [index, setIndex] = useState(0);
-  const [quantityFullMeal, setQuantityFullMeal] = useState(0);
-  const [quantityHalfMeal, setQuantityHalfMeal] = useState(0);
+const PriceMenu = ({finalOrder, setFinalOrder, check, setCheck}) => {
+  var tempIndex = '';
+  Object.keys(finalOrder).every(dat => {
+    tempIndex === '' ? (tempIndex = dat) : false;
+  });
 
-  var x = props.finalOrder;
-
-  const setQuantityFull = q => {
-    setQuantityFullMeal(q);
-    x['1 lbs'].quantity = q;
-    props.setFinalOrder(x);
-  };
-  const setQuantityHalf = q => {
-    setQuantityHalfMeal(q);
-    x['2 lbs'].quantity = q;
-    props.setFinalOrder(x);
-  };
-
-  const menuItem = [
-    {
-      type: '1 Pound',
-      price: props.finalOrder['1 lbs'].price,
-      quantity: quantityFullMeal,
-      setQuantity: setQuantityFull,
-      show: true,
-    },
-    {
-      type: '2 Pound',
-      price: props.finalOrder['2 lbs'].price,
-      quantity: quantityHalfMeal,
-      setQuantity: setQuantityHalf,
-      show: props.is2pound,
-    },
-  ];
+  const [index, setIndex] = useState(tempIndex);
 
   return (
     <View style={styles.container}>
-      {menuItem[index].show ? (
+      <MenuOption index={index} setIndex={setIndex} finalOrder={finalOrder} />
+      {finalOrder[index].available ? (
         <View>
           <View style={styles.textContainer}>
-            <Text style={styles.titleText}>{menuItem[index].type}</Text>
+            <Text style={styles.titleText}>{finalOrder[index].name}</Text>
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.priceText}>
-              Price : ₹ {menuItem[index].price}
+              Price : ₹ {finalOrder[index].price}
             </Text>
             <DetailCounter
-              quantity={menuItem[index].quantity}
-              setQuantity={menuItem[index].setQuantity}
+              index={index}
+              finalOrder={finalOrder}
+              setFinalOrder={setFinalOrder}
             />
           </View>
         </View>
@@ -66,19 +41,13 @@ const PriceMenu = props => {
           <Text style={styles.titleText}>Currently Not Available</Text>
         </View>
       )}
-      <MenuOption index={index} setIndex={setIndex} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
-    marginVertical: 10,
-    elevation: 2,
-    borderWidth: 0.001,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    width: '90%',
   },
   textContainer: {
     marginBottom: 10,

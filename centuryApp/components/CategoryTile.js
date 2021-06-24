@@ -17,7 +17,7 @@ const CategoryTile = props => {
       {props.button ? (
         <Button
           title={props.text}
-          onPress={() => props.setCurrentCategory(props.text)}
+          onPress={props.onPress}
           type="clear"
           titleStyle={{...styles.textContainer, ...props.textStyle}}
         />
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,210,0,0.1)',
     borderRadius: 10,
     borderColor: 'green',
+    overflow: 'hidden',
   },
   textContainer: {
     paddingHorizontal: 15,

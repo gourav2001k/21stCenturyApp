@@ -1,45 +1,81 @@
 import React from 'react';
-import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Dimensions,
+  FlatList,
+} from 'react-native';
 
-import {ButtonGroup} from 'react-native-elements/dist/buttons/ButtonGroup';
-
+import CategoryTile from '../../CategoryTile';
 import Colors from '../../../constants/Colors';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const MenuOption = props => {
-  const buttons = ['1 Pound', '2 Pound'];
+const MenuOption = ({finalOrder, index, setIndex}) => {
+  const List = [];
+
+  var tempObject = {};
+  Object.keys(finalOrder).map(dat => {
+    tempObject = {...finalOrder[dat]};
+    tempObject['id'] = dat;
+    List.push(tempObject);
+  });
 
   return (
-    <ButtonGroup
-      buttons={buttons}
-      onPress={val => {
-        props.setIndex(val);
-      }}
-      selectedIndex={props.index}
-      containerStyle={styles.container}
-      selectedButtonStyle={{
-        backgroundColor: 'white',
-      }}
-      textStyle={styles.text}
-      selectedTextStyle={styles.selectedText}
-      innerBorderStyle={{
-        color: Colors.counterBackground,
-        width: 2,
-      }}
-    />
+    <View style={styles.container}>
+      <FlatList
+        horizontal={true}
+        data={List}
+        renderItem={({item}) => (
+          <CategoryTile
+            text="sadaadssadsssssaa"
+            containerStyle={
+              index === item.id
+                ? styles.activeCategoryContainer
+                : styles.inactiveCategoryContainer
+            }
+            textStyle={
+              index === item.id
+                ? styles.activeTextContainer
+                : styles.inactiveTextContainer
+            }
+            button
+            onPress={() => {
+              setIndex(item.id);
+            }}
+          />
+        )}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
-    marginBottom: -1,
-    marginLeft: -1,
-    marginRight: -1,
-    backgroundColor: Colors.menuBackground,
+    paddingTop: 10,
+    paddingBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+    overflow: 'scroll',
+    backgroundColor: 'rgba(255,255,255,0.8)',
   },
+  activeCategoryContainer: {
+    marginHorizontal: 10,
+    borderColor: 'white',
+    backgroundColor: 'green',
+  },
+  inactiveCategoryContainer: {
+    marginHorizontal: 10,
+    backgroundColor: Colors.blueJeans,
+  },
+  activeTextContainer: {
+    color: 'white',
+  },
+
   text: {
     color: 'white',
     fontSize: 13,
