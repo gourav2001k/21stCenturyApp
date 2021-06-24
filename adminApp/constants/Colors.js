@@ -1,0 +1,15 @@
+export default {
+  'Red Orange Color Wheel': '#ff4800',
+  'Orange Pantone': '#ff5400',
+  'Safety Orange Blaze Orange': '#ff6000',
+  Pumpkin: '#ff6d00',
+  'Heat Wave': '#48cae4',
+  'Blue Green': '#0096c7',
+  'Star Command Blue': '#0077b6',
+  'Dark Cornflower Blue': '#023e8a',
+  'Navy Blue': '#03045e',
+  lightBackground: 'rgba(0,0,0,0.6)',
+  darkBackground: 'rgba(28, 49, 51,0.8)',
+  counterBackground: 'rgba(0,0,0,0.2)',
+  menuBackground: 'rgba(10,10,10,0.2)',
+};

@@ -60,7 +60,6 @@ const UpdateMeal = props => {
   const fetchItems = async () => {
     let mealData = await firestore().collection('meals').doc(mealId).get();
     mealData = mealData.data();
-    console.log(mealData);
     setFirebaseImage(mealData['imageURL']);
     mealData['imageURL'] = await storage()
       .ref(mealData['imageURL'])
