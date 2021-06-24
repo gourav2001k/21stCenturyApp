@@ -18,10 +18,10 @@ const Meals = props => {
 
   const fetchItems = async () => {
     try {
+      const onResult = () => setIsLoading(false);
+      firestore().collection('meals').onSnapshot(onResult, console.warn);
+
       const fetchMeals = await firestore().collection('meals').get();
-      // fetchMeals.forEach(doc => {
-      //   console.log(doc.data());
-      // });
       const imageStore = storage().ref();
       const tempAllMeal = [];
 

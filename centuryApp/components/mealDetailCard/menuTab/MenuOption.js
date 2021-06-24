@@ -31,7 +31,7 @@ const MenuOption = ({finalOrder, index, setIndex}) => {
         data={List}
         renderItem={({item}) => (
           <CategoryTile
-            text="sadaadssadsssssaa"
+            text={item.name}
             containerStyle={
               index === item.id
                 ? styles.activeCategoryContainer
