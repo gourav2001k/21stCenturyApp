@@ -28,7 +28,8 @@ const UpdateMeal = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [appLoading, setAppLoading] = useState(true);
   const [filePath, setFilePath] = useState('');
-  const [firebaseImage, setFirebaseImage] = useState();
+  const [firebaseImage, setFirebaseImage] = useState(true);
+  const [oldURL, setOldURL] = useState();
   const [mealData, setMealData] = useState();
   // Overlay (Add New)
   const [visible, setVisible] = useState(false);
@@ -60,7 +61,7 @@ const UpdateMeal = props => {
   const fetchItems = async () => {
     let mealData = await firestore().collection('meals').doc(mealId).get();
     mealData = mealData.data();
-    setFirebaseImage(mealData['imageURL']);
+    setOldURL(mealData['imageURL']);
     mealData['imageURL'] = await storage()
       .ref(mealData['imageURL'])
       .getDownloadURL();
@@ -87,13 +88,7 @@ const UpdateMeal = props => {
   const filePicker = async () => {
     launchImageLibrary({}, data => {
       if (data.didCancel) return;
-      if (firebaseImage) {
-        storage()
-          .ref(firebaseImage)
-          .delete()
-          .then(() => setFirebaseImage())
-          .catch(err => console.log(err));
-      }
+      if (firebaseImage) setFirebaseImage(false);
       setFilePath(data.assets[0].uri);
     });
   };
@@ -102,10 +97,13 @@ const UpdateMeal = props => {
     setIsLoading(true);
     try {
       if (!variants) throw new Error("Variants can't be empty");
-      // Create the file metadata
-      var loc = 'meals/' + makeID(8) + '-' + Date.now().toString() + '.jpg';
-      const imageStore = storage().ref(loc);
-      await imageStore.putFile(filePath);
+      if (!firebaseImage) {
+        storage().ref(oldURL).delete();
+        // Create the file metadatastorage()
+        var loc = 'meals/' + makeID(8) + '-' + Date.now().toString() + '.jpg';
+        const imageStore = storage().ref(loc);
+        await imageStore.putFile(filePath);
+      }
       // create doc to be inserted
       var avail = false;
       var vrnts = {};
@@ -132,7 +130,7 @@ const UpdateMeal = props => {
         .set(doc)
         .then(() => {
           console.log('Document successfully written!');
-          props.navigation.replace('Meals');
+          props.navigation.pop();
           setIsLoading(false);
         })
         .catch(error => {

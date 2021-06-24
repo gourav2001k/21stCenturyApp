@@ -96,7 +96,7 @@ const AddMeal = props => {
         .set(doc)
         .then(() => {
           console.log('Document successfully written!');
-          props.navigation.replace('Meals');
+          props.navigation.pop();
           setIsLoading(false);
         })
         .catch(error => {
