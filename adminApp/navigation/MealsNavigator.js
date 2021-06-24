@@ -7,11 +7,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import Meals from '../screens/Meals';
-import MealDetails from '../screens/MealDetails';
 import Orders from '../screens/Orders';
 import OrderDetails from '../screens/OrderDetails';
 import Profile from '../screens/Profile';
 import AddMeal from '../screens/AddMeal';
+import UpdateMeal from '../screens/UpdateMeal';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +19,7 @@ const MealsStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Meals" component={Meals} />
-      <Stack.Screen name="MealDetails" component={MealDetails} />
+      <Stack.Screen name="UpdateMeal" component={UpdateMeal} />
       <Stack.Screen name="Add Meal" component={AddMeal} />
     </Stack.Navigator>
   );

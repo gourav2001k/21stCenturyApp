@@ -6,12 +6,12 @@ const Meals = props => {
   return (
     <View style={styles.screen}>
       <Text>This is Meals Screen!!!</Text>
-      {/* <Button
-        title="ToMealDetail"
+      <Button
+        title="Update Meal"
         onPress={() => {
-          props.navigation.navigate('MealDetails');
+          props.navigation.navigate('UpdateMeal', {mealId: 'qDYcva0HlnaBJf64'});
         }}
-      /> */}
+      />
       <FAB
         large
         icon="plus"

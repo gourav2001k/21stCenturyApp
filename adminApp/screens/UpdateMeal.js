@@ -1,0 +1,365 @@
+import React, {useState, Fragment} from 'react';
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+} from 'react-native';
+import {Input, Button, Overlay} from 'react-native-elements';
+import {FAB, Colors} from 'react-native-paper';
+import Entypo from 'react-native-vector-icons/Entypo';
+import DropDownPicker from 'react-native-dropdown-picker';
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {ActivityIndicator} from 'react-native-paper';
+import {Formik} from 'formik';
+import MealValidator from '../validators/MealValidator';
+import {showMessage} from 'react-native-flash-message';
+import OverlayComp from '../components/AddVariant';
+import UpdateComp from '../components/UpdateVariant';
+import varTile from '../components/VariantTile';
+import AppLoading from '../hooks/AppLoading';
+
+const UpdateMeal = props => {
+  const mealId = props.route.params.mealId;
+  const [isLoading, setIsLoading] = useState(false);
+  const [appLoading, setAppLoading] = useState(true);
+  const [filePath, setFilePath] = useState('');
+  const [firebaseImage, setFirebaseImage] = useState();
+  const [mealData, setMealData] = useState();
+  // Overlay (Add New)
+  const [visible, setVisible] = useState(false);
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
+  const [update, setUpdate] = useState(false);
+  const [idx, setIDX] = useState();
+  const toggleUpdate = () => {
+    setUpdate(!update);
+  };
+
+  // Variants
+  const [variants, setVariants] = useState();
+
+  // Dropdown Menu
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState();
+  const [items, setItems] = useState([
+    {label: 'CAKE', value: 'Cake'},
+    {label: 'BISCUITS', value: 'Biscuits'},
+    {label: 'PASTRIES', value: 'Pastries'},
+    {label: 'BREADS', value: 'Breads'},
+    {label: 'CHOCOLATES', value: 'Chocolates'},
+    {label: 'SNACKS', value: 'Snacks'},
+  ]);
+
+  const fetchItems = async () => {
+    let mealData = await firestore().collection('meals').doc(mealId).get();
+    mealData = mealData.data();
+    console.log(mealData);
+    setFirebaseImage(mealData['imageURL']);
+    mealData['imageURL'] = await storage()
+      .ref(mealData['imageURL'])
+      .getDownloadURL();
+    setMealData(mealData);
+    setFilePath(mealData['imageURL']);
+    setValue(mealData.category);
+    setVariants(mealData.variants);
+  };
+
+  if (appLoading) {
+    return (
+      <AppLoading
+        fetchItems={fetchItems}
+        onFinish={() => {
+          setAppLoading(false);
+        }}
+        onError={console.warn}
+      />
+    );
+  }
+
+  var db = firestore();
+
+  const filePicker = async () => {
+    launchImageLibrary({}, data => {
+      if (data.didCancel) return;
+      if (firebaseImage) {
+        storage()
+          .ref(firebaseImage)
+          .delete()
+          .then(() => setFirebaseImage())
+          .catch(err => console.log(err));
+      }
+      setFilePath(data.assets[0].uri);
+    });
+  };
+
+  const addMeal = async (name, description, discount, time) => {
+    setIsLoading(true);
+    try {
+      if (!variants) throw new Error("Variants can't be empty");
+      // Create the file metadata
+      var loc = 'meals/' + makeID(8) + '-' + Date.now().toString() + '.jpg';
+      const imageStore = storage().ref(loc);
+      await imageStore.putFile(filePath);
+      // create doc to be inserted
+      var avail = false;
+      var vrnts = {};
+      for (const key in variants) {
+        vrnts[key] = variants[key];
+        vrnts[key].price = parseInt(vrnts[key].price);
+        avail |= vrnts[key].available;
+      }
+      var doc = {
+        imageURL: loc,
+        name: name,
+        category: value,
+        description: description,
+        time: parseInt(time),
+        variants: vrnts,
+        discount: parseInt(discount),
+        available: Boolean(avail),
+        rating: 0,
+        ratings: {},
+      };
+      // Writing the doc to FireStore
+      db.collection('meals')
+        .doc(mealId)
+        .set(doc)
+        .then(() => {
+          console.log('Document successfully written!');
+          props.navigation.replace('Meals');
+          setIsLoading(false);
+        })
+        .catch(error => {
+          console.error('Error writing document: ', error);
+          setIsLoading(false);
+        });
+    } catch (err) {
+      showMessage({
+        message: 'Error',
+        description: err.message,
+        type: 'danger',
+      });
+      setIsLoading(false);
+    }
+  };
+  return (
+    <View style={styles.screen}>
+      <Text style={styles.text}>Category</Text>
+      <DropDownPicker
+        containerStyle={{...styles.picker, paddingBottom: open ? 200 : 10}}
+        textStyle={styles.picker}
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+      />
+      <Text style={styles.text}>Variants</Text>
+      {variants ? (
+        <FlatList
+          keyExtractor={idx => idx}
+          data={Object.keys(variants)}
+          renderItem={item =>
+            varTile(item.item, variants, setIDX, toggleUpdate)
+          }
+        />
+      ) : (
+        <Text
+          style={{
+            ...styles.text,
+            paddingHorizontal: '10%',
+            paddingVertical: 10,
+            fontWeight: 'normal',
+          }}>
+          Please add atleast one Variant
+        </Text>
+      )}
+
+      <ScrollView>
+        <Formik
+          initialValues={{
+            name: mealData.name,
+            time: mealData.time.toString(),
+            discount: mealData.discount.toString(),
+            filePath: mealData.imageURL,
+            description: mealData.description,
+          }}
+          validationSchema={MealValidator}
+          onSubmit={values => {
+            addMeal(
+              values.name,
+              values.description,
+              values.discount,
+              values.time,
+            );
+          }}>
+          {({
+            values,
+            errors,
+            handleChange,
+            touched,
+            handleBlur,
+            handleSubmit,
+            setFieldValue,
+          }) => (
+            <Fragment>
+              <Input
+                placeholder="Enter meal name"
+                onChangeText={handleChange('name')}
+                value={values.name}
+                label="Meal Name"
+                onBlur={handleBlur('name')}
+                errorStyle={{color: 'red'}}
+                errorMessage={touched.name && errors.name}
+              />
+              <Input
+                placeholder="Short Description"
+                onChangeText={handleChange('description')}
+                value={values.description}
+                label="Description"
+                onBlur={handleBlur('description')}
+                errorStyle={{color: 'red'}}
+                errorMessage={touched.description && errors.description}
+              />
+              <Input
+                placeholder="Discount Value in %"
+                label="Dicount"
+                maxLength={2}
+                value={values.discount}
+                keyboardType="number-pad"
+                onChangeText={handleChange('discount')}
+                onBlur={handleBlur('discount')}
+                errorStyle={{color: 'red'}}
+                errorMessage={touched.discount && errors.discount}
+              />
+              <Input
+                placeholder="Time"
+                label="Preparation Time"
+                maxLength={3}
+                value={values.time}
+                keyboardType="number-pad"
+                onChangeText={handleChange('time')}
+                onBlur={handleBlur('time')}
+                errorStyle={{color: 'red'}}
+                errorMessage={touched.time && errors.time}
+              />
+              <View style={styles.picker}>
+                <Button
+                  icon={<Entypo name="image" size={25} color="white" />}
+                  raised={true}
+                  title="     Choose Image"
+                  onPress={async () => {
+                    await filePicker();
+                    handleBlur('filePath');
+                    setFieldValue('filePath', filePath);
+                  }}
+                />
+              </View>
+              <Text style={{color: 'red', paddingLeft: 90}}>
+                {filePath === '' && touched.filePath ? errors.filePath : ''}
+              </Text>
+              {filePath !== '' ? (
+                <View style={styles.image}>
+                  <Image
+                    source={{uri: filePath}}
+                    style={{
+                      width: '100%',
+                      height: 200,
+                      borderRadius: 5,
+                      overflow: 'hidden',
+                    }}
+                  />
+                </View>
+              ) : null}
+
+              <View style={styles.submit}>
+                <Button raised={true} title="Update" onPress={handleSubmit} />
+              </View>
+              <ActivityIndicator
+                animating={isLoading}
+                size="large"
+                color="blue"
+              />
+            </Fragment>
+          )}
+        </Formik>
+      </ScrollView>
+      <FAB
+        large
+        icon="plus"
+        color="white"
+        style={styles.fab}
+        onPress={toggleOverlay}
+      />
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <OverlayComp setVariants={setVariants} toggleOverlay={toggleOverlay} />
+      </Overlay>
+      <Overlay isVisible={update} onBackdropPress={toggleUpdate}>
+        <UpdateComp
+          setVariants={setVariants}
+          variants={variants}
+          toggleUpdate={toggleUpdate}
+          idx={idx}
+        />
+      </Overlay>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    padding: 20,
+    position: 'relative',
+  },
+  text: {
+    paddingHorizontal: 10,
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: '#474747',
+  },
+  image: {
+    paddingHorizontal: '10%',
+    paddingVertical: 10,
+  },
+  picker: {
+    paddingVertical: 10,
+    paddingHorizontal: '3%',
+    fontSize: 17,
+    textAlign: 'center',
+    color: '#474747',
+  },
+  submit: {
+    paddingHorizontal: '30%',
+    paddingVertical: 20,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    backgroundColor: Colors.blue600,
+  },
+});
+
+const makeID = length => {
+  var result = [];
+  var characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result.push(
+      characters.charAt(Math.floor(Math.random() * charactersLength)),
+    );
+  }
+  return result.join('');
+};
+
+export default UpdateMeal;
