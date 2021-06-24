@@ -26,6 +26,7 @@ const MealCard = props => {
     imageURL,
     variants,
     time,
+    mealID,
   } = props.meal;
 
   var renderPrice = Infinity;
@@ -35,7 +36,7 @@ const MealCard = props => {
 
   const Openable = () => {
     available
-      ? props.navigation.navigate('MealDetails', {mealDetail: props.meal})
+      ? props.navigation.navigate('MealDetails', {mealID: mealID})
       : showMessage({
           message: 'SOLD OUT !!!!!',
           description: 'Meal not available',

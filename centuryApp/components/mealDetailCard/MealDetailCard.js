@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
+import {View, StyleSheet, Dimensions, ScrollView} from 'react-native';
 
 import AboutMeal from './AboutMeal';
 import DetailImage from './DetailImage';
@@ -33,31 +33,32 @@ const MealDetailCard = props => {
     ...variants,
   });
 
-  console.log(finalOrder);
   return (
     <View style={styles.container}>
       <DetailImage imageURL={imageURL} />
-      <View style={{height: height / 9}}>
-        <AboutMeal name={name} description={description} />
-      </View>
-      <View
-        style={{
-          alignItems: 'center',
-        }}>
-        <PriceMenu
-          setFinalOrder={setFinalOrder}
-          finalOrder={finalOrder}
-          check={check}
-          setCheck={setCheck}
-        />
-      </View>
-      <View style={styles.categoryContainer}>
-        <CategoryTile text={category} />
-      </View>
-      <RatingTile value={rating} />
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <CartButton mealID={mealID} finalOrder={finalOrder} />
-      </View>
+      <ScrollView>
+        <View style={{height: height / 9}}>
+          <AboutMeal name={name} description={description} />
+        </View>
+        <View
+          style={{
+            alignItems: 'center',
+          }}>
+          <PriceMenu
+            setFinalOrder={setFinalOrder}
+            finalOrder={finalOrder}
+            check={check}
+            setCheck={setCheck}
+          />
+        </View>
+        <View style={styles.categoryContainer}>
+          <CategoryTile text={category} />
+        </View>
+        <RatingTile value={rating} />
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <CartButton mealID={mealID} finalOrder={finalOrder} />
+        </View>
+      </ScrollView>
     </View>
   );
 };
