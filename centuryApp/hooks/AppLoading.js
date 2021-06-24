@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
 
 const AppLoading = ({fetchItems, onFinish, onError}) => {
   const startAscync = async () => {
@@ -15,7 +16,7 @@ const AppLoading = ({fetchItems, onFinish, onError}) => {
   }, []);
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{fontSize: 25}}>Loading ....</Text>
+      <ActivityIndicator animating={true} size="large" color="blue" />
     </View>
   );
 };

@@ -8,13 +8,12 @@ import {
   FlatList,
 } from 'react-native';
 import {Input, Button, Overlay, ListItem} from 'react-native-elements';
-import {FAB, Colors} from 'react-native-paper';
+import {FAB, Colors,ActivityIndicator} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DropDownPicker from 'react-native-dropdown-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {ActivityIndicator} from 'react-native-paper';
 import {Formik} from 'formik';
 import MealValidator from '../validators/MealValidator';
 import {showMessage} from 'react-native-flash-message';
