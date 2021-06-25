@@ -37,7 +37,7 @@ const MealDetailCard = props => {
     <View style={styles.container}>
       <DetailImage imageURL={imageURL} />
       <ScrollView>
-        <View style={{height: height / 9}}>
+        <View style={{height: height / 9, marginTop: 10}}>
           <AboutMeal name={name} description={description} />
         </View>
         <View
@@ -55,7 +55,12 @@ const MealDetailCard = props => {
           <CategoryTile text={category} />
         </View>
         <RatingTile value={rating} />
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 10,
+          }}>
           <CartButton mealID={mealID} finalOrder={finalOrder} />
         </View>
       </ScrollView>

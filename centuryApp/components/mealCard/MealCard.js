@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TouchableNativeFeedback,
-  Dimensions,
-} from 'react-native';
+import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
+import Touchable from 'react-native-touchable-scale';
 
 import MealImage from './MealImage';
 import Colors from '../../constants/Colors';
@@ -45,46 +39,44 @@ const MealCard = props => {
   };
 
   return (
-    <View style={styles.mainContainer}>
-      <TouchableNativeFeedback onPress={Openable}>
-        <View style={styles.container}>
-          <MealImage
-            imageURL={imageURL}
-            name={name}
-            discount={discount}
-            available={available}
-            rating={rating}
-            time={time}
+    <Touchable onPress={Openable} activeScale={0.93} friction={4}>
+      <View style={styles.mainContainer}>
+        <MealImage
+          imageURL={imageURL}
+          name={name}
+          discount={discount}
+          available={available}
+          rating={rating}
+          time={time}
+        />
+        <View style={styles.textContainer}>
+          <CategoryTile
+            text={category}
+            containerStyle={{
+              marginHorizontal: 10,
+              borderColor: Colors.blueJeans,
+              backgroundColor: 'rgba(0,65,255,0.1)',
+            }}
+            textStyle={{
+              fontSize: 18,
+              color: Colors.blueJeans,
+            }}
           />
-          <View style={styles.textContainer}>
-            <CategoryTile
-              text={category}
-              containerStyle={{
-                marginHorizontal: 10,
-                borderColor: Colors.blueJeans,
-                backgroundColor: 'rgba(0,65,255,0.1)',
-              }}
-              textStyle={{
-                fontSize: 18,
-                color: Colors.blueJeans,
-              }}
-            />
-            <CategoryTile
-              text={`Rs ${renderPrice}`}
-              containerStyle={{
-                marginHorizontal: 10,
-                borderColor: Colors.blueJeans,
-                backgroundColor: 'rgba(0,65,255,0.1)',
-              }}
-              textStyle={{
-                fontSize: 18,
-                color: Colors.blueJeans,
-              }}
-            />
-          </View>
+          <CategoryTile
+            text={`Rs ${renderPrice}`}
+            containerStyle={{
+              marginHorizontal: 10,
+              borderColor: Colors.blueJeans,
+              backgroundColor: 'rgba(0,65,255,0.1)',
+            }}
+            textStyle={{
+              fontSize: 18,
+              color: Colors.blueJeans,
+            }}
+          />
         </View>
-      </TouchableNativeFeedback>
-    </View>
+      </View>
+    </Touchable>
   );
 };
 
@@ -100,7 +92,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.001,
     elevation: 2,
   },
-  container: {},
   textContainer: {
     padding: 10,
     flexDirection: 'row',

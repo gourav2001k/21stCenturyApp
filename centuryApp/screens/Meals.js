@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, ScrollView, Dimensions} from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
@@ -20,7 +20,6 @@ const Meals = props => {
     try {
       const onResult = () => setIsLoading(false);
       firestore().collection('meals').onSnapshot(onResult, console.warn);
-
       const fetchMeals = await firestore().collection('meals').get();
       const imageStore = storage().ref();
       const tempAllMeal = [];
@@ -36,7 +35,6 @@ const Meals = props => {
           tempAllMeal.push(mealData);
         }),
       );
-
       setAllMeal(tempAllMeal);
       setIsLoading(true);
     } catch (err) {
@@ -62,39 +60,29 @@ const Meals = props => {
         setCurrentCategory={setCurrentCategory}
         currentCategory={currentCategory}
       />
-      {allMeal.map((dat, idx) => {
-        currentCategory === 'All Meal' || dat.category === currentCategory
-          ? (currentMeal += 1)
-          : (currentMeal += 0);
-        return currentCategory === 'All Meal' ||
-          dat.category === currentCategory ? (
-          <MealCard navigation={props.navigation} meal={dat} key={idx} />
-        ) : null;
-      })}
-      {currentMeal === 0 ? (
-        <View
-          style={{
-            marginTop: height / 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text>Currently No Meal is available for {currentCategory}!!!</Text>
-        </View>
-      ) : null}
-      {/* <Button
-        title="refresh"
-        onPress={() => {
-          setIsLoading(false);
-          console.log('he');
-        }}
-      /> */}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {allMeal.map((dat, idx) => {
+          return dat.category === currentCategory ? (
+            <MealCard navigation={props.navigation} meal={dat} key={idx} />
+          ) : null;
+        })}
+        {currentMeal === 0 ? (
+          <View
+            style={{
+              marginTop: height / 3,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text>Currently No Meal is available for {currentCategory}!!!</Text>
+          </View>
+        ) : null}
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   screen: {
-    justifyContent: 'center',
     alignItems: 'center',
   },
 });

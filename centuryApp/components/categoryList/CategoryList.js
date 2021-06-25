@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Button,
   Dimensions,
   FlatList,
+  Pressable,
 } from 'react-native';
 import Colors from '../../constants/Colors';
 
@@ -15,6 +16,8 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const CategoryList = props => {
+  const flatlistRef = useRef();
+  const [refresh, setRefresh] = useState(false);
   const List = [
     {id: 0, name: 'Cake'},
     {id: 1, name: 'Biscuits'},
@@ -23,11 +26,23 @@ const CategoryList = props => {
     {id: 4, name: 'Chocolates'},
     {id: 5, name: 'Breads'},
   ];
+  useEffect(() => {
+    setTimeout(() => {
+      setRefresh(true);
+    }, 100);
+
+    flatlistRef.current.scrollToEnd({animating: true});
+    setTimeout(
+      () => flatlistRef.current.scrollToIndex({animating: true, index: 0}),
+      500,
+    );
+  });
   return (
     <View style={styles.container}>
       <FlatList
         horizontal={true}
         data={List}
+        ref={flatlistRef}
         renderItem={({item}) => {
           return item.name === props.currentCategory ? (
             <CategoryTile
