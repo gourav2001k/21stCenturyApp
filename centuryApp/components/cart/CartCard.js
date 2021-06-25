@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
 
-import {ListItem, Avatar, Icon} from 'react-native-elements';
+import {Avatar} from 'react-native-elements';
+import {SwipeListView} from 'react-native-swipe-list-view';
 
 import RightIcon from './RightIcon';
 import DetailCounter from './DetailCounter';
@@ -11,66 +12,42 @@ import Colors from '../../constants/Colors';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const CartCard = ({cartMealID, details, imageURL}) => {
-  const {available, mealID, name, price, quantity, setCartItems} = details;
+const CartCard = ({cartMealID, details, imageURL, setCartItems}) => {
+  const {available, mealID, name, price, quantity} = details;
+  const listViewData = Array(20)
+    .fill('')
+    .map((_, i) => ({key: `${i}`, text: `item #${i}`}));
 
   return (
-    <ListItem.Swipeable rightContent={<RightIcon />} style={styles.container}>
+    <View style={styles.container}>
       <Avatar
         rounded
         source={{uri: imageURL}}
         style={{height: height / 10, width: '25%'}}
       />
-      <ListItem.Content style={{alignItems: 'center'}}>
-        <ListItem.Title
-          style={{fontSize: 18, fontWeight: 'bold'}}
-          numberOfLines={2}>
+      <View style={styles.textContainer}>
+        <Text style={{fontSize: 18, fontWeight: 'bold'}} numberOfLines={2}>
           {name}
-        </ListItem.Title>
-        <View style={{marginTop: 10}}>
-          <CategoryTile
-            text={`Rs ${price}`}
-            containerStyle={{
-              backgroundColor: 'rgba(0,65,255,0.2)',
-              borderColor: Colors['Navy Blue'],
-            }}
-            textStyle={{color: Colors['Navy Blue']}}
-          />
-        </View>
-      </ListItem.Content>
-      {/* <ListItem.Content
-          style={{
-            // backgroundColor: 'black',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 10,
-            paddingVertical: 10,
-          }}>
-          <ListItem.Subtitle
-            style={{
-              fontSize: 18,
-              backgroundColor: 'rgba(0,0,0,0.2)',
-              paddingHorizontal: 10,
-              paddingVertical: 2,
-              borderRadius: 10,
-              marginLeft: 10,
-            }}>
-            x {quantity}
-          </ListItem.Subtitle> */}
-      <ListItem.Content
-        style={{
-          alignItems: 'flex-end',
-          justifyContent: 'space-around',
-        }}>
-        <DetailCounter quantity={quantity} />
-        <Icon
-          name="arrow-right"
-          type="font-awesome"
-          style={{marginTop: 10}}
-          size={15}
+        </Text>
+        <CategoryTile
+          text={`Rs ${price}`}
+          containerStyle={{
+            backgroundColor: 'rgba(0,65,255,0.2)',
+            borderColor: Colors['Navy Blue'],
+          }}
+          textStyle={{color: Colors['Navy Blue']}}
         />
-      </ListItem.Content>
-    </ListItem.Swipeable>
+      </View>
+      <View style={styles.detailContainer}>
+        <DetailCounter
+          cartMealID={cartMealID}
+          setCartItems={setCartItems}
+          details={details}
+          quantity={quantity}
+        />
+        <RightIcon />
+      </View>
+    </View>
   );
 };
 
@@ -82,6 +59,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginTop: 10,
     elevation: 2,
+    flexDirection: 'row',
+    padding: 10,
+  },
+  textContainer: {
+    width: '48%',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  detailContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    // marginLeft: -20,
+    // backgroundColor: 'black',
   },
 });
 

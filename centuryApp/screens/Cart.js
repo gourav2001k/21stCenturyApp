@@ -19,6 +19,10 @@ const Cart = props => {
     const imageStore = storage().ref();
 
     var fetchedUserCart = userDetails.data().cart;
+    Object.keys(fetchedUserCart).map(dat => {
+      fetchedUserCart[dat].quantity === 0 ? delete fetchedUserCart[dat] : null;
+    });
+
     var imagesObject = {};
 
     await Promise.all(
@@ -55,22 +59,20 @@ const Cart = props => {
       />
     );
   }
-
+  console.log(cartItems);
   return (
     <View style={styles.screen}>
       <View style={styles.cardContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {Object.keys(cartItems).map(dat =>
-            cartItems[dat].quantity === 100 ? null : (
-              <CartCard
-                key={dat}
-                details={cartItems[dat]}
-                imageURL={images[cartItems[dat].mealID]}
-                setCartItems={setCartItems}
-                cartMealID={dat}
-              />
-            ),
-          )}
+          {Object.keys(cartItems).map(dat => (
+            <CartCard
+              key={dat}
+              details={cartItems[dat]}
+              imageURL={images[cartItems[dat].mealID]}
+              setCartItems={setCartItems}
+              cartMealID={dat}
+            />
+          ))}
         </ScrollView>
       </View>
       <View

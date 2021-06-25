@@ -8,32 +8,46 @@ import Colors from '../../constants/Colors';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const DetailCounter = ({quantity}) => {
+const DetailCounter = ({quantity, details, setCartItems, cartMealID}) => {
   return (
     <View style={styles.container}>
       <View style={styles.addContainer}>
         <Icon
           name="add-outline"
           type="ionicon"
-          size={18}
+          size={27}
           color="white"
           onPress={() => {
-            console.log('add');
+            var newCartItems = {};
+            newCartItems[cartMealID] = {
+              ...details,
+              quantity: (quantity += 1),
+            };
+            setCartItems(prev => ({
+              ...prev,
+              ...newCartItems,
+            }));
           }}
         />
       </View>
       <View style={{justifyContent: 'center'}}>
-        <Text style={{fontFamily: 'roboto-light', fontSize: 18}}>
-          {quantity}
-        </Text>
+        <Text style={{fontSize: 18}}>{quantity}</Text>
       </View>
       <View style={styles.subContainer}>
         <Icon
           name="remove-outline"
           type="ionicon"
-          size={18}
+          size={27}
           onPress={() => {
-            console.log('sub');
+            var newCartItems = {};
+            newCartItems[cartMealID] = {
+              ...details,
+              quantity: quantity === 0 ? 0 : (quantity -= 1),
+            };
+            setCartItems(prev => ({
+              ...prev,
+              ...newCartItems,
+            }));
           }}
         />
       </View>
@@ -44,24 +58,19 @@ const DetailCounter = ({quantity}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    // borderRadius: 50,
-    width: 100,
-    justifyContent: 'space-around',
+    width: 85,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    // backgroundColor: 'black',
+    backgroundColor: 'rgba(150,25,25,0.1)',
     overflow: 'hidden',
   },
   addContainer: {
     backgroundColor: Colors['Orange Pantone'],
-    width: 30,
-    height: 30,
     alignItems: 'center',
     justifyContent: 'center',
   },
   subContainer: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
-    width: 30,
-    height: 30,
+    backgroundColor: 'rgba(0,0,0,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },

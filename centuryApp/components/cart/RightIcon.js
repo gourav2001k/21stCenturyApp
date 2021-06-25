@@ -6,14 +6,8 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const RightIcon = () => (
-  <View
-    style={{
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100%',
-    }}>
+  <View style={{marginTop: 10}}>
     <Icon
-      raised
       name="trash"
       type="font-awesome"
       color="#f50"
