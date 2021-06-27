@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, ScrollView, Dimensions} from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
@@ -18,8 +18,6 @@ const Meals = props => {
 
   const fetchItems = async () => {
     try {
-      const onResult = () => setIsLoading(false);
-      firestore().collection('meals').onSnapshot(onResult, console.warn);
       const fetchMeals = await firestore().collection('meals').get();
       const imageStore = storage().ref();
       const tempAllMeal = [];
@@ -41,6 +39,16 @@ const Meals = props => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    const onResult = () => {
+      setIsLoading(false);
+    };
+    const unsubscribe = firestore().collection('meals').onSnapshot(onResult);
+
+    return () => unsubscribe();
+  }, []);
+
   if (!isLoading) {
     return (
       <AppLoading

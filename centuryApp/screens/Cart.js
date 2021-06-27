@@ -24,7 +24,6 @@ const Cart = props => {
     Object.keys(fetchedUserCart).map(dat => {
       fetchedUserCart[dat].quantity === 0 ? delete fetchedUserCart[dat] : null;
     });
-    // console.log(fetchedUserCart);
     var imagesObject = {};
 
     await Promise.all(
@@ -74,7 +73,18 @@ const Cart = props => {
   Object.keys(cartItems).map(dat => {
     totalValue += cartItems[dat].quantity * cartItems[dat].price;
   });
-  return (
+
+  return Object.keys(cartItems).length === 0 ? (
+    <View style={styles.emptyScreen}>
+      <Text>Cart Is Empty....</Text>
+      <Button
+        title="Go to Meals"
+        onPress={() => {
+          props.navigation.navigate('Meals');
+        }}
+      />
+    </View>
+  ) : (
     <View style={styles.screen}>
       <View style={styles.cardContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -101,7 +111,11 @@ const Cart = props => {
             ₹ {totalValue}
           </Text>
         </Text>
-        <OrderButton totalAmount={totalValue} cartItems={cartItems} />
+        <OrderButton
+          totalAmount={totalValue}
+          cartItems={cartItems}
+          setIsLoading={setIsLoading}
+        />
       </View>
     </View>
   );
@@ -110,6 +124,11 @@ const Cart = props => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  emptyScreen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cardContainer: {
     height: '75%',
