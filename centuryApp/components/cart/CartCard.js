@@ -14,9 +14,6 @@ const width = Dimensions.get('screen').width;
 
 const CartCard = ({cartMealID, details, imageURL, setCartItems}) => {
   const {available, mealID, name, price, quantity} = details;
-  const listViewData = Array(20)
-    .fill('')
-    .map((_, i) => ({key: `${i}`, text: `item #${i}`}));
 
   return (
     <View style={styles.container}>
@@ -45,7 +42,12 @@ const CartCard = ({cartMealID, details, imageURL, setCartItems}) => {
           details={details}
           quantity={quantity}
         />
-        <RightIcon />
+        <RightIcon
+          cartMealID={cartMealID}
+          setCartItems={setCartItems}
+          details={details}
+          quantity={quantity}
+        />
       </View>
     </View>
   );

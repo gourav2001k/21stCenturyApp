@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     color: 'green',
     fontSize: 18,
+    fontFamily: 'robotoRegular',
   },
 });
 
