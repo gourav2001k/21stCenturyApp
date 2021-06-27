@@ -16,7 +16,7 @@ const OrderButton = ({cartItems, totalAmount}) => {
     y[x[1]] = {
       ...cartItems[dat],
     };
-    y[x[1]].available;
+    delete y[x[1]].available;
     delete y[x[1]].mealID;
     finalCart[x[0]] = {...finalCart[x[0]], ...y};
   });
@@ -40,6 +40,7 @@ const OrderButton = ({cartItems, totalAmount}) => {
       meals: finalCart,
       userID: auth().currentUser.uid,
       createdAt: firestore.Timestamp.now(),
+      status: false,
     };
     console.log(doc);
 
