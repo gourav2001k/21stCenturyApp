@@ -13,7 +13,7 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const CartCard = ({cartMealID, details, imageURL, setCartItems}) => {
-  const {available, mealID, name, price, quantity} = details;
+  const {available, mealID, name, price, quantity, mealName} = details;
 
   return (
     <View style={styles.container}>
@@ -23,7 +23,18 @@ const CartCard = ({cartMealID, details, imageURL, setCartItems}) => {
         style={{height: height / 10, width: '25%'}}
       />
       <View style={styles.textContainer}>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}} numberOfLines={2}>
+        <Text
+          style={{
+            fontSize: 18,
+            fontFamily: 'robotoRegular',
+            fontWeight: 'bold',
+          }}
+          numberOfLines={2}>
+          {mealName}
+        </Text>
+        <Text
+          style={{fontSize: 17, fontFamily: 'robotoLight'}}
+          numberOfLines={2}>
           {name}
         </Text>
         <CategoryTile

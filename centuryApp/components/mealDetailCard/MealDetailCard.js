@@ -26,6 +26,7 @@ const MealDetailCard = props => {
 
   Object.keys(variants).map(dat => {
     variants[dat]['quantity'] = 0;
+    variants[dat]['mealName'] = name;
   });
 
   const [check, setCheck] = useState(false);
