@@ -18,6 +18,7 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
     y[x[1]] = {
       ...cartItems[dat],
     };
+    delete y[x[1]].mealName;
     delete y[x[1]].available;
     delete y[x[1]].mealID;
     finalCart[x[0]] = {...finalCart[x[0]], ...y};

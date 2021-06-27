@@ -14,12 +14,13 @@ const Orders = props => {
   const userID = auth().currentUser.uid;
 
   const fetchItems = async () => {
-    const orders = await firestore().collection('orders').get();
+    const orders = await firestore()
+      .collection('orders')
+      .where('userID', '==', userID)
+      .get();
     const fetchedUserOrder = {};
     orders.docs.map(doc => {
-      doc.data().userID === userID
-        ? (fetchedUserOrder[doc.id] = doc.data())
-        : null;
+      fetchedUserOrder[doc.id] = doc.data();
     });
     setUserOrders(fetchedUserOrder);
   };
