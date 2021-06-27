@@ -36,7 +36,7 @@ const CategoryList = props => {
       () => flatlistRef.current.scrollToIndex({animating: true, index: 0}),
       500,
     );
-  });
+  }, [refresh]);
   return (
     <View style={styles.container}>
       <FlatList

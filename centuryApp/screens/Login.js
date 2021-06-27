@@ -77,7 +77,7 @@ const Login = props => {
         });
         console.log('Data Writen successfully');
       }
-      props.navigation.pop();
+      props.navigation.replace('MealsNavigator');
     } catch (error) {
       console.log(error);
       showMessage({

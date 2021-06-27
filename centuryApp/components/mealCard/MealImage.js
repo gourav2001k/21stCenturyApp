@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     width: '85%',
   },
   title: {
-    fontFamily: 'roboto-light',
+    fontFamily: 'robotoLight',
     fontSize: 18,
     color: 'white',
     textAlign: 'center',

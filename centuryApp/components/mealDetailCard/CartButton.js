@@ -24,7 +24,17 @@ const CartButton = ({mealID, finalOrder}) => {
     try {
       const cart = await firestore().collection('users').doc(userID).get();
       var cartItems = cart.data().cart;
-      cartItems = {...cartItems, ...orderForCart};
+
+      Object.keys(orderForCart).map(dat => {
+        cartItems.hasOwnProperty(dat)
+          ? (cartItems[dat].quantity += orderForCart[dat].quantity)
+          : (cartItems[dat] = orderForCart[dat]);
+      });
+
+      Object.keys(cartItems).map(dat => {
+        cartItems[dat].quantity === 0 ? delete cartItems[dat] : cartItems[dat];
+      });
+
       await firestore().collection('users').doc(userID).update({
         cart: cartItems,
       });
