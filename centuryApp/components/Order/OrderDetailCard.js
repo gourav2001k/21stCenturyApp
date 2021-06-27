@@ -42,7 +42,7 @@ const OrderDetailCard = ({orderData}) => {
       </View>
       {Object.keys(orderData).map(dat =>
         dat === 'mealName' || dat === 'imageURL' ? null : (
-          <RenderList mealData={orderData[dat]} />
+          <RenderList mealData={orderData[dat]} key={dat} />
         ),
       )}
     </View>

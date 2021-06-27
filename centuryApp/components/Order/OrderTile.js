@@ -21,6 +21,9 @@ const OrdersTile = ({orderData, navigation, orderID}) => {
   const Openable = () => {
     navigation.navigate('OrderDetails', {
       orderID: orderID,
+      total: amount,
+      date: createdAt,
+      status: status,
     });
   };
 
