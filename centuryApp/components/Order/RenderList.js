@@ -8,14 +8,17 @@ const RenderList = ({mealData}) => {
   const {name, price, quantity} = mealData;
   return (
     <View style={styles.container}>
-      <View>
-        <Text>{name}</Text>
+      <View style={{width: '25%'}}>
+        <Text numberOfLines={1}>{name}</Text>
       </View>
-      <View>
+      <View style={{width: '25%'}}>
         <Text>₹ {price}</Text>
       </View>
-      <View>
-        <Text>{quantity}x</Text>
+      <View
+        style={{
+          width: '10%',
+        }}>
+        <Text numberOfLines={1}>{quantity}x</Text>
       </View>
     </View>
   );
