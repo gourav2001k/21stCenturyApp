@@ -7,7 +7,8 @@ import auth from '@react-native-firebase/auth';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const OrderButton = ({cartItems, totalAmount}) => {
+const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
+  const userID = auth().currentUser.uid;
   var finalCart = {};
 
   Object.keys(cartItems).map(dat => {
@@ -38,13 +39,18 @@ const OrderButton = ({cartItems, totalAmount}) => {
     var doc = {
       amount: totalAmount,
       meals: finalCart,
-      userID: auth().currentUser.uid,
+      userID: userID,
       createdAt: firestore.Timestamp.now(),
       status: false,
     };
     console.log(doc);
 
     await firestore().collection('orders').doc(makeID(16)).set(doc);
+
+    await firestore().collection('users').doc(userID).update({
+      cart: {},
+    });
+    setIsLoading(false);
   };
 
   return (
