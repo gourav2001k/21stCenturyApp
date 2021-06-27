@@ -26,6 +26,14 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
 
   const updateOrders = async () => {
     try {
+      Object.keys(finalCart).map(dat => {
+        Object.keys(finalCart[dat]).map(data => {
+          finalCart[dat][data].quantity === 0
+            ? delete finalCart[dat][data]
+            : null;
+        });
+        Object.keys(finalCart[dat]).length === 0 ? delete finalCart[dat] : null;
+      });
       var doc = {
         amount: totalAmount,
         meals: finalCart,
@@ -33,16 +41,24 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
         createdAt: firestore.Timestamp.now(),
         status: false,
       };
-      await firestore().collection('orders').doc(makeID(16)).set(doc);
-      await firestore().collection('users').doc(userID).update({
-        cart: {},
-      });
-      setIsLoading(false);
-      showMessage({
-        message: 'Order Done',
-        description: 'Order Placed successfully!!!!',
-        type: 'success',
-      });
+      if (Object.keys(finalCart).length === 0) {
+        showMessage({
+          message: 'ERROR !!!!!!!',
+          description: 'Please Add meals to Order..',
+          type: 'danger',
+        });
+      } else {
+        await firestore().collection('orders').doc(makeID(16)).set(doc);
+        await firestore().collection('users').doc(userID).update({
+          cart: {},
+        });
+        setIsLoading(false);
+        showMessage({
+          message: 'Order Done',
+          description: 'Order Placed successfully!!!!',
+          type: 'success',
+        });
+      }
     } catch (err) {
       showMessage({
         message: 'ERROR !!!!!!!',

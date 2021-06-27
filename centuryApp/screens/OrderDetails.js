@@ -11,14 +11,16 @@ import greenTick from '../assets/greenTick.jpg';
 import yellowTick from '../assets/yellowTick.jpg';
 
 const OrderDetails = props => {
+  const {orderID, total} = props.route.params;
+
   const [isLoading, setIsLoading] = useState(false);
   const [orderData, setOrderData] = useState();
-  const {total, orderID, date, status} = props.route.params;
+  const [date, setDate] = useState();
+  const [status, setStatus] = useState();
 
   const fetchItems = async () => {
     const order = await firestore().collection('orders').doc(orderID).get();
     const fetchedOrderData = order.data();
-
     await Promise.all(
       Object.keys(fetchedOrderData['meals']).map(async dat => {
         const meal = await firestore().collection('meals').doc(dat).get();
@@ -32,6 +34,8 @@ const OrderDetails = props => {
       }),
     );
     setOrderData(fetchedOrderData);
+    setDate(fetchedOrderData.createdAt);
+    setStatus(fetchedOrderData.status);
   };
 
   useEffect(() => {
@@ -58,7 +62,6 @@ const OrderDetails = props => {
     <View style={styles.screen}>
       <ScrollView>
         {Object.keys(orderData['meals']).map((dat, idx) => {
-          console.log(orderData['meals'][dat]);
           return (
             <OrderDetailCard orderData={orderData['meals'][dat]} key={idx} />
           );
