@@ -7,6 +7,7 @@ import {
   TouchableNativeFeedback,
   Image,
 } from 'react-native';
+import Touchable from 'react-native-touchable-scale';
 
 import Colors from '../../constants/Colors';
 import CategoryTile from '../CategoryTile';
@@ -20,12 +21,11 @@ const OrdersTile = ({orderData, navigation, orderID}) => {
   const Openable = () => {
     navigation.navigate('OrderDetails', {
       orderID: orderID,
-      orderData: orderData,
     });
   };
 
   return (
-    <TouchableNativeFeedback onPress={Openable}>
+    <Touchable onPress={Openable} activeScale={0.9} friction={8}>
       <View style={styles.container}>
         <View>
           <View style={styles.order}>
@@ -60,7 +60,7 @@ const OrdersTile = ({orderData, navigation, orderID}) => {
           </View>
         </View>
       </View>
-    </TouchableNativeFeedback>
+    </Touchable>
   );
 };
 

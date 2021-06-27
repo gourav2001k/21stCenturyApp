@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
 
+import {showMessage} from 'react-native-flash-message';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
@@ -22,35 +23,32 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
     finalCart[x[0]] = {...finalCart[x[0]], ...y};
   });
 
-  const makeID = length => {
-    var result = [];
-    var characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-      result.push(
-        characters.charAt(Math.floor(Math.random() * charactersLength)),
-      );
-    }
-    return result.join('');
-  };
-
   const updateOrders = async () => {
-    var doc = {
-      amount: totalAmount,
-      meals: finalCart,
-      userID: userID,
-      createdAt: firestore.Timestamp.now(),
-      status: false,
-    };
-    console.log(doc);
-
-    await firestore().collection('orders').doc(makeID(16)).set(doc);
-
-    await firestore().collection('users').doc(userID).update({
-      cart: {},
-    });
-    setIsLoading(false);
+    try {
+      var doc = {
+        amount: totalAmount,
+        meals: finalCart,
+        userID: userID,
+        createdAt: firestore.Timestamp.now(),
+        status: false,
+      };
+      await firestore().collection('orders').doc(makeID(16)).set(doc);
+      await firestore().collection('users').doc(userID).update({
+        cart: {},
+      });
+      setIsLoading(false);
+      showMessage({
+        message: 'Order Done',
+        description: 'Order Placed successfully!!!!',
+        type: 'success',
+      });
+    } catch (err) {
+      showMessage({
+        message: 'ERROR !!!!!!!',
+        description: err.message,
+        type: 'danger',
+      });
+    }
   };
 
   return (
@@ -68,5 +66,18 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
 const styles = StyleSheet.create({
   container: {},
 });
+
+const makeID = length => {
+  var result = [];
+  var characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result.push(
+      characters.charAt(Math.floor(Math.random() * charactersLength)),
+    );
+  }
+  return result.join('');
+};
 
 export default OrderButton;

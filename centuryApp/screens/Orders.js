@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, Button, ScrollView} from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -14,9 +14,6 @@ const Orders = props => {
   const userID = auth().currentUser.uid;
 
   const fetchItems = async () => {
-    const onResult = () => setIsLoading(false);
-    firestore().collection('orders').onSnapshot(onResult, console.warn);
-
     const orders = await firestore().collection('orders').get();
     const fetchedUserOrder = {};
     orders.docs.map(doc => {
@@ -27,6 +24,14 @@ const Orders = props => {
     setUserOrders(fetchedUserOrder);
   };
 
+  useEffect(() => {
+    const onResult = () => {
+      setIsLoading(false);
+    };
+    const unsubscribe = firestore().collection('orders').onSnapshot(onResult);
+
+    return () => unsubscribe();
+  }, []);
   if (!isLoading) {
     return (
       <AppLoading
@@ -40,14 +45,17 @@ const Orders = props => {
   }
   return (
     <View style={styles.screen}>
-      {Object.keys(userOrders).map(dat => (
-        <OrdersTile
-          key={dat}
-          orderData={userOrders[dat]}
-          orderID={dat}
-          navigation={props.navigation}
-        />
-      ))}
+      <ScrollView style={styles.scrollContainer}>
+        {Object.keys(userOrders).map(dat => (
+          <OrdersTile
+            key={dat}
+            orderData={userOrders[dat]}
+            orderID={dat}
+            navigation={props.navigation}
+          />
+        ))}
+        <View style={{marginBottom: 10}}></View>
+      </ScrollView>
     </View>
   );
 };
@@ -56,6 +64,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
+  scrollContainer: {},
 });
 
 export default Orders;
