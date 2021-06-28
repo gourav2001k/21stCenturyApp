@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textContainer: {
-    width: '85%',
+    width: '78%',
   },
   title: {
     fontFamily: 'robotoLight',

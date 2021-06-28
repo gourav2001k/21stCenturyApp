@@ -11,17 +11,16 @@ const width = Dimensions.get('screen').width;
 const DetailCounter = ({quantity, details, setCartItems, cartMealID}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.addContainer}>
+      <View style={styles.subContainer}>
         <Icon
-          name="add-outline"
+          name="remove-outline"
           type="ionicon"
           size={27}
-          color="white"
           onPress={() => {
             var newCartItems = {};
             newCartItems[cartMealID] = {
               ...details,
-              quantity: (quantity += 1),
+              quantity: quantity === 0 ? 0 : (quantity -= 1),
             };
             setCartItems(prev => ({
               ...prev,
@@ -33,16 +32,17 @@ const DetailCounter = ({quantity, details, setCartItems, cartMealID}) => {
       <View style={{justifyContent: 'center'}}>
         <Text style={{fontSize: 18}}>{quantity}</Text>
       </View>
-      <View style={styles.subContainer}>
+      <View style={styles.addContainer}>
         <Icon
-          name="remove-outline"
+          name="add-outline"
           type="ionicon"
           size={27}
+          color="white"
           onPress={() => {
             var newCartItems = {};
             newCartItems[cartMealID] = {
               ...details,
-              quantity: quantity === 0 ? 0 : (quantity -= 1),
+              quantity: (quantity += 1),
             };
             setCartItems(prev => ({
               ...prev,

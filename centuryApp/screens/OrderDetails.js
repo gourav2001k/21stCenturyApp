@@ -31,6 +31,7 @@ const OrderDetails = props => {
           .getDownloadURL();
         fetchedOrderData['meals'][dat]['mealName'] = mealData.name;
         fetchedOrderData['meals'][dat]['imageURL'] = newURL;
+        fetchedOrderData['meals'][dat]['rating'] = mealData.rating;
       }),
     );
     setOrderData(fetchedOrderData);
@@ -63,7 +64,13 @@ const OrderDetails = props => {
       <ScrollView>
         {Object.keys(orderData['meals']).map((dat, idx) => {
           return (
-            <OrderDetailCard orderData={orderData['meals'][dat]} key={idx} />
+            <OrderDetailCard
+              orderData={orderData['meals'][dat]}
+              key={idx}
+              orderID={orderID}
+              mealID={dat}
+              status={status}
+            />
           );
         })}
         <View style={{marginBottom: 10}}></View>
