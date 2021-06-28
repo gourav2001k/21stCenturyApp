@@ -13,23 +13,6 @@ const DetailCounter = ({finalOrder, setFinalOrder, index}) => {
     <View style={styles.container}>
       <Icon
         raised
-        name="add-outline"
-        type="ionicon"
-        size={18}
-        onPress={() => {
-          setFinalOrder(prev => ({
-            ...prev,
-            [index]: {...prev[index], quantity: (prev[index].quantity += 1)},
-          }));
-        }}
-      />
-      <View style={{justifyContent: 'center'}}>
-        <Text style={{fontFamily: 'roboto-light', fontSize: 18}}>
-          {finalOrder[index].quantity}
-        </Text>
-      </View>
-      <Icon
-        raised
         name="remove-outline"
         type="ionicon"
         size={18}
@@ -41,6 +24,24 @@ const DetailCounter = ({finalOrder, setFinalOrder, index}) => {
               quantity:
                 prev[index].quantity === 0 ? 0 : (prev[index].quantity -= 1),
             },
+          }));
+        }}
+      />
+
+      <View style={{justifyContent: 'center'}}>
+        <Text style={{fontFamily: 'roboto-light', fontSize: 18}}>
+          {finalOrder[index].quantity}
+        </Text>
+      </View>
+      <Icon
+        raised
+        name="add-outline"
+        type="ionicon"
+        size={18}
+        onPress={() => {
+          setFinalOrder(prev => ({
+            ...prev,
+            [index]: {...prev[index], quantity: (prev[index].quantity += 1)},
           }));
         }}
       />

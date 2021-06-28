@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 
+import {Icon} from 'react-native-elements';
 import CategoryTile from '../../CategoryTile';
 import Colors from '../../../constants/Colors';
 
@@ -16,6 +17,8 @@ const width = Dimensions.get('screen').width;
 
 const MenuOption = ({finalOrder, index, setIndex}) => {
   const List = [];
+  const flatlistRef = useRef();
+  const [refresh, setRefresh] = useState(false);
 
   var tempObject = {};
   Object.keys(finalOrder).map(dat => {
@@ -24,31 +27,46 @@ const MenuOption = ({finalOrder, index, setIndex}) => {
     List.push(tempObject);
   });
 
+  useEffect(() => {
+    setTimeout(() => {
+      setRefresh(true);
+    }, 100);
+
+    flatlistRef.current.scrollToEnd({animating: true});
+    setTimeout(
+      () => flatlistRef.current.scrollToIndex({animating: true, index: 0}),
+      500,
+    );
+  }, [refresh]);
+
   return (
     <View style={styles.container}>
-      <FlatList
-        horizontal={true}
-        data={List}
-        renderItem={({item}) => (
-          <CategoryTile
-            text={item.name}
-            containerStyle={
-              index === item.id
-                ? styles.activeCategoryContainer
-                : styles.inactiveCategoryContainer
-            }
-            textStyle={
-              index === item.id
-                ? styles.activeTextContainer
-                : styles.inactiveTextContainer
-            }
-            button
-            onPress={() => {
-              setIndex(item.id);
-            }}
-          />
-        )}
-      />
+      <View style={styles.flatlistContainer}>
+        <FlatList
+          horizontal={true}
+          data={List}
+          ref={flatlistRef}
+          renderItem={({item}) => (
+            <CategoryTile
+              text={item.name}
+              containerStyle={
+                index === item.id
+                  ? styles.activeCategoryContainer
+                  : styles.inactiveCategoryContainer
+              }
+              textStyle={
+                index === item.id
+                  ? styles.activeTextContainer
+                  : styles.inactiveTextContainer
+              }
+              button
+              onPress={() => {
+                setIndex(item.id);
+              }}
+            />
+          )}
+        />
+      </View>
     </View>
   );
 };
@@ -58,10 +76,18 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'flex-start',
-    overflow: 'scroll',
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
+  flatlistContainer: {
+    width: '92%',
+    paddingVertical: 2,
+  },
+  arrowContainer: {
+    width: '8%',
+    borderWidth: 0.001,
+    elevation: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   activeCategoryContainer: {
     marginHorizontal: 10,

@@ -7,16 +7,17 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import AppLoading from '../../hooks/AppLoading';
 import RenderList from './RenderList';
+import RatingOption from './RatingOption';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const OrderDetailCard = ({orderData}) => {
+const OrderDetailCard = ({orderData, orderID, mealID, status}) => {
   const {mealName, imageURL} = orderData;
   var totalValue = 0;
 
   Object.keys(orderData).map(dat => {
-    dat === 'mealName' || dat === 'imageURL'
+    dat === 'mealName' || dat === 'imageURL' || dat === 'rating'
       ? null
       : (totalValue += orderData[dat].quantity * orderData[dat].price);
   });
@@ -42,16 +43,26 @@ const OrderDetailCard = ({orderData}) => {
         </Text>
       </View>
       {Object.keys(orderData).map(dat =>
-        dat === 'mealName' || dat === 'imageURL' ? null : (
+        dat === 'mealName' || dat === 'imageURL' || dat === 'rating' ? null : (
           <RenderList mealData={orderData[dat]} key={dat} />
         ),
       )}
+      {status ? (
+        <View style={styles.ratingContainer}>
+          <RatingOption
+            orderID={orderID}
+            mealID={mealID}
+            intialRating={orderData.rating}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'rgba(255,255,255,0.4)',
     borderRadius: 30,
     borderTopLeftRadius: 29,
     overflow: 'hidden',
@@ -90,6 +101,13 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flexDirection: 'row',
+  },
+  ratingContainer: {
+    backgroundColor: 'white',
+    marginBottom: -10,
+    marginHorizontal: -10,
+    padding: 5,
+    marginTop: 5,
   },
 });
 
