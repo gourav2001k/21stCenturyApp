@@ -1,10 +1,143 @@
-import React from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, Button, ScrollView, Image} from 'react-native';
+
+import firestore from '@react-native-firebase/firestore';
+import Touchable from 'react-native-touchable-scale';
+import storage from '@react-native-firebase/storage';
+import {showMessage} from 'react-native-flash-message';
+import AppLoading from '../hooks/AppLoading';
+
+import OrderDetailCard from '../components/Order/OrderDetailCard';
+import greenTick from '../assets/greenTick.jpg';
+import yellowTick from '../assets/yellowTick.jpg';
 
 const OrderDetails = props => {
+  const {orderID, total} = props.route.params;
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [orderData, setOrderData] = useState();
+  const [date, setDate] = useState();
+  const [status, setStatus] = useState();
+
+  const fetchItems = async () => {
+    const order = await firestore().collection('orders').doc(orderID).get();
+    const fetchedOrderData = order.data();
+    await Promise.all(
+      Object.keys(fetchedOrderData['meals']).map(async dat => {
+        const meal = await firestore().collection('meals').doc(dat).get();
+        const mealData = meal.data();
+        const newURL = await storage()
+          .ref()
+          .child(mealData.imageURL)
+          .getDownloadURL();
+        fetchedOrderData['meals'][dat]['mealName'] = mealData.name;
+        fetchedOrderData['meals'][dat]['imageURL'] = newURL;
+        fetchedOrderData['meals'][dat]['rating'] = mealData.rating;
+      }),
+    );
+    setOrderData(fetchedOrderData);
+    setDate(fetchedOrderData.createdAt);
+    setStatus(fetchedOrderData.status);
+  };
+
+  useEffect(() => {
+    const onResult = () => {
+      setIsLoading(false);
+    };
+    const unsubscribe = firestore().collection('orders').onSnapshot(onResult);
+
+    return () => unsubscribe();
+  }, []);
+
+  if (!isLoading) {
+    return (
+      <AppLoading
+        fetchItems={fetchItems}
+        onFinish={() => {
+          setIsLoading(true);
+        }}
+        onError={console.warn}
+      />
+    );
+  }
+
+  const handleStatus = async () => {
+    try {
+      await firestore()
+        .collection('orders')
+        .doc(orderID)
+        .update({status: true});
+      setStatus(true);
+    } catch (err) {
+      showMessage({
+        description: 'SOmething wrong Happened',
+        message: err.message,
+        type: 'danger',
+      });
+    }
+  };
+
   return (
     <View style={styles.screen}>
-      <Text>This is OrderDetails Screen!!!</Text>
+      <ScrollView>
+        {Object.keys(orderData['meals']).map((dat, idx) => {
+          return (
+            <OrderDetailCard
+              orderData={orderData['meals'][dat]}
+              key={idx}
+              orderID={orderID}
+              mealID={dat}
+              status={status}
+            />
+          );
+        })}
+        <View style={{marginBottom: 10}}></View>
+      </ScrollView>
+      <View style={styles.bottomContainer}>
+        <View>
+          <Text style={styles.bottomText}>
+            Total :
+            <Text
+              style={{
+                fontFamily: 'robotoRegular',
+                fontSize: 20,
+              }}>
+              ₹ {total}
+            </Text>
+          </Text>
+          <View style={styles.date}>
+            <Text style={{fontSize: 15, fontFamily: 'robotoLight'}}>
+              Date/Time :
+            </Text>
+            <Text style={styles.dateText}>{date.toDate().toDateString()}</Text>
+            <Text style={styles.dateText}>
+              {date.toDate().toLocaleTimeString()}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text>Final Status </Text>
+          <Touchable
+            disabled={status}
+            onPress={handleStatus}
+            activeScale={0.9}
+            friction={8}>
+            <View>
+              <Image
+                source={status ? greenTick : yellowTick}
+                style={{width: 40, height: 40, margin: 5}}
+              />
+              <Text style={{fontFamily: 'roboto-regular', fontWeight: 'bold'}}>
+                {status ? 'Completed' : 'Processing'}
+              </Text>
+            </View>
+          </Touchable>
+        </View>
+      </View>
     </View>
   );
 };
@@ -12,8 +145,27 @@ const OrderDetails = props => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+  bottomContainer: {
+    height: '20%',
+    width: '105%',
+    borderRadius: 5,
+    elevation: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  bottomText: {
+    margin: 15,
+    textAlign: 'left',
+    fontSize: 18,
+  },
+  date: {
+    marginTop: -10,
+    marginLeft: 15,
+  },
+  dateText: {
+    fontSize: 16,
+    fontFamily: 'roboto-regular',
   },
 });
 
