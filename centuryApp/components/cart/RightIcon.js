@@ -10,7 +10,7 @@ const RightIcon = ({quantity, details, setCartItems, cartMealID}) => (
     <Icon
       name="trash"
       type="font-awesome"
-      color="#f50"
+      color="rgba(0,65,200,1)"
       onPress={() => {
         setCartItems(prev => {
           var newCartItem = {...prev};

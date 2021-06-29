@@ -4,9 +4,9 @@ import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const SummaryDetails = ({totalValue}) => {
-  var grandTotal = totalValue + (totalValue * 5) / 100 + 40;
-
+const SummaryDetails = ({totalValue, type}) => {
+  var grandTotal =
+    totalValue + (totalValue * 5) / 100 + (type === 'delivery' ? 40 : 0);
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
@@ -32,10 +32,10 @@ const SummaryDetails = ({totalValue}) => {
           <Text
             style={{
               fontFamily: 'robotoLight',
-              fontSize: 17,
+              fontSize: 20,
               color: 'rgba(0,0,0,0.6)',
             }}>
-            ₹ 40
+            ₹ {type === 'takeAway' ? '0' : '40'}
           </Text>
         </View>
       </View>
