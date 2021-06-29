@@ -4,10 +4,10 @@ import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import {Button, Icon, Overlay} from 'react-native-elements';
 
 import Colors from '../../constants/Colors';
-import ConfirmationOrder from './ConfirmationOrder';
 import SummaryDetails from './SummaryDetails';
 import ChooseType from './ChooseType';
 import OrderButton from './OrderButton';
+import Address from './Address';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -42,7 +42,8 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
           {type === 'takeAway' ? (
             <OrderButton
               cartItems={cartItems}
-              totalAmount={totalValue}
+              totalAmount={totalValue * 1.05}
+              setIsLoading={setIsLoading}
               type={type}
             />
           ) : (
@@ -65,7 +66,6 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
         <View style={styles.crossIcon}>
           <Icon name="cross" type="entypo" raised onPress={toggleOverlay1} />
         </View>
-
         <ChooseType type={type} setType={setType} />
       </Overlay>
       <Overlay
@@ -75,7 +75,12 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
         <View style={styles.crossIcon}>
           <Icon name="cross" type="entypo" raised onPress={toggleOverlay} />
         </View>
-        <ConfirmationOrder />
+        <Address
+          cartItems={cartItems}
+          totalAmount={totalValue * 1.05}
+          type={type}
+          setIsLoading={setIsLoading}
+        />
       </Overlay>
     </View>
   );

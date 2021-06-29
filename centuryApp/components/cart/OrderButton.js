@@ -10,7 +10,14 @@ import Colors from '../../constants/Colors';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const OrderButton = ({cartItems, totalAmount, type, address}) => {
+const OrderButton = ({
+  cartItems,
+  totalAmount,
+  type,
+  address,
+  setIsLoading,
+  disabled,
+}) => {
   const userID = auth().currentUser.uid;
   var finalCart = {};
 
@@ -48,7 +55,7 @@ const OrderButton = ({cartItems, totalAmount, type, address}) => {
         type: type === 'takeAway' ? 'takeAway' : 'delivery',
         isAccept: false,
         isCancel: false,
-        address: type === 'takeAway' ? {} : {...address},
+        address: address ? address : {},
       };
       if (Object.keys(finalCart).length === 0) {
         showMessage({
@@ -58,16 +65,25 @@ const OrderButton = ({cartItems, totalAmount, type, address}) => {
         });
       } else {
         await firestore().collection('orders').doc(makeID(16)).set(doc);
-        await firestore().collection('users').doc(userID).update({
-          cart: {},
-        });
+        if (address) {
+          await firestore().collection('users').doc(userID).update({
+            cart: {},
+            address: address,
+          });
+        } else {
+          await firestore().collection('users').doc(userID).update({
+            cart: {},
+          });
+        }
         showMessage({
           message: 'Order Done',
           description: 'Order Placed successfully!!!!',
           type: 'success',
         });
+        setIsLoading(false);
       }
     } catch (err) {
+      console.log(err);
       showMessage({
         message: 'ERROR !!!!!!!',
         description: err.message,
@@ -78,6 +94,7 @@ const OrderButton = ({cartItems, totalAmount, type, address}) => {
 
   return (
     <Button
+      disabled={disabled ? true : false}
       title="Place Order"
       onPress={() => {
         updateOrders();

@@ -18,7 +18,7 @@ const AppNavigator = () => {
         <Drawer.Screen name="DashBoard" component={MainNavigation} />
         <Drawer.Screen name="About Us" component={AboutUs} />
       </Drawer.Navigator>
-      <FlashMessage position="bottom" />
+      <FlashMessage position="bottom" style={{elevation: 10}} />
     </NavigationContainer>
   );
 };
