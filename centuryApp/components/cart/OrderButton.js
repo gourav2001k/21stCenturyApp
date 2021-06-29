@@ -84,17 +84,17 @@ const styles = StyleSheet.create({
   container: {},
 });
 
-const makeID = length => {
-  var result = [];
-  var characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result.push(
-      characters.charAt(Math.floor(Math.random() * charactersLength)),
-    );
-  }
-  return result.join('');
+const makeID = () => {
+  const d = new Date();
+  return (
+    String(d.getDate()).padStart(2, '0') +
+    String(d.getMonth() + 1).padStart(2, '0') +
+    String(d.getFullYear()).padStart(4, '0') +
+    String(d.getHours()).padStart(2, '0') +
+    String(d.getMinutes()).padStart(2, '0') +
+    String(d.getSeconds()).padStart(2, '0') +
+    String(d.getMilliseconds()).padStart(3, '0')
+  );
 };
 
 export default OrderButton;
