@@ -102,12 +102,15 @@ const Login = props => {
         await auth().currentUser.updateProfile({
           photoURL: 'images/blankProfile.png',
         });
-        await firestore().collection('users').doc(user.uid).set({
-          cart: {},
-          token: '',
-          isComplete: false,
-          address: {},
-        });
+        await firestore()
+          .collection('users')
+          .doc(user.uid)
+          .set({
+            cart: {},
+            token: '',
+            isComplete: false,
+            address: {locality: 'IIT Jodhpur'},
+          });
         console.log('Data Writen successfully');
       }
     } catch (error) {

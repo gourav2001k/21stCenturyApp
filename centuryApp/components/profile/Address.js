@@ -1,41 +1,37 @@
 import React, {useEffect, useState, Fragment} from 'react';
 import {View, Text, StyleSheet, Dimensions, ScrollView} from 'react-native';
-import {Input} from 'react-native-elements';
+import {Input, Button} from 'react-native-elements';
 import {ActivityIndicator} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import OrderButton from './OrderButton';
+import {showMessage} from 'react-native-flash-message';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const AddressValidator = Yup.object().shape({
+  name: Yup.string()
+    .label('Name')
+    .required('You need to provide an Name')
+    .min(3, 'Name must contain atleast 3 characters'),
   address: Yup.string()
     .label('Address')
     .required('You need to provide an address')
     .min(15, 'Address must contain atleast 15 characters'),
   locality: Yup.string().label('locality'),
-  phone: Yup.number()
-    .label('Phone Number')
-    .required('Phone number is required for delivery')
-    .min(1000000000, 'Not a valid Phone Number')
-    .max(99999999999, 'Not a valid Phone Number'),
 });
 
-const Address = ({cartItems, totalAmount, type, setIsLoading}) => {
+const Address = ({toggleOverlay}) => {
   const userID = auth().currentUser.uid;
-  const deliveryCharge = 40;
   const [oldAddress, setAddress] = useState({});
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetch = async () => {
       var userData = await firestore().collection('users').doc(userID).get();
       userData = userData.data();
-      var phone = auth().currentUser.phoneNumber;
-      phone = phone.substring(3);
-      setAddress({...userData.address, phone: phone});
+      setAddress(userData.address);
       setLoading(false);
     };
     fetch();
@@ -48,18 +44,56 @@ const Address = ({cartItems, totalAmount, type, setIsLoading}) => {
       </View>
     );
 
+  const updateAddress = async (name, address, locality) => {
+    try {
+      toggleOverlay();
+      await auth().currentUser.updateProfile({displayName: name});
+      await firestore()
+        .collection('users')
+        .doc(auth().currentUser.uid)
+        .update({
+          address: {address: address, locality: locality, city: 'Jodhpur'},
+          isComplete: true,
+        });
+      showMessage({
+        message: 'Updated',
+        description: 'Details were updated successfully!!',
+        type: 'success',
+      });
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        message: 'ERROR !!!!!!!',
+        description: err.message,
+        type: 'danger',
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.contain}>
           <Formik
             initialValues={{
+              name: auth().currentUser.displayName
+                ? auth().currentUser.displayName
+                : '',
               address: oldAddress.address ? oldAddress.address : '',
               locality: oldAddress.locality ? oldAddress.locality : '',
-              phone: oldAddress.phone,
             }}
-            validationSchema={AddressValidator}>
-            {({values, errors, handleChange, touched, handleBlur}) => (
+            validationSchema={AddressValidator}
+            onSubmit={values => {
+              updateAddress(values.name, values.address, values.locality);
+            }}>
+            {({
+              values,
+              errors,
+              handleChange,
+              touched,
+              handleBlur,
+              handleSubmit,
+            }) => (
               <Fragment>
                 <Text
                   style={{
@@ -69,9 +103,18 @@ const Address = ({cartItems, totalAmount, type, setIsLoading}) => {
                     marginTop: 20,
                     marginBottom: 40,
                   }}>
-                  Delivery Address
+                  Update Profile
                 </Text>
-
+                <Input
+                  label="Name*"
+                  value={values.name}
+                  placeholder="Your Name"
+                  leftIcon={{type: 'FontAwesome', name: 'account-box'}}
+                  onChangeText={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                  errorStyle={{color: 'red'}}
+                  errorMessage={touched.name && errors.name}
+                />
                 <Input
                   label="Address*"
                   value={values.address}
@@ -98,35 +141,8 @@ const Address = ({cartItems, totalAmount, type, setIsLoading}) => {
                   disabled={true}
                   leftIcon={{type: 'Entypo', name: 'location-city'}}
                 />
-                <Input
-                  placeholder="10 digit number"
-                  keyboardType="phone-pad"
-                  value={values.phone}
-                  label="Phone No.*"
-                  maxLength={10}
-                  leftIcon={{type: 'Ionicons', name: 'call'}}
-                  onChangeText={handleChange('phone')}
-                  onBlur={handleBlur('phone')}
-                  errorStyle={{color: 'red'}}
-                  errorMessage={touched.phone && errors.phone}
-                />
                 <View style={styles.button}>
-                  <OrderButton
-                    cartItems={cartItems}
-                    disabled={Boolean(
-                      Object.keys(errors).length > 0 ||
-                        Object.keys(touched).length === 0,
-                    )}
-                    totalAmount={totalAmount + deliveryCharge}
-                    type={type}
-                    setIsLoading={setIsLoading}
-                    address={{
-                      address: values.address,
-                      locality: values.locality,
-                      phone: values.phone,
-                      city: 'Jodhpur',
-                    }}
-                  />
+                  <Button title="Update" onPress={handleSubmit} />
                 </View>
               </Fragment>
             )}

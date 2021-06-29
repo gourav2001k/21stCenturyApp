@@ -83,7 +83,6 @@ const OrderButton = ({
         setIsLoading(false);
       }
     } catch (err) {
-      console.log(err);
       showMessage({
         message: 'ERROR !!!!!!!',
         description: err.message,
