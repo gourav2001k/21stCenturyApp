@@ -22,9 +22,9 @@ const PriceMenu = ({finalOrder, setFinalOrder, check, setCheck}) => {
       <MenuOption index={index} setIndex={setIndex} finalOrder={finalOrder} />
       {finalOrder[index].available ? (
         <View>
-          <View style={styles.textContainer}>
+          {/* <View style={styles.textContainer}>
             <Text style={styles.titleText}>{finalOrder[index].name}</Text>
-          </View>
+          </View> */}
           <View style={styles.priceContainer}>
             <Text style={styles.priceText}>
               Price : ₹ {finalOrder[index].price}
@@ -47,7 +47,8 @@ const PriceMenu = ({finalOrder, setFinalOrder, check, setCheck}) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '90%',
+    width: '100%',
+    // backgroundColor: 'rgba(0,165,255,0.1)',
   },
   textContainer: {
     marginBottom: 10,
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   priceText: {
-    fontSize: 20,
+    fontSize: 25,
     color: Colors.lightBackground,
   },
   border: {

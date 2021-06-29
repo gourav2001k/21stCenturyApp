@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   titleContainer: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.6)',
     paddingVertical: 5,
     flexDirection: 'row',
     justifyContent: 'center',

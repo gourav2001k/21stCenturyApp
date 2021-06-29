@@ -30,7 +30,7 @@ const MealsStack = () => {
               onPress={() => {
                 navigation.toggleDrawer();
               }}
-              color={Colors.vividSkyBlue}
+              color="white"
             />
           </HeaderButtons>
         ),
@@ -38,16 +38,16 @@ const MealsStack = () => {
           <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
             <Item
               title="Cart"
-              iconName="ios-cart"
+              iconName="ios-cart-outline"
               onPress={() => {
                 navigation.navigate('Cart');
               }}
-              color={Colors.vividSkyBlue}
+              color="white"
             />
           </HeaderButtons>
         ),
-        // headerStyle: {backgroundColor: 'rgba(0,0,0,0.1)'},
-        // headerTitleStyle: {color: Colors.tuftsBlue},
+        headerStyle: {backgroundColor: Colors['Star Command Blue']},
+        headerTitleStyle: {color: 'white'},
       })}>
       <Stack.Screen name="Meals" component={Meals} />
       <Stack.Screen name="MealDetails" component={MealDetails} />
@@ -67,10 +67,12 @@ const OrderStack = () => {
               onPress={() => {
                 navigation.toggleDrawer();
               }}
-              color={Colors.vividSkyBlue}
+              color="white"
             />
           </HeaderButtons>
         ),
+        headerStyle: {backgroundColor: 'hsla(200, 100%, 43%, 1)'},
+        headerTitleStyle: {color: 'white'},
       })}>
       <Stack.Screen name="Orders" component={Orders} />
       <Stack.Screen name="OrderDetails" component={OrderDetails} />
@@ -106,7 +108,7 @@ const MealsTab = () => {
     <BottomTab.Navigator
       shifting={true}
       // activeColor={Colors.tuftsBlue}
-      inactiveColor="rgba(0,0,0,0.2)">
+      inactiveColor="rgba(0,0,0,0.5)">
       <BottomTab.Screen
         name="Meals"
         component={MealsStack}
@@ -114,7 +116,8 @@ const MealsTab = () => {
           tabBarIcon: ({color}) => (
             <Ionicons size={23} color={color} name="fast-food-outline" />
           ),
-          tabBarColor: 'hsla(35, 90%, 45%, 1)',
+          // tabBarColor: 'hsla(35, 90%, 45%, 1)',
+          tabBarColor: Colors['Star Command Blue'],
         }}
       />
       <BottomTab.Screen
@@ -124,7 +127,7 @@ const MealsTab = () => {
           tabBarIcon: ({color}) => (
             <Ionicons size={23} color={color} name="ios-restaurant" />
           ),
-          tabBarColor: 'hsla(42, 100%, 43%, 1)',
+          tabBarColor: 'hsla(200, 100%, 43%, 1)',
         }}
       />
       <BottomTab.Screen

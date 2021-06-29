@@ -1,8 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 
-import {Rating} from 'react-native-elements';
-
+import {Rating, AirbnbRating} from 'react-native-ratings';
+import greenTick from '../../assets/greenTick.jpg';
+import Colors from '../../constants/Colors';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
@@ -11,14 +12,15 @@ const RatingTile = props => {
     <View style={styles.container}>
       <Text style={{fontSize: 20}}>Rating : </Text>
       <Rating
-        type="star"
-        count={2}
+        type="custom"
+        count={5}
         ratingCount={5}
-        imageSize={24}
-        ratingTextColor="rgb(0, 0, 0)"
+        imageSize={30}
         startingValue={props.value}
-        fractions={1}
+        showRating={false}
+        style={{borderColor: 'black'}}
         readonly
+        // ratingColor={Colors['Star Command Blue']}
       />
     </View>
   );

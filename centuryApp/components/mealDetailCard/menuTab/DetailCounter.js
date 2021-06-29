@@ -29,7 +29,8 @@ const DetailCounter = ({finalOrder, setFinalOrder, index}) => {
       />
 
       <View style={{justifyContent: 'center'}}>
-        <Text style={{fontFamily: 'roboto-light', fontSize: 18}}>
+        <Text
+          style={{fontFamily: 'roboto-light', fontSize: 18, color: 'white'}}>
           {finalOrder[index].quantity}
         </Text>
       </View>
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     height: height / 17,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.counterBackground,
+    backgroundColor: Colors['Star Command Blue'],
     borderRadius: 50,
     marginBottom: 20,
     marginTop: -10,
