@@ -61,11 +61,11 @@ const styles = StyleSheet.create({
     width: 85,
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'rgba(150,25,25,0.1)',
+    backgroundColor: 'rgba(0,25,255,0.1)',
     overflow: 'hidden',
   },
   addContainer: {
-    backgroundColor: Colors['Orange Pantone'],
+    backgroundColor: Colors['Star Command Blue'],
     alignItems: 'center',
     justifyContent: 'center',
   },

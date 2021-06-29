@@ -10,11 +10,10 @@ import Colors from '../../constants/Colors';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
+const OrderButton = ({cartItems, totalAmount, type, address}) => {
   const userID = auth().currentUser.uid;
   var finalCart = {};
 
-  // console.log('-=-=-=-=', cartItems);
   Object.keys(cartItems).map(dat => {
     var x = dat.split('_');
     var y = {};
@@ -46,6 +45,10 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
         userID: userID,
         createdAt: firestore.Timestamp.now(),
         status: false,
+        type: type === 'takeAway' ? 'takeAway' : 'delivery',
+        isAccept: false,
+        isCancel: false,
+        address: type === 'takeAway' ? {} : {...address},
       };
       if (Object.keys(finalCart).length === 0) {
         showMessage({
@@ -58,7 +61,6 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
         await firestore().collection('users').doc(userID).update({
           cart: {},
         });
-        setIsLoading(false);
         showMessage({
           message: 'Order Done',
           description: 'Order Placed successfully!!!!',
@@ -75,36 +77,28 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Button
-        title="Proceed to Checkout"
-        onPress={() => {
-          updateOrders();
-        }}
-        iconRight
-        icon={<Icon name="arrow-right" size={30} color="white" />}
-        buttonStyle={styles.button}
-        titleStyle={{
-          color: 'white',
-          marginLeft: 10,
-          fontSize: 20,
-          fontFamily: 'robotoRegular',
-        }}
-        raised
-      />
-    </View>
+    <Button
+      title="Place Order"
+      onPress={() => {
+        updateOrders();
+      }}
+      iconRight
+      icon={<Icon name="arrow-right" size={30} color="white" />}
+      buttonStyle={styles.button}
+      titleStyle={{
+        color: 'white',
+        marginLeft: 10,
+        fontSize: 20,
+        fontFamily: 'robotoRegular',
+      }}
+      raised
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 30,
-    overflow: 'hidden',
-  },
+  container: {},
   button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
     backgroundColor: Colors['Star Command Blue'],
   },
 });
