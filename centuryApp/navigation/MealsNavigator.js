@@ -14,6 +14,7 @@ import Orders from '../screens/Orders';
 import OrderDetails from '../screens/OrderDetails';
 import Profile from '../screens/Profile';
 
+import auth from '@react-native-firebase/auth';
 import Colors from '../constants/Colors';
 
 const Stack = createStackNavigator();
@@ -40,7 +41,9 @@ const MealsStack = () => {
               title="Cart"
               iconName="ios-cart-outline"
               onPress={() => {
-                navigation.navigate('Cart');
+                auth().currentUser
+                  ? navigation.navigate('Cart')
+                  : navigation.navigate('Login');
               }}
               color="white"
             />

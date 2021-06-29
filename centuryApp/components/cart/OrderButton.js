@@ -1,9 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
 
+import {Button, Icon} from 'react-native-elements';
 import {showMessage} from 'react-native-flash-message';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import Colors from '../../constants/Colors';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -12,6 +14,7 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
   const userID = auth().currentUser.uid;
   var finalCart = {};
 
+  // console.log('-=-=-=-=', cartItems);
   Object.keys(cartItems).map(dat => {
     var x = dat.split('_');
     var y = {};
@@ -26,14 +29,17 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
 
   const updateOrders = async () => {
     try {
+      // to delete if the item in cart has 0 quantity.
       Object.keys(finalCart).map(dat => {
         Object.keys(finalCart[dat]).map(data => {
           finalCart[dat][data].quantity === 0
             ? delete finalCart[dat][data]
             : null;
         });
+        // to delete if the meal has no variant ordered
         Object.keys(finalCart[dat]).length === 0 ? delete finalCart[dat] : null;
       });
+      //making document to set in the databse
       var doc = {
         amount: totalAmount,
         meals: finalCart,
@@ -75,13 +81,32 @@ const OrderButton = ({cartItems, totalAmount, setIsLoading}) => {
         onPress={() => {
           updateOrders();
         }}
+        iconRight
+        icon={<Icon name="arrow-right" size={30} color="white" />}
+        buttonStyle={styles.button}
+        titleStyle={{
+          color: 'white',
+          marginLeft: 10,
+          fontSize: 20,
+          fontFamily: 'robotoRegular',
+        }}
+        raised
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    borderRadius: 30,
+    overflow: 'hidden',
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: Colors['Star Command Blue'],
+  },
 });
 
 const makeID = () => {

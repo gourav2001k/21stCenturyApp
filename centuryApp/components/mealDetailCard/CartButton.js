@@ -12,7 +12,7 @@ import Colors from '../../constants/Colors';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const CartButton = ({mealID, finalOrder}) => {
+const CartButton = ({mealID, finalOrder, navigation}) => {
   var orderForCart = {};
   var tempName;
 
@@ -21,8 +21,9 @@ const CartButton = ({mealID, finalOrder}) => {
     orderForCart[tempName] = {...finalOrder[dat], mealID: mealID};
   });
 
-  const userID = auth().currentUser.uid;
   const addToCart = async () => {
+    const userID = auth().currentUser.uid;
+
     try {
       const cart = await firestore().collection('users').doc(userID).get();
       var cartItems = cart.data().cart;
@@ -59,6 +60,16 @@ const CartButton = ({mealID, finalOrder}) => {
       <Button
         title="Add to Cart"
         onPress={() => {
+          if (!auth().currentUser) {
+            setTimeout(() => {
+              navigation.navigate('Login');
+            }, 2500);
+            return showMessage({
+              message: 'Login Required',
+              description: 'Redericting You too Login....',
+              type: 'danger',
+            });
+          }
           addToCart();
         }}
         icon={<Icon name="cart" type="ionicon" size={25} color="white" />}

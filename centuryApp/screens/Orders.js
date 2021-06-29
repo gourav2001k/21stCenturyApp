@@ -11,12 +11,10 @@ const Orders = props => {
   const [userOrders, setUserOrders] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const userID = auth().currentUser.uid;
-
   const fetchItems = async () => {
     const orders = await firestore()
       .collection('orders')
-      .where('userID', '==', userID)
+      .where('userID', '==', auth().currentUser.uid)
       .get();
     const fetchedUserOrder = {};
     orders.docs.map(doc => {
@@ -26,16 +24,27 @@ const Orders = props => {
   };
 
   useEffect(() => {
-    const onResult = () => {
-      setIsLoading(false);
-    };
-    const unsubscribe = firestore()
-      .collection('orders')
-      .where('userID', '==', userID)
-      .onSnapshot(onResult);
+    if (!auth().currentUser) {
+      props.navigation.navigate('Login');
+    } else {
+      const onResult = () => {
+        setIsLoading(false);
+      };
+      const unsubscribe = firestore()
+        .collection('orders')
+        .where('userID', '==', auth().currentUser.uid)
+        .onSnapshot(onResult);
 
-    return () => unsubscribe();
+      return () => unsubscribe();
+    }
   }, []);
+  if (!auth().currentUser) {
+    return (
+      <View>
+        <Text>Redirecting</Text>
+      </View>
+    );
+  }
   if (!isLoading) {
     return (
       <AppLoading

@@ -61,7 +61,11 @@ const MealDetailCard = props => {
             // paddingBottom: 20,
             marginTop: 30,
           }}>
-          <CartButton mealID={mealID} finalOrder={finalOrder} />
+          <CartButton
+            mealID={mealID}
+            finalOrder={finalOrder}
+            navigation={props.navigation}
+          />
         </View>
         {/* <View style={styles.categoryContainer}>
           <CategoryTile text={category} />
