@@ -29,12 +29,12 @@ const CategoryList = props => {
   useEffect(() => {
     setTimeout(() => {
       setRefresh(true);
-    }, 100);
+    }, 50);
 
     flatlistRef.current.scrollToEnd({animating: true});
     setTimeout(
       () => flatlistRef.current.scrollToIndex({animating: true, index: 0}),
-      500,
+      300,
     );
   }, [refresh]);
   return (

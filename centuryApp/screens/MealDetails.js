@@ -55,7 +55,7 @@ const MealDetails = props => {
 
   return (
     <View style={styles.screen}>
-      <MealDetailCard mealDetail={mealDetail} />
+      <MealDetailCard mealDetail={mealDetail} navigation={props.navigation} />
     </View>
   );
 };

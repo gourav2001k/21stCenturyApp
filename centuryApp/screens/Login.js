@@ -25,6 +25,8 @@ const Login = props => {
       await RNBootSplash.hide({fade: true});
       console.log('Bootsplash has been hidden successfully');
     });
+
+    return () => init();
   }, []);
   const [isClicked, setIsClicked] = useState(false);
   const [phone, setPhone] = useState();
