@@ -7,7 +7,7 @@ import storage from '@react-native-firebase/storage';
 
 import AppLoading from '../hooks/AppLoading';
 import CartCard from '../components/cart/CartCard';
-import OrderButton from '../components/cart/OrderButton';
+import Summary from '../components/cart/Summary';
 
 const Cart = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -86,37 +86,24 @@ const Cart = props => {
     </View>
   ) : (
     <View style={styles.screen}>
-      <View style={styles.cardContainer}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {Object.keys(cartItems).map(dat => (
-            <CartCard
-              key={dat}
-              details={cartItems[dat]}
-              imageURL={images[cartItems[dat].mealID]}
-              setCartItems={setCartItems}
-              cartMealID={dat}
-            />
-          ))}
-        </ScrollView>
-      </View>
-      <View style={styles.totalContainer}>
-        <Text style={styles.text}>
-          Total :
-          <Text
-            style={{
-              fontFamily: 'robotoRegular',
-              fontSize: 25,
-            }}>
-            {' '}
-            ₹ {totalValue}
-          </Text>
-        </Text>
-        <OrderButton
-          totalAmount={totalValue}
-          cartItems={cartItems}
-          setIsLoading={setIsLoading}
-        />
-      </View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 10}}>
+        {Object.keys(cartItems).map(dat => (
+          <CartCard
+            key={dat}
+            details={cartItems[dat]}
+            imageURL={images[cartItems[dat].mealID]}
+            setCartItems={setCartItems}
+            cartMealID={dat}
+          />
+        ))}
+      </ScrollView>
+      <Summary
+        totalValue={totalValue}
+        cartItems={cartItems}
+        setIsLoading={setIsLoading}
+      />
     </View>
   );
 };
@@ -131,23 +118,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardContainer: {
-    height: '75%',
     overflow: 'hidden',
     marginBottom: 10,
-  },
-  totalContainer: {
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    height: '25%',
-    borderTopWidth: 0.001,
-    elevation: 2,
-    marginHorizontal: -5,
-  },
-  text: {
-    marginTop: 10,
-    textAlign: 'left',
-    fontFamily: 'robotoLight',
-    fontSize: 25,
   },
 });
 

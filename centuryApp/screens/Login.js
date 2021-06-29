@@ -74,6 +74,7 @@ const Login = props => {
           cart: {},
           token: '',
           isComplete: false,
+          address: {},
         });
         console.log('Data Writen successfully');
       }
