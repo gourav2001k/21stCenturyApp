@@ -11,15 +11,15 @@ const TimePatch = props => {
     <CategoryTile
       text={`${props.time} min`}
       containerStyle={{
-        width: 65,
-        height: 20,
-        marginRight: 10,
+        width: 85,
+        height: 25,
+        marginRight: 18,
         borderColor: 'black',
         backgroundColor: 'rgba(0,0,0,0.5)',
       }}
       textStyle={{
         color: 'white',
-        fontSize: 10,
+        fontSize: 15,
       }}
     />
   );

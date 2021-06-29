@@ -55,23 +55,23 @@ const MealCard = props => {
             containerStyle={{
               marginHorizontal: 10,
               borderColor: Colors.blueJeans,
-              backgroundColor: 'rgba(0,65,255,0.1)',
+              backgroundColor: Colors['Star Command Blue'],
             }}
             textStyle={{
               fontSize: 18,
-              color: Colors.blueJeans,
+              color: 'white',
             }}
           />
           <CategoryTile
-            text={`Rs ${renderPrice}`}
+            text={`₹ ${renderPrice}`}
             containerStyle={{
               marginHorizontal: 10,
               borderColor: Colors.blueJeans,
-              backgroundColor: 'rgba(0,65,255,0.1)',
+              backgroundColor: Colors['Star Command Blue'],
             }}
             textStyle={{
               fontSize: 18,
-              color: Colors.blueJeans,
+              color: 'white',
             }}
           />
         </View>
@@ -83,7 +83,6 @@ const MealCard = props => {
 const styles = StyleSheet.create({
   mainContainer: {
     marginTop: 10,
-    padding: 2,
     borderTopStartRadius: 35,
     borderTopEndRadius: 35,
     borderBottomEndRadius: 30,
@@ -91,6 +90,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 0.001,
     elevation: 2,
+    backgroundColor: 'rgba(0,165,255,0.1)',
   },
   textContainer: {
     padding: 10,

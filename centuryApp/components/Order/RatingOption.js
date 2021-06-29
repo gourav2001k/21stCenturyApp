@@ -8,7 +8,7 @@ import {Rating} from 'react-native-elements';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const RatingOption = ({intialRating, mealID, orderID}) => {
+const RatingOption = ({mealID, orderID}) => {
   const handleRating = async ratingValue => {
     var db = firestore().collection('meals').doc(mealID);
     var fetchedRating = await db.get();
@@ -40,7 +40,7 @@ const RatingOption = ({intialRating, mealID, orderID}) => {
       <Rating
         type="custom"
         imageSize={25}
-        startingValue={intialRating}
+        startingValue={0}
         onFinishRating={rating => handleRating(rating)}
       />
     </View>

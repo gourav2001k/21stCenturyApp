@@ -45,7 +45,7 @@ const OrdersTile = ({orderData, navigation, orderID}) => {
             </Text>
           </View>
         </View>
-        <View>
+        <View style={styles.bottomContainer}>
           <Text>Total:</Text>
           <CategoryTile
             text={`Rs ${amount}`}
@@ -93,6 +93,9 @@ const styles = StyleSheet.create({
     fontFamily: 'robotoRegular',
   },
   priceConainer: {},
+  bottomContainer: {
+    // backgroundColor: 'rgba(0,165,255,0.1)',
+  },
 });
 
 export default OrdersTile;

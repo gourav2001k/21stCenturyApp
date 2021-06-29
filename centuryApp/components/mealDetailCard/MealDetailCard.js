@@ -52,17 +52,23 @@ const MealDetailCard = props => {
             setCheck={setCheck}
           />
         </View>
-        <View style={styles.categoryContainer}>
-          <CategoryTile text={category} />
-        </View>
-        <RatingTile value={rating} />
         <View
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            marginBottom: 10,
+            // marginBottom: 10,
+            // backgroundColor: 'rgba(0,165,255,0.1)',
+            // paddingBottom: 20,
+            marginTop: 30,
           }}>
           <CartButton mealID={mealID} finalOrder={finalOrder} />
+        </View>
+        {/* <View style={styles.categoryContainer}>
+          <CategoryTile text={category} />
+        </View> */}
+
+        <View style={{marginTop: 30}}>
+          <RatingTile value={rating} />
         </View>
       </ScrollView>
     </View>
@@ -72,13 +78,12 @@ const MealDetailCard = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: 'white',
   },
   categoryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
+    marginTop: 20,
     marginHorizontal: 10,
   },
 });

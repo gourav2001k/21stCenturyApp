@@ -124,9 +124,10 @@ const styles = StyleSheet.create({
     height: '20%',
     width: '105%',
     borderRadius: 5,
-    elevation: 2,
+    // elevation: 2,
     flexDirection: 'row',
     justifyContent: 'space-around',
+    backgroundColor: 'rgba(0,165,255,0.1)',
   },
   bottomText: {
     margin: 15,

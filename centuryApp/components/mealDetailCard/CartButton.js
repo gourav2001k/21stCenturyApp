@@ -7,6 +7,8 @@ import auth from '@react-native-firebase/auth';
 import {showMessage} from 'react-native-flash-message';
 import {Button, Icon} from 'react-native-elements';
 
+import Colors from '../../constants/Colors';
+
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
@@ -59,9 +61,14 @@ const CartButton = ({mealID, finalOrder}) => {
         onPress={() => {
           addToCart();
         }}
-        icon={<Icon name="cart" type="ionicon" size={20} color="red" />}
+        icon={<Icon name="cart" type="ionicon" size={25} color="white" />}
         buttonStyle={styles.button}
-        titleStyle={{color: 'red', marginLeft: 10}}
+        titleStyle={{
+          color: 'white',
+          marginLeft: 10,
+          fontSize: 20,
+          fontFamily: 'robotoRegular',
+        }}
         raised
       />
     </View>
@@ -74,14 +81,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 30,
     overflow: 'hidden',
-    width: '45%',
+    width: '55%',
     elevation: 2,
   },
   button: {
     width: '120%',
     paddingLeft: 30,
     paddingRight: 50,
-    backgroundColor: 'rgba(255,0,0,0.2)',
+    backgroundColor: Colors['Star Command Blue'],
   },
 });
 

@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     flexDirection: 'row',
     backgroundColor: 'rgba(0,0,0,0)',
+    marginBottom: 40,
   },
   flatlistContainer: {
     width: '92%',
@@ -91,17 +92,21 @@ const styles = StyleSheet.create({
   },
   activeCategoryContainer: {
     marginHorizontal: 10,
-    borderColor: 'white',
-    backgroundColor: 'green',
+    borderColor: Colors['Star Command Blue'],
+    backgroundColor: Colors['Star Command Blue'],
   },
   inactiveCategoryContainer: {
     marginHorizontal: 10,
-    backgroundColor: Colors.blueJeans,
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    borderColor: Colors['Star Command Blue'],
   },
   activeTextContainer: {
     color: 'white',
   },
-
+  inactiveTextContainer: {
+    borderColor: 'blue',
+    color: Colors['Star Command Blue'],
+  },
   text: {
     color: 'white',
     fontSize: 13,
