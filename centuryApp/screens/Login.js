@@ -1,16 +1,40 @@
 /* eslint-disable */
-import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, ImageBackground, Dimensions, StyleSheet} from 'react-native';
+import {Colors, ActivityIndicator} from 'react-native-paper';
 import {Input, Button} from 'react-native-elements';
 import {showMessage} from 'react-native-flash-message';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import RNBootSplash from 'react-native-bootsplash';
+
+import Logo from '../assets/logo.png';
+import CategoryTile from '../components/CategoryTile';
+
+const height = Dimensions.get('screen').height;
+const width = Dimensions.get('screen').width;
 
 const Login = props => {
+  useEffect(() => {
+    const init = async () => {
+      auth().onAuthStateChanged(user => {
+        if (user) props.navigation.navigate('MealsNavigator');
+      });
+    };
+    init().finally(async () => {
+      await RNBootSplash.hide({fade: true});
+      console.log('Bootsplash has been hidden successfully');
+    });
+  }, []);
+  const [isClicked, setIsClicked] = useState(false);
   const [phone, setPhone] = useState();
   const [OTP, setOTP] = useState();
   const [confirmed, setConfirmed] = useState();
   const [isOTP, setIsOTP] = useState(false);
+
+  const onSkip = () => {
+    props.navigation.navigate('MealsNavigator');
+  };
 
   const numParser = inputText => {
     setPhone(inputText.replace(/[^0-9]/g, ''));
@@ -19,18 +43,21 @@ const Login = props => {
     setOTP(inputText.replace(/[^0-9]/g, ''));
   };
   const reset = () => {
+    setIsClicked(false);
     setIsOTP(false);
     setPhone(null);
     setConfirmed(null);
     setOTP(null);
   };
   const sendOTP = async () => {
+    setIsClicked(true);
     if (phone.length < 10) {
       showMessage({
         message: 'Invalid Phone',
         description: 'Phone Number must be 10 digits in length',
         type: 'danger',
       });
+      setIsClicked(false);
       return;
     }
     try {
@@ -50,15 +77,18 @@ const Login = props => {
       });
       reset();
     }
+    setIsClicked(false);
   };
 
   const verifyOTP = async () => {
+    setIsClicked(true);
     if (OTP.length < 6) {
       showMessage({
         message: 'Invalid Code',
         description: 'OTP must be 6 digits in length',
         type: 'danger',
       });
+      setIsClicked(false);
       return;
     }
     try {
@@ -78,7 +108,6 @@ const Login = props => {
         });
         console.log('Data Writen successfully');
       }
-      props.navigation.replace('MealsNavigator');
     } catch (error) {
       console.log(error);
       showMessage({
@@ -92,9 +121,36 @@ const Login = props => {
 
   return (
     <View style={styles.screen}>
+      <View style={styles.skip}>
+        <CategoryTile
+          text="Skip"
+          button
+          containerStyle={{
+            width: 80,
+            height: 40,
+            marginRight: 18,
+            borderColor: 'black',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}
+          textStyle={{
+            color: 'white',
+            fontSize: 16,
+          }}
+          onPress={onSkip}
+        />
+      </View>
+      <ImageBackground
+        source={Logo}
+        style={{
+          width: (2 * width) / 3,
+          height: (2 * width) / 3,
+          marginBottom: 50,
+        }}
+      />
       <Input
         placeholder="10 digit number"
         keyboardType="phone-pad"
+        label="Phone No."
         maxLength={10}
         onChangeText={numParser}
         value={phone}
@@ -104,6 +160,7 @@ const Login = props => {
       {isOTP ? (
         <Input
           placeholder="Enter OTP"
+          label="OTP"
           keyboardType="phone-pad"
           maxLength={6}
           onChangeText={OTPParser}
@@ -111,6 +168,7 @@ const Login = props => {
           leftIcon={{type: 'FontAwesome', name: 'lock'}}
         />
       ) : null}
+      <ActivityIndicator animating={isClicked} size="large" color="blue" />
       <View style={styles.button}>
         {!isOTP ? (
           <Button
@@ -147,11 +205,12 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 330,
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
+  skip: {position: 'absolute', top: 10, right: -10},
 });
 
 export default Login;
