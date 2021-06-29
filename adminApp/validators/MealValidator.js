@@ -9,7 +9,6 @@ const MealValidator = Yup.object().shape({
     .label('Description')
     .required('Description needs to be filled')
     .min(30, 'Description must have at least 30 characters'),
-  discount: Yup.number().label('Discount').required(),
   time: Yup.number().label('Preparation Time').required(),
   filePath: Yup.string()
     .label('Image')

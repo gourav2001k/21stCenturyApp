@@ -93,7 +93,7 @@ const UpdateMeal = props => {
     });
   };
 
-  const addMeal = async (name, description, discount, time) => {
+  const addMeal = async (name, description, time) => {
     setIsLoading(true);
     try {
       if (!variants) throw new Error("Variants can't be empty");
@@ -119,15 +119,13 @@ const UpdateMeal = props => {
         description: description,
         time: parseInt(time),
         variants: vrnts,
-        discount: parseInt(discount),
         available: Boolean(avail),
-        rating: 0,
-        ratings: {},
       };
+      console.log(doc);
       // Writing the doc to FireStore
       db.collection('meals')
         .doc(mealId)
-        .set(doc)
+        .update(doc)
         .then(() => {
           console.log('Document successfully written!');
           props.navigation.pop();
@@ -185,18 +183,12 @@ const UpdateMeal = props => {
           initialValues={{
             name: mealData.name,
             time: mealData.time.toString(),
-            discount: mealData.discount.toString(),
             filePath: mealData.imageURL,
             description: mealData.description,
           }}
           validationSchema={MealValidator}
           onSubmit={values => {
-            addMeal(
-              values.name,
-              values.description,
-              values.discount,
-              values.time,
-            );
+            addMeal(values.name, values.description, values.time);
           }}>
           {({
             values,
@@ -225,17 +217,6 @@ const UpdateMeal = props => {
                 onBlur={handleBlur('description')}
                 errorStyle={{color: 'red'}}
                 errorMessage={touched.description && errors.description}
-              />
-              <Input
-                placeholder="Discount Value in %"
-                label="Dicount"
-                maxLength={2}
-                value={values.discount}
-                keyboardType="number-pad"
-                onChangeText={handleChange('discount')}
-                onBlur={handleBlur('discount')}
-                errorStyle={{color: 'red'}}
-                errorMessage={touched.discount && errors.discount}
               />
               <Input
                 placeholder="Time"

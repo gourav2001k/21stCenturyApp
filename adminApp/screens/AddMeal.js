@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import {Input, Button, Overlay, ListItem} from 'react-native-elements';
-import {FAB, Colors,ActivityIndicator} from 'react-native-paper';
+import {FAB, Colors, ActivityIndicator} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DropDownPicker from 'react-native-dropdown-picker';
 import firestore from '@react-native-firebase/firestore';
@@ -61,7 +61,7 @@ const AddMeal = props => {
     });
   };
 
-  const addMeal = async (name, description, discount, time) => {
+  const addMeal = async (name, description, time) => {
     setIsLoading(true);
     try {
       if (!variants) throw new Error("Variants can't be empty");
@@ -84,7 +84,6 @@ const AddMeal = props => {
         description: description,
         time: time,
         variants: vrnts,
-        discount: parseInt(discount),
         available: Boolean(avail),
         rating: 0,
         ratings: {},
@@ -150,18 +149,12 @@ const AddMeal = props => {
           initialValues={{
             name: '',
             time: '',
-            discount: '',
             filePath: '',
             description: '',
           }}
           validationSchema={MealValidator}
           onSubmit={values => {
-            addMeal(
-              values.name,
-              values.description,
-              values.discount,
-              values.time,
-            );
+            addMeal(values.name, values.description, values.time);
           }}>
           {({
             values,
@@ -190,17 +183,6 @@ const AddMeal = props => {
                 onBlur={handleBlur('description')}
                 errorStyle={{color: 'red'}}
                 errorMessage={touched.description && errors.description}
-              />
-              <Input
-                placeholder="Discount Value in %"
-                label="Dicount"
-                maxLength={2}
-                value={values.discount}
-                keyboardType="number-pad"
-                onChangeText={handleChange('discount')}
-                onBlur={handleBlur('discount')}
-                errorStyle={{color: 'red'}}
-                errorMessage={touched.discount && errors.discount}
               />
               <Input
                 placeholder="Time"
