@@ -89,10 +89,9 @@ const makeID = () => {
   return (
     String(d.getDate()).padStart(2, '0') +
     String(d.getMonth() + 1).padStart(2, '0') +
-    String(d.getFullYear()).padStart(4, '0') +
+    String(d.getFullYear() - 2000).padStart(2, '0') +
     String(d.getHours()).padStart(2, '0') +
     String(d.getMinutes()).padStart(2, '0') +
-    String(d.getSeconds()).padStart(2, '0') +
     String(d.getMilliseconds()).padStart(3, '0')
   );
 };

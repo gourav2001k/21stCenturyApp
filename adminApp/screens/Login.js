@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, {useState} from 'react';
 import {View, ImageBackground, Dimensions, StyleSheet} from 'react-native';
+import {Colors, ActivityIndicator} from 'react-native-paper';
 import {Input, Button} from 'react-native-elements';
 import {showMessage} from 'react-native-flash-message';
 import auth from '@react-native-firebase/auth';
@@ -11,6 +12,7 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const Login = props => {
+  const [isClicked, setIsClicked] = useState(false);
   const [phone, setPhone] = useState();
   const [OTP, setOTP] = useState();
   const [confirmed, setConfirmed] = useState();
@@ -23,18 +25,21 @@ const Login = props => {
     setOTP(inputText.replace(/[^0-9]/g, ''));
   };
   const reset = () => {
+    setIsClicked(false);
     setIsOTP(false);
     setPhone(null);
     setConfirmed(null);
     setOTP(null);
   };
   const sendOTP = async () => {
+    setIsClicked(true);
     if (phone.length < 10) {
       showMessage({
         message: 'Invalid Phone',
         description: 'Phone Number must be 10 digits in length',
         type: 'danger',
       });
+      setIsClicked(false);
       return;
     }
     try {
@@ -56,15 +61,18 @@ const Login = props => {
       });
       reset();
     }
+    setIsClicked(false);
   };
 
   const verifyOTP = async () => {
+    setIsClicked(true);
     if (OTP.length < 6) {
       showMessage({
         message: 'Invalid Code',
         description: 'OTP must be 6 digits in length',
         type: 'danger',
       });
+      setIsClicked(false);
       return;
     }
     try {
@@ -88,7 +96,7 @@ const Login = props => {
         source={Logo}
         style={{
           width: (2 * width) / 3,
-          height: width / 3,
+          height: (2 * width) / 3,
           marginBottom: 50,
         }}
       />
@@ -111,6 +119,7 @@ const Login = props => {
           leftIcon={{type: 'FontAwesome', name: 'lock'}}
         />
       ) : null}
+      <ActivityIndicator animating={isClicked} size="large" color="blue" />
       <View style={styles.button}>
         {!isOTP ? (
           <Button
@@ -147,7 +156,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 330,
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
