@@ -13,7 +13,6 @@ const width = Dimensions.get('screen').width;
 const MealCard = props => {
   const {
     available,
-    discount,
     category,
     rating,
     name,
@@ -44,7 +43,6 @@ const MealCard = props => {
         <MealImage
           imageURL={imageURL}
           name={name}
-          discount={discount}
           available={available}
           rating={rating}
           time={time}

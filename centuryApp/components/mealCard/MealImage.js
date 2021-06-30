@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 import AvailableImage from './AvailableImage';
-import DiscountImage from './DiscountImage';
 import RatingTile from './RatingTile';
 import TimePatch from './TimePatch';
 
@@ -27,12 +26,9 @@ const MealImage = props => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: props.discount === 0 ? 'flex-end' : 'space-between',
+            justifyContent: 'flex-end',
             marginTop: 5,
           }}>
-          {props.discount === 0 ? null : (
-            <DiscountImage value={props.discount} />
-          )}
           <TimePatch time={props.time} />
         </View>
       ) : null}

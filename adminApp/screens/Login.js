@@ -1,10 +1,11 @@
 /* eslint-disable */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, ImageBackground, Dimensions, StyleSheet} from 'react-native';
 import {Colors, ActivityIndicator} from 'react-native-paper';
 import {Input, Button} from 'react-native-elements';
 import {showMessage} from 'react-native-flash-message';
 import auth from '@react-native-firebase/auth';
+import RNBootSplash from 'react-native-bootsplash';
 
 import Logo from '../assets/logo.png';
 
@@ -12,6 +13,20 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const Login = props => {
+  useEffect(() => {
+    const init = async () => {
+      auth().onAuthStateChanged(user => {
+        if (user) props.navigation.replace('Home');
+      });
+    };
+    init().finally(async () => {
+      await RNBootSplash.hide({fade: true});
+      console.log('Bootsplash has been hidden successfully');
+    });
+
+    return () => init();
+  }, []);
+
   const [isClicked, setIsClicked] = useState(false);
   const [phone, setPhone] = useState();
   const [OTP, setOTP] = useState();
@@ -78,7 +93,6 @@ const Login = props => {
     try {
       await confirmed.confirm(OTP);
       var user = auth().currentUser;
-      props.navigation.replace('Home');
     } catch (error) {
       console.log(error);
       showMessage({

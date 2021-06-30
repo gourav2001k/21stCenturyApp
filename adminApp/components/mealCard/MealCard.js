@@ -17,17 +17,8 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const MealCard = props => {
-  const {
-    mealID,
-    available,
-    discount,
-    category,
-    rating,
-    name,
-    imageURL,
-    variants,
-    time,
-  } = props.meal;
+  const {mealID, available, category, rating, name, imageURL, variants, time} =
+    props.meal;
 
   var renderPrice = Infinity;
   Object.keys(variants).map(dat => {
@@ -45,7 +36,6 @@ const MealCard = props => {
           <MealImage
             imageURL={imageURL}
             name={name}
-            discount={discount}
             available={available}
             rating={rating}
             time={time}

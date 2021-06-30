@@ -14,7 +14,6 @@ const width = Dimensions.get('screen').width;
 const MealDetailCard = props => {
   const {
     available,
-    discount,
     category,
     rating,
     name,
