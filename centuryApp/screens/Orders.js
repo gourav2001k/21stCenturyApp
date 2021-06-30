@@ -9,6 +9,7 @@ import OrdersTile from '../components/Order/OrderTile';
 
 const Orders = props => {
   const [userOrders, setUserOrders] = useState();
+  const [sequence, setSequence] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchItems = async () => {
@@ -17,9 +18,13 @@ const Orders = props => {
       .where('userID', '==', auth().currentUser.uid)
       .get();
     const fetchedUserOrder = {};
+    var arr = [];
     orders.docs.map(doc => {
       fetchedUserOrder[doc.id] = doc.data();
+      arr.push([doc.data().createdAt, doc.id]);
     });
+    arr.sort((a, b) => a[0] < b[0]);
+    setSequence(arr);
     setUserOrders(fetchedUserOrder);
   };
 
@@ -59,11 +64,11 @@ const Orders = props => {
   return (
     <View style={styles.screen}>
       <ScrollView style={styles.scrollContainer}>
-        {Object.keys(userOrders).map(dat => (
+        {sequence.map(xy => (
           <OrdersTile
-            key={dat}
-            orderData={userOrders[dat]}
-            orderID={dat}
+            key={xy[1]}
+            orderData={userOrders[xy[1]]}
+            orderID={xy[1]}
             navigation={props.navigation}
           />
         ))}
