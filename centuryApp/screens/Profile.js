@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 
+import {Button, Icon, Overlay, ListItem} from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+
+import Colors from '../constants/Colors';
 import Address from '../components/profile/Address';
-import {Button, Icon, Overlay} from 'react-native-elements';
+import Logo from '../assets/logo.png';
 
 const Profile = props => {
   const [isLoading, setIsLoading] = useState(true);
@@ -42,22 +45,68 @@ const Profile = props => {
       </View>
     );
   }
+  const renderList = [
+    {
+      name: auth().currentUser.displayName
+        ? auth().currentUser.displayName
+        : '(No Name)',
+      title: 'Name',
+      type: 'fontAwesome',
+      icon: 'account-box',
+    },
+    {
+      name: oldAddress.address ? oldAddress.address : '(Not present)',
+      title: 'Address',
+      type: 'entypo',
+      icon: 'location-pin',
+    },
+    {
+      name: oldAddress.locality ? oldAddress.locality : '(Not present)',
+      title: 'Locality',
+      type: 'Entypo',
+      icon: 'local-attraction',
+    },
+    {
+      name: 'Jodhpur',
+      title: 'City',
+      type: 'Entypo',
+      icon: 'location-city',
+    },
+    {
+      name: auth().currentUser.phoneNumber,
+      title: 'Phone No.',
+      type: 'ionicons',
+      icon: 'call',
+    },
+  ];
   return (
     <View style={styles.screen}>
-      <Text>
-        Name :{' '}
-        {auth().currentUser.displayName
-          ? auth().currentUser.displayName
-          : '(No Name)'}
-      </Text>
-      <Text>
-        Address : {oldAddress.address ? oldAddress.address : '(Not present)'}
-      </Text>
-      <Text>
-        Locality : {oldAddress.locality ? oldAddress.locality : '(Not present)'}
-      </Text>
-      <Text>Phone : {auth().currentUser.phoneNumber}</Text>
-      <Button title="Update Profile" onPress={toggleOverlay} />
+      <Image source={Logo} style={styles.image} />
+      {renderList.map((dat, idx) => (
+        <ListItem key={idx} bottomDivider style={{width: '95%'}}>
+          <ListItem.Content
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+            }}>
+            <Icon name={dat.icon} type={dat.type} />
+            <ListItem.Title style={{marginLeft: 20}}>
+              {dat.title}
+            </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Content>
+            <ListItem.Subtitle>{dat.name}</ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+      ))}
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Update Profile"
+          onPress={toggleOverlay}
+          buttonStyle={styles.button}
+          titleStyle={styles.titleButton}
+        />
+      </View>
       <Overlay
         isVisible={visible}
         onBackdropPress={toggleOverlay}
@@ -74,8 +123,30 @@ const Profile = props => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
+    marginHorizontal: 10,
+    marginTop: 20,
     alignItems: 'center',
+  },
+  image: {
+    width: 150,
+    height: 150,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderRadius: 30,
+    width: '75%',
+    marginTop: 20,
+  },
+  button: {
+    backgroundColor: Colors['Star Command Blue'],
+  },
+  titleButton: {
+    color: 'white',
+    marginLeft: 20,
+    fontSize: 22,
+    fontFamily: 'robotoRegular',
   },
   overlayContainer: {
     width: '105%',
