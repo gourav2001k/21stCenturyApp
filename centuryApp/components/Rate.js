@@ -44,8 +44,8 @@ const App = () => {
           //After 5 second ask for the rate this app
           Alert.alert(
             'Rate us',
-            'Would you like to share your review with us?
-             This will help and motivate us a lot.',
+            'Would you like to share your review with us?',
+            'This will help and motivate us a lot.',
             [
               {text: 'Sure', onPress: () => openStore()},
               {
@@ -64,15 +64,13 @@ const App = () => {
   const openStore = () => {
     //This is the main trick
     if (Platform.OS != 'ios') {
-      Linking.openURL(
-        `market://details?id=${GOOGLE_PACKAGE_NAME}`,
-      ).catch(
-          (err) => alert('Please check for Google Play Store')
+      Linking.openURL(`market://details?id=${GOOGLE_PACKAGE_NAME}`).catch(err =>
+        alert('Please check for Google Play Store'),
       );
     } else {
       Linking.openURL(
         `itms://itunes.apple.com/in/app/apple-store/${APPLE_STORE_ID}`,
-      ).catch((err) => alert('Please check for the App Store'));
+      ).catch(err => alert('Please check for the App Store'));
     }
   };
 
@@ -92,9 +90,7 @@ const App = () => {
             onPress={startRatingCounter}
             activeOpacity={0.6}
             style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>
-              Restart Rating Counter
-            </Text>
+            <Text style={styles.buttonTextStyle}>Restart Rating Counter</Text>
           </TouchableOpacity>
         )}
       </View>

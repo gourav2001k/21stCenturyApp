@@ -1,21 +1,8 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 
-import {
-  DrawerContentScrollView,
-  DrawerItem,
-  DrawerItemList,
-} from '@react-navigation/drawer';
-import {
-  Avatar,
-  Title,
-  Caption,
-  Paragraph,
-  Drawer,
-  Text,
-  TouchableRipple,
-  Switch,
-} from 'react-native-paper';
+import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import {Avatar, Drawer} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Logo from '../assets/logo.png';
 import auth from '@react-native-firebase/auth';

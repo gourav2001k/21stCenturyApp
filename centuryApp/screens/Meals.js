@@ -70,6 +70,7 @@ const Meals = props => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         {allMeal.map((dat, idx) => {
+          dat.category === currentCategory ? (currentMeal += 1) : null;
           return dat.category === currentCategory ? (
             <MealCard navigation={props.navigation} meal={dat} key={idx} />
           ) : null;
