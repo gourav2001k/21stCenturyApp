@@ -16,11 +16,12 @@ const Login = props => {
   useEffect(() => {
     const init = async () => {
       auth().onAuthStateChanged(user => {
-        if (user) props.navigation.replace('Home');
+        if (user) console.log('Looged In');
       });
     };
     init().finally(async () => {
       await RNBootSplash.hide({fade: true});
+      if (auth().currentUser) props.navigation.replace('Home');
       console.log('Bootsplash has been hidden successfully');
     });
 
@@ -93,6 +94,7 @@ const Login = props => {
     try {
       await confirmed.confirm(OTP);
       var user = auth().currentUser;
+      props.navigation.replace('Home');
     } catch (error) {
       console.log(error);
       showMessage({
