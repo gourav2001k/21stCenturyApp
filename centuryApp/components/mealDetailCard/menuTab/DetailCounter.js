@@ -15,7 +15,7 @@ const DetailCounter = ({finalOrder, setFinalOrder, index}) => {
         raised
         name="remove-outline"
         type="ionicon"
-        size={18}
+        size={20}
         onPress={() => {
           setFinalOrder(prev => ({
             ...prev,
@@ -30,7 +30,7 @@ const DetailCounter = ({finalOrder, setFinalOrder, index}) => {
 
       <View style={{justifyContent: 'center'}}>
         <Text
-          style={{fontFamily: 'roboto-light', fontSize: 18, color: 'white'}}>
+          style={{fontFamily: 'roboto-light', fontSize: 25, color: 'white'}}>
           {finalOrder[index].quantity}
         </Text>
       </View>
@@ -38,7 +38,7 @@ const DetailCounter = ({finalOrder, setFinalOrder, index}) => {
         raised
         name="add-outline"
         type="ionicon"
-        size={18}
+        size={20}
         onPress={() => {
           setFinalOrder(prev => ({
             ...prev,

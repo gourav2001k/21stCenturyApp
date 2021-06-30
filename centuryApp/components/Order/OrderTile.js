@@ -28,39 +28,41 @@ const OrdersTile = ({orderData, navigation, orderID}) => {
   };
 
   return (
-    <Touchable onPress={Openable} activeScale={0.9} friction={8}>
-      <View style={styles.container}>
-        <View>
-          <View style={styles.order}>
-            <Text>OrderID:</Text>
-            <Text style={styles.orderText}>{orderID}</Text>
-          </View>
-          <View style={styles.date}>
-            <Text>Date/Time :</Text>
-            <Text style={styles.dateText}>
-              {createdAt.toDate().toDateString()}
-            </Text>
-            <Text style={styles.dateText}>
-              {createdAt.toDate().toLocaleTimeString()}
-            </Text>
-          </View>
+    <Touchable
+      onPress={Openable}
+      activeScale={0.9}
+      friction={8}
+      style={styles.container}>
+      <View style={{width: '55%', marginLeft: 10}}>
+        <View style={styles.order}>
+          <Text>OrderID:</Text>
+          <Text style={styles.orderText}>{orderID}</Text>
         </View>
-        <View style={styles.bottomContainer}>
-          <Text>Total:</Text>
-          <CategoryTile
-            text={`Rs ${amount}`}
-            containerStyle={{
-              backgroundColor: 'rgba(0,65,255,0.2)',
-              borderColor: Colors['Navy Blue'],
-            }}
-            textStyle={{color: Colors['Navy Blue']}}
+        <View style={styles.date}>
+          <Text>Date/Time :</Text>
+          <Text style={styles.dateText}>
+            {createdAt.toDate().toDateString()}
+          </Text>
+          <Text style={styles.dateText}>
+            {createdAt.toDate().toLocaleTimeString()}
+          </Text>
+        </View>
+      </View>
+      <View>
+        <Text style={{marginLeft: 15}}>Total:</Text>
+        <CategoryTile
+          text={`Rs ${amount}`}
+          containerStyle={{
+            backgroundColor: 'rgba(0,65,255,0.2)',
+            borderColor: Colors['Navy Blue'],
+          }}
+          textStyle={{color: Colors['Navy Blue']}}
+        />
+        <View style={{marginLeft: 10}}>
+          <Image
+            source={status ? greenTick : yellowTick}
+            style={{width: 50, height: 50}}
           />
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Image
-              source={status ? greenTick : yellowTick}
-              style={{width: 50, height: 50}}
-            />
-          </View>
         </View>
       </View>
     </Touchable>
@@ -76,9 +78,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginTop: 10,
     width: screenWidth - 20,
-    justifyContent: 'space-around',
     borderWidth: 0.001,
-    elevation: 3,
+    elevation: 2,
     alignItems: 'center',
   },
   orderText: {
@@ -91,10 +92,6 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 15,
     fontFamily: 'robotoRegular',
-  },
-  priceConainer: {},
-  bottomContainer: {
-    // backgroundColor: 'rgba(0,165,255,0.1)',
   },
 });
 

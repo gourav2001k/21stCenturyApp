@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 
 import {Button, Icon, Overlay} from 'react-native-elements';
-
 import Colors from '../../constants/Colors';
+
 import SummaryDetails from './SummaryDetails';
 import ChooseType from './ChooseType';
 import OrderButton from './OrderButton';
 import Address from './Address';
+import ModeButton from './ModeButton';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -29,15 +30,7 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
     <View style={styles.container}>
       <SummaryDetails totalValue={totalValue} type={type} />
       <View style={styles.buttonContainer}>
-        <View style={styles.modeContainer}>
-          <Button
-            title="Mode"
-            onPress={toggleOverlay1}
-            buttonStyle={styles.button}
-            titleStyle={styles.titleButton}
-            raised
-          />
-        </View>
+        <ModeButton toggleOverlay1={toggleOverlay1} type={type} />
         <View style={styles.finalButtonContainer}>
           {type === 'takeAway' ? (
             <OrderButton
@@ -54,7 +47,6 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
               icon={<Icon name="arrow-right" size={30} color="white" />}
               buttonStyle={styles.button}
               titleStyle={styles.titleButton}
-              raised
             />
           )}
         </View>
@@ -103,15 +95,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  modeContainer: {
-    borderTopStartRadius: 30,
-    borderBottomStartRadius: 30,
-    overflow: 'hidden',
-  },
   finalButtonContainer: {
-    width: '65%',
-    borderTopEndRadius: 30,
-    borderBottomEndRadius: 30,
+    borderRadius: 30,
     overflow: 'hidden',
   },
   button: {
@@ -120,8 +105,8 @@ const styles = StyleSheet.create({
 
   titleButton: {
     color: 'white',
-    marginLeft: 10,
-    fontSize: 20,
+    marginLeft: 20,
+    fontSize: 22,
     fontFamily: 'robotoRegular',
   },
   overlayContainer: {

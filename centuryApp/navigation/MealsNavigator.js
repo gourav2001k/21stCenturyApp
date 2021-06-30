@@ -95,10 +95,12 @@ const ProfileStack = () => {
               onPress={() => {
                 navigation.toggleDrawer();
               }}
-              color={Colors.vividSkyBlue}
+              color="white"
             />
           </HeaderButtons>
         ),
+        headerStyle: {backgroundColor: Colors['Star Command Blue']},
+        headerTitleStyle: {color: 'white'},
       })}>
       <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
@@ -117,9 +119,8 @@ const MealsTab = () => {
         component={MealsStack}
         options={{
           tabBarIcon: ({color}) => (
-            <Ionicons size={23} color={color} name="fast-food-outline" />
+            <Ionicons size={23} color={color} name="fast-food" />
           ),
-          // tabBarColor: 'hsla(35, 90%, 45%, 1)',
           tabBarColor: Colors['Star Command Blue'],
         }}
       />
@@ -140,7 +141,7 @@ const MealsTab = () => {
           tabBarIcon: ({color}) => (
             <FontAwesome size={23} color={color} name="user" />
           ),
-          tabBarColor: '#006400',
+          tabBarColor: 'hsla(200, 90%, 40%, 1)',
         }}
       />
     </BottomTab.Navigator>

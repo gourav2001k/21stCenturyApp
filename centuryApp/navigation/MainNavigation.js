@@ -1,10 +1,15 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import HeaderButtonss from '../components/HeaderButtonss';
+
 import MealsNavigator from './MealsNavigator';
 import Login from '../screens/Login';
 import Cart from '../screens/Cart';
 import Colors from '../constants/Colors';
+import AboutUs from '../screens/AboutUs';
+import Rule from '../screens/Rule';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +33,46 @@ const MainNavigation = () => {
           headerTitleStyle: {color: '#ffffff'},
           headerTintColor: '#ffffff',
         }}
+      />
+      <Stack.Screen
+        name="About Us"
+        component={AboutUs}
+        options={({navigation, route}) => ({
+          headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
+              <Item
+                title="Menu"
+                iconName="ios-menu"
+                onPress={() => {
+                  navigation.toggleDrawer();
+                }}
+                color="white"
+              />
+            </HeaderButtons>
+          ),
+          headerStyle: {backgroundColor: Colors['Star Command Blue']},
+          headerTitleStyle: {color: 'white'},
+        })}
+      />
+      <Stack.Screen
+        name="Rule"
+        component={Rule}
+        options={({navigation, route}) => ({
+          headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
+              <Item
+                title="Menu"
+                iconName="ios-menu"
+                onPress={() => {
+                  navigation.toggleDrawer();
+                }}
+                color="white"
+              />
+            </HeaderButtons>
+          ),
+          headerStyle: {backgroundColor: Colors['Star Command Blue']},
+          headerTitleStyle: {color: 'white'},
+        })}
       />
     </Stack.Navigator>
   );

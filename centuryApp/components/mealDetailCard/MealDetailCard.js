@@ -37,12 +37,12 @@ const MealDetailCard = props => {
     <View style={styles.container}>
       <DetailImage imageURL={imageURL} />
       <ScrollView>
-        <View style={{height: height / 9, marginTop: 10}}>
+        <View style={{height: height / 9, marginTop: 5}}>
           <AboutMeal name={name} description={description} />
         </View>
         <View
           style={{
-            alignItems: 'center',
+            height: height / 5,
           }}>
           <PriceMenu
             setFinalOrder={setFinalOrder}
@@ -55,10 +55,7 @@ const MealDetailCard = props => {
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            // marginBottom: 10,
-            // backgroundColor: 'rgba(0,165,255,0.1)',
-            // paddingBottom: 20,
-            marginTop: 30,
+            height: height / 11,
           }}>
           <CartButton
             mealID={mealID}
@@ -66,11 +63,7 @@ const MealDetailCard = props => {
             navigation={props.navigation}
           />
         </View>
-        {/* <View style={styles.categoryContainer}>
-          <CategoryTile text={category} />
-        </View> */}
-
-        <View style={{marginTop: 30}}>
+        <View style={{marginTop: 10}}>
           <RatingTile value={rating} />
         </View>
       </ScrollView>
