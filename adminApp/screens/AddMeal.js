@@ -99,6 +99,11 @@ const AddMeal = props => {
         })
         .catch(error => {
           console.error('Error writing document: ', error);
+          showMessage({
+            message: 'Error',
+            description: error.message,
+            type: 'danger',
+          });
           setIsLoading(false);
         });
     } catch (err) {
