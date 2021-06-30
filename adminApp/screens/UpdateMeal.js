@@ -97,10 +97,11 @@ const UpdateMeal = props => {
     setIsLoading(true);
     try {
       if (!variants) throw new Error("Variants can't be empty");
+      var loc = oldURL;
       if (!firebaseImage) {
         storage().ref(oldURL).delete();
         // Create the file metadatastorage()
-        var loc = 'meals/' + makeID(8) + '-' + Date.now().toString() + '.jpg';
+        loc = 'meals/' + makeID(8) + '-' + Date.now().toString() + '.jpg';
         const imageStore = storage().ref(loc);
         await imageStore.putFile(filePath);
       }
@@ -121,7 +122,6 @@ const UpdateMeal = props => {
         variants: vrnts,
         available: Boolean(avail),
       };
-      console.log(doc);
       // Writing the doc to FireStore
       db.collection('meals')
         .doc(mealId)
@@ -133,6 +133,11 @@ const UpdateMeal = props => {
         })
         .catch(error => {
           console.error('Error writing document: ', error);
+          showMessage({
+            message: 'Error',
+            description: error.message,
+            type: 'danger',
+          });
           setIsLoading(false);
         });
     } catch (err) {
