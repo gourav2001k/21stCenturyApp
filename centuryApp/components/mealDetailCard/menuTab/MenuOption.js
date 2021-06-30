@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     flexDirection: 'row',
     backgroundColor: 'rgba(0,0,0,0)',
-    marginBottom: 40,
+    marginBottom: 20,
+    marginLeft: 10,
   },
   flatlistContainer: {
     width: '92%',
