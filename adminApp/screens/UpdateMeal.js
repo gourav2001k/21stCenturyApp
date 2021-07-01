@@ -164,13 +164,15 @@ const UpdateMeal = props => {
       />
       <Text style={styles.text}>Variants</Text>
       {variants ? (
-        <FlatList
-          keyExtractor={idx => idx}
-          data={Object.keys(variants)}
-          renderItem={item =>
-            varTile(item.item, variants, setIDX, toggleUpdate)
-          }
-        />
+        <View style={{minHeight: '15%', maxHeight: '25%'}}>
+          <FlatList
+            keyExtractor={idx => idx}
+            data={Object.keys(variants)}
+            renderItem={item =>
+              varTile(item.item, variants, setIDX, toggleUpdate)
+            }
+          />
+        </View>
       ) : (
         <Text
           style={{
