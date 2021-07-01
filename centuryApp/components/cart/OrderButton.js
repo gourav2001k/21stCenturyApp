@@ -65,7 +65,7 @@ const OrderButton = ({
         });
       } else {
         await firestore().collection('orders').doc(makeID(16)).set(doc);
-        if (address) {
+        if (address && type !== 'takeAway') {
           await firestore().collection('users').doc(userID).update({
             cart: {},
             address: address,

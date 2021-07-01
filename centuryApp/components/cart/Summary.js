@@ -10,6 +10,7 @@ import OrderButton from './OrderButton';
 import Address from './Address';
 import ModeButton from './ModeButton';
 import {showMessage} from 'react-native-flash-message';
+import StoreChoose from './storeChoose';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -19,12 +20,17 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
 
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
+  const [visible2, setVisible2] = useState(false);
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
   const toggleOverlay1 = () => {
     setVisible1(!visible1);
+  };
+
+  const toggleOverlay2 = () => {
+    setVisible2(!visible2);
   };
 
   const checkTotal = () => {
@@ -46,15 +52,17 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
         <ModeButton toggleOverlay1={toggleOverlay1} type={type} />
         <View style={styles.finalButtonContainer}>
           {type === 'takeAway' ? (
-            <OrderButton
-              cartItems={cartItems}
-              totalAmount={totalValue * 1.05}
-              setIsLoading={setIsLoading}
-              type={type}
+            <Button
+              title="Checkout"
+              onPress={toggleOverlay2}
+              iconRight
+              icon={<Icon name="arrow-right" size={30} color="white" />}
+              buttonStyle={styles.button}
+              titleStyle={styles.titleButton}
             />
           ) : (
             <Button
-              title="Place Order"
+              title="Checkout"
               onPress={checkTotal}
               iconRight
               icon={<Icon name="arrow-right" size={30} color="white" />}
@@ -72,6 +80,20 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
           <Icon name="cross" type="entypo" raised onPress={toggleOverlay1} />
         </View>
         <ChooseType type={type} setType={setType} />
+      </Overlay>
+      <Overlay
+        isVisible={visible2}
+        onBackdropPress={toggleOverlay2}
+        overlayStyle={styles.overlayContainer2}>
+        <View style={styles.crossIcon}>
+          <Icon name="cross" type="entypo" raised onPress={toggleOverlay2} />
+        </View>
+        <StoreChoose
+          cartItems={cartItems}
+          totalAmount={totalValue}
+          type={type}
+          setIsLoading={setIsLoading}
+        />
       </Overlay>
       <Overlay
         isVisible={visible}
@@ -132,6 +154,13 @@ const styles = StyleSheet.create({
   overlayContainer1: {
     width: '105%',
     height: '55%',
+    position: 'absolute',
+    bottom: -10,
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
+  overlayContainer2: {
+    width: '105%',
+    height: '75%',
     position: 'absolute',
     bottom: -10,
     backgroundColor: 'rgba(0,0,0,0)',

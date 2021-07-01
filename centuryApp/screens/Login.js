@@ -95,6 +95,7 @@ const Login = props => {
     }
     try {
       await confirmed.confirm(OTP);
+      reset();
       var user = auth().currentUser;
       var userDB = await firestore().collection('users').doc(user.uid).get();
       userDB = userDB.data();
@@ -175,6 +176,12 @@ const Login = props => {
       ) : null}
       <ActivityIndicator animating={isClicked} size="large" color="blue" />
       <View style={styles.button}>
+        <Button
+          raised={true}
+          title="Reset"
+          onPress={reset}
+          buttonStyle={{width: 130}}
+        />
         {!isOTP ? (
           <Button
             raised={true}
@@ -190,12 +197,6 @@ const Login = props => {
             buttonStyle={{width: 130}}
           />
         )}
-        <Button
-          raised={true}
-          title="Reset"
-          onPress={reset}
-          buttonStyle={{width: 130}}
-        />
       </View>
     </View>
   );

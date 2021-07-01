@@ -8,9 +8,10 @@ import Logo from '../assets/logo.png';
 import auth from '@react-native-firebase/auth';
 
 const logOut = async () => {
-  await auth()
-    .signOut()
-    .then(() => console.log('User signed out!'));
+  if (auth().currentUser)
+    await auth()
+      .signOut()
+      .then(() => console.log('User signed out!'));
 };
 const DrawerContent = props => {
   return (
@@ -101,6 +102,13 @@ const DrawerContent = props => {
             props.navigation.navigate('Login');
           }}
         />
+        {/* <DrawerItem
+          icon={({color, size}) => (
+            <Icon name="copyright" color={color} size={size} />
+          )}
+          disabled={true}
+          label="GH Tek"
+        /> */}
       </Drawer.Section>
     </View>
   );
