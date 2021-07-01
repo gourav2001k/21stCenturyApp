@@ -26,7 +26,6 @@ const AddressValidator = Yup.object().shape({
 
 const Address = ({cartItems, totalAmount, type, setIsLoading}) => {
   const userID = auth().currentUser.uid;
-  const deliveryCharge = 40;
   const [oldAddress, setAddress] = useState({});
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -117,7 +116,7 @@ const Address = ({cartItems, totalAmount, type, setIsLoading}) => {
                       Object.keys(errors).length > 0 ||
                         Object.keys(touched).length === 0,
                     )}
-                    totalAmount={totalAmount + deliveryCharge}
+                    totalAmount={totalAmount * 1.05}
                     type={type}
                     setIsLoading={setIsLoading}
                     address={{

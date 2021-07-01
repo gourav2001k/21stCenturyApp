@@ -5,8 +5,7 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const SummaryDetails = ({totalValue, type}) => {
-  var grandTotal =
-    totalValue + (totalValue * 5) / 100 + (type === 'delivery' ? 40 : 0);
+  var grandTotal = totalValue + (totalValue * 5) / 100;
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
@@ -35,7 +34,7 @@ const SummaryDetails = ({totalValue, type}) => {
               fontSize: 20,
               color: 'rgba(0,0,0,0.6)',
             }}>
-            ₹ {type === 'takeAway' ? '0' : '40'}
+            ₹ 0
           </Text>
         </View>
       </View>

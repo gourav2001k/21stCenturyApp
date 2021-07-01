@@ -11,24 +11,6 @@ const ChooseType = ({type, setType}) => {
     <View style={styles.container}>
       <ListItem bottomDivider>
         <ListItem.Content>
-          <ListItem.Title>Take Away</ListItem.Title>
-          <ListItem.Subtitle>
-            We will be waiting.. with your order Ready.
-          </ListItem.Subtitle>
-        </ListItem.Content>
-        <CheckBox
-          center
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
-          checked={check}
-          onPress={() => {
-            check ? null : setCheck(!check);
-            setType('takeAway');
-          }}
-        />
-      </ListItem>
-      <ListItem bottomDivider>
-        <ListItem.Content>
           <ListItem.Title>Delivery</ListItem.Title>
           <ListItem.Subtitle>
             Hope You will enjoy our fast and safe Delivery
@@ -42,6 +24,24 @@ const ChooseType = ({type, setType}) => {
           onPress={() => {
             !check ? null : setCheck(!check);
             setType('delivery');
+          }}
+        />
+      </ListItem>
+      <ListItem bottomDivider>
+        <ListItem.Content>
+          <ListItem.Title>Take Away</ListItem.Title>
+          <ListItem.Subtitle>
+            We will be waiting.. with your order Ready.
+          </ListItem.Subtitle>
+        </ListItem.Content>
+        <CheckBox
+          center
+          checkedIcon="dot-circle-o"
+          uncheckedIcon="circle-o"
+          checked={check}
+          onPress={() => {
+            check ? null : setCheck(!check);
+            setType('takeAway');
           }}
         />
       </ListItem>

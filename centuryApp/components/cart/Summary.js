@@ -9,6 +9,7 @@ import ChooseType from './ChooseType';
 import OrderButton from './OrderButton';
 import Address from './Address';
 import ModeButton from './ModeButton';
+import {showMessage} from 'react-native-flash-message';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -24,6 +25,18 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
   };
   const toggleOverlay1 = () => {
     setVisible1(!visible1);
+  };
+
+  const checkTotal = () => {
+    if (totalValue >= 300) {
+      toggleOverlay();
+    } else {
+      showMessage({
+        message: '!!! ERROR !!!',
+        description: 'Minimum order value must be 300 for Free Delivery',
+        type: 'danger',
+      });
+    }
   };
 
   return (
@@ -42,7 +55,7 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
           ) : (
             <Button
               title="Place Order"
-              onPress={toggleOverlay}
+              onPress={checkTotal}
               iconRight
               icon={<Icon name="arrow-right" size={30} color="white" />}
               buttonStyle={styles.button}
@@ -69,7 +82,7 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
         </View>
         <Address
           cartItems={cartItems}
-          totalAmount={totalValue * 1.05}
+          totalAmount={totalValue}
           type={type}
           setIsLoading={setIsLoading}
         />
