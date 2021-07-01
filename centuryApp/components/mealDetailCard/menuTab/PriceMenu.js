@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textUnavilableContainer: {
-    height: height / 6.5,
+    // height: height / 6.5,
     justifyContent: 'center',
     alignItems: 'center',
   },
