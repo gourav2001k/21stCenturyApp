@@ -28,10 +28,10 @@ const MealDetailCard = props => {
     variants[dat]['mealName'] = name;
   });
 
-  const [check, setCheck] = useState(false);
   const [finalOrder, setFinalOrder] = useState({
     ...variants,
   });
+  const [currentCounter, setCurrentCounter] = useState(0);
 
   return (
     <View style={styles.container}>
@@ -47,23 +47,24 @@ const MealDetailCard = props => {
           <PriceMenu
             setFinalOrder={setFinalOrder}
             finalOrder={finalOrder}
-            check={check}
-            setCheck={setCheck}
+            currentCounter={currentCounter}
+            setCurrentCounter={setCurrentCounter}
           />
         </View>
         <View
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            height: height / 11,
+            height: height / 12,
           }}>
           <CartButton
             mealID={mealID}
             finalOrder={finalOrder}
             navigation={props.navigation}
+            currentCounter={currentCounter}
           />
         </View>
-        <View style={{marginTop: 10}}>
+        <View style={{marginTop: 5}}>
           <RatingTile value={rating} />
         </View>
       </ScrollView>
