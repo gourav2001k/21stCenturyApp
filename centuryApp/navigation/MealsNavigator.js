@@ -16,6 +16,7 @@ import Profile from '../screens/Profile';
 
 import auth from '@react-native-firebase/auth';
 import Colors from '../constants/Colors';
+import CartIcon from '../components/CartIcon';
 
 const Stack = createStackNavigator();
 
@@ -35,20 +36,7 @@ const MealsStack = () => {
             />
           </HeaderButtons>
         ),
-        headerRight: () => (
-          <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
-            <Item
-              title="Cart"
-              iconName="ios-cart-outline"
-              onPress={() => {
-                auth().currentUser
-                  ? navigation.navigate('Cart')
-                  : navigation.navigate('Login');
-              }}
-              color="white"
-            />
-          </HeaderButtons>
-        ),
+        headerRight: () => <CartIcon navigation={navigation} />,
         headerStyle: {backgroundColor: Colors['Star Command Blue']},
         headerTitleStyle: {color: 'white'},
       })}>

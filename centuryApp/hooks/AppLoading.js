@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
-
-const AppLoading = ({fetchItems, onFinish, onError}) => {
+import {Icon} from 'react-native-elements';
+const AppLoading = ({fetchItems, onFinish, onError, cart}) => {
   const startAscync = async () => {
     try {
       await fetchItems();
@@ -16,7 +16,18 @@ const AppLoading = ({fetchItems, onFinish, onError}) => {
   }, []);
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator animating={true} size="large" color="blue" />
+      {cart ? (
+        <Icon
+          size={25}
+          title="Cart"
+          type="ionicon"
+          name="ios-cart-outline"
+          color="white"
+          containerStyle={{marginRight: 20}}
+        />
+      ) : (
+        <ActivityIndicator animating={true} size="large" color="blue" />
+      )}
     </View>
   );
 };
