@@ -9,22 +9,21 @@ import Colors from '../../../constants/Colors';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const PriceMenu = ({finalOrder, setFinalOrder, check, setCheck}) => {
+const PriceMenu = ({finalOrder, setFinalOrder, setCurrentCounter}) => {
   var tempIndex = '';
   Object.keys(finalOrder).every(dat => {
     tempIndex === '' ? (tempIndex = dat) : false;
   });
 
   const [index, setIndex] = useState(tempIndex);
-
+  useEffect(() => {
+    setCurrentCounter(finalOrder[index].quantity);
+  }, [finalOrder, index]);
   return (
     <View style={styles.container}>
       <MenuOption index={index} setIndex={setIndex} finalOrder={finalOrder} />
       {finalOrder[index].available ? (
         <View>
-          {/* <View style={styles.textContainer}>
-            <Text style={styles.titleText}>{finalOrder[index].name}</Text>
-          </View> */}
           <View style={styles.priceContainer}>
             <Text style={styles.priceText}>
               Price : ₹ {finalOrder[index].price}
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textUnavilableContainer: {
-    height: height / 6.5,
+    // height: height / 6.5,
     justifyContent: 'center',
     alignItems: 'center',
   },

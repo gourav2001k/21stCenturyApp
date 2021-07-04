@@ -12,7 +12,7 @@ import Colors from '../../constants/Colors';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const CartButton = ({mealID, finalOrder, navigation}) => {
+const CartButton = ({mealID, finalOrder, navigation, currentCounter}) => {
   var orderForCart = {};
   var tempName;
 
@@ -68,6 +68,14 @@ const CartButton = ({mealID, finalOrder, navigation}) => {
               message: 'Login Required',
               description: 'Redericting You too Login....',
               type: 'danger',
+            });
+          }
+          if (currentCounter === 0) {
+            return showMessage({
+              message: 'Quantity Added is 0 !!! ',
+              description: 'Please Add Atleast 1 meal',
+              type: 'danger',
+              duration: 3000,
             });
           }
           addToCart();

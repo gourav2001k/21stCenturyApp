@@ -100,9 +100,9 @@ const Login = props => {
       var userDB = await firestore().collection('users').doc(user.uid).get();
       userDB = userDB.data();
       if (!userDB) {
-        await auth().currentUser.updateProfile({
-          photoURL: 'images/blankProfile.png',
-        });
+        // await auth().currentUser.updateProfile({
+        //   photoURL: 'images/blankProfile.png',
+        // });
         await firestore()
           .collection('users')
           .doc(user.uid)
@@ -110,7 +110,7 @@ const Login = props => {
             cart: {},
             token: '',
             isComplete: false,
-            address: {locality: 'IIT Jodhpur'},
+            address: {locality: 'JJC'},
           });
         console.log('Data Writen successfully');
       }
@@ -176,12 +176,6 @@ const Login = props => {
       ) : null}
       <ActivityIndicator animating={isClicked} size="large" color="blue" />
       <View style={styles.button}>
-        <Button
-          raised={true}
-          title="Reset"
-          onPress={reset}
-          buttonStyle={{width: 130}}
-        />
         {!isOTP ? (
           <Button
             raised={true}
@@ -197,6 +191,12 @@ const Login = props => {
             buttonStyle={{width: 130}}
           />
         )}
+        <Button
+          raised={true}
+          title="Reset"
+          onPress={reset}
+          buttonStyle={{width: 130}}
+        />
       </View>
     </View>
   );

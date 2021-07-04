@@ -18,7 +18,7 @@ const SummaryDetails = ({totalValue, type}) => {
           </Text>
         </View>
       </View>
-      <View style={styles.textContainer}>
+      {/* <View style={styles.textContainer}>
         <Text
           style={{
             fontFamily: 'robotoRegular',
@@ -37,12 +37,12 @@ const SummaryDetails = ({totalValue, type}) => {
             ₹ 0
           </Text>
         </View>
-      </View>
+      </View> */}
       <View style={styles.textContainer}>
         <Text
           style={{
             fontFamily: 'robotoRegular',
-            fontSize: 15,
+            fontSize: 17,
             color: 'rgba(0,0,0,0.6)',
           }}>
           Taxes
@@ -51,7 +51,7 @@ const SummaryDetails = ({totalValue, type}) => {
           <Text
             style={{
               fontFamily: 'robotoLight',
-              fontSize: 17,
+              fontSize: 20,
               color: 'rgba(0,0,0,0.6)',
             }}>
             ₹ {(totalValue * 5) / 100}
