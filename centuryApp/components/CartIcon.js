@@ -26,7 +26,10 @@ const CartIcon = ({navigation}) => {
     const onResult = () => {
       setIsLoading(false);
     };
-    const unsubscribe = firestore().collection('users').onSnapshot(onResult);
+    const unsubscribe = firestore()
+      .collection('users')
+      .doc(auth().currentUser.uid)
+      .onSnapshot(onResult);
 
     return () => unsubscribe();
   }, []);

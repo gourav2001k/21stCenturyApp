@@ -23,6 +23,7 @@
     "babel-plugin-inline-dotenv": "^1.6.0",
     "eslint": "^7.29.0",
     "formik": "^2.2.9",
+    "paytm_allinone_react-native": "^1.0.9",
     "react": "17.0.1",
     "react-native": "0.64.2",
     "react-native-bootsplash": "^3.2.4",
