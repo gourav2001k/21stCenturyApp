@@ -5,7 +5,7 @@ import {CheckBox, ListItem} from 'react-native-elements';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const ChooseType = ({type, setType}) => {
+const ChooseType = ({type, setType, toggleOverlay}) => {
   const [check, setCheck] = useState(type === 'takeAway');
   return (
     <View style={styles.container}>
@@ -24,6 +24,7 @@ const ChooseType = ({type, setType}) => {
           onPress={() => {
             !check ? null : setCheck(!check);
             setType('delivery');
+            toggleOverlay();
           }}
         />
       </ListItem>
@@ -42,6 +43,7 @@ const ChooseType = ({type, setType}) => {
           onPress={() => {
             check ? null : setCheck(!check);
             setType('takeAway');
+            toggleOverlay();
           }}
         />
       </ListItem>

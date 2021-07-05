@@ -1,4 +1,3 @@
-const https = require("https");
 const axios = require("axios");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -7,8 +6,7 @@ const generateCheckSum = require("../utils/generateCheckSum");
 
 exports.getOrders = async (req, res, next) => {
   try {
-    const { orderID, custID } = req.query;
-    // const resp = await validateCheckSum(req.query.orderID, checkSum);
+    const { orderID, custID, amount } = req.query;
     var paytmParams = {};
 
     paytmParams.body = {
@@ -18,7 +16,7 @@ exports.getOrders = async (req, res, next) => {
       orderId: orderID,
       callbackUrl: `https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=${orderID}`,
       txnAmount: {
-        value: "1.00",
+        value: amount.toString(),
         currency: "INR",
       },
       userInfo: {

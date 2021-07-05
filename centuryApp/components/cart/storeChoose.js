@@ -8,7 +8,14 @@ import OrderButton from './OrderButton';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const StoreChoose = ({cartItems, totalAmount, type, setIsLoading}) => {
+const StoreChoose = ({
+  cartItems,
+  totalAmount,
+  type,
+  setIsLoading,
+  toggleOverlay,
+  setIndicator,
+}) => {
   const [check, setCheck] = useState(type === 'takeAway');
   return (
     <View style={styles.container}>
@@ -52,8 +59,10 @@ const StoreChoose = ({cartItems, totalAmount, type, setIsLoading}) => {
         <OrderButton
           cartItems={cartItems}
           totalAmount={totalAmount * 1.05}
+          toggleOverlay={toggleOverlay}
           type={type}
           setIsLoading={setIsLoading}
+          setIndicator={setIndicator}
           address={{
             address: check ? 'New Jaljog Circle, Sardarpura' : 'BJS Colony',
             phone: check ? '8114485947' : '8114485947',

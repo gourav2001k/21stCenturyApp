@@ -15,7 +15,7 @@ import StoreChoose from './storeChoose';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const Summary = ({totalValue, cartItems, setIsLoading}) => {
+const Summary = ({totalValue, cartItems, setIsLoading, setIndicator}) => {
   const [type, setType] = useState('delivery');
 
   const [visible, setVisible] = useState(false);
@@ -79,7 +79,11 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
         <View style={styles.crossIcon}>
           <Icon name="cross" type="entypo" raised onPress={toggleOverlay1} />
         </View>
-        <ChooseType type={type} setType={setType} />
+        <ChooseType
+          toggleOverlay={toggleOverlay1}
+          type={type}
+          setType={setType}
+        />
       </Overlay>
       <Overlay
         isVisible={visible2}
@@ -89,10 +93,12 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
           <Icon name="cross" type="entypo" raised onPress={toggleOverlay2} />
         </View>
         <StoreChoose
+          toggleOverlay={toggleOverlay2}
           cartItems={cartItems}
           totalAmount={totalValue}
           type={type}
           setIsLoading={setIsLoading}
+          setIndicator={setIndicator}
         />
       </Overlay>
       <Overlay
@@ -103,10 +109,12 @@ const Summary = ({totalValue, cartItems, setIsLoading}) => {
           <Icon name="cross" type="entypo" raised onPress={toggleOverlay} />
         </View>
         <Address
+          toggleOverlay={toggleOverlay}
           cartItems={cartItems}
           totalAmount={totalValue}
           type={type}
           setIsLoading={setIsLoading}
+          setIndicator={setIndicator}
         />
       </Overlay>
     </View>

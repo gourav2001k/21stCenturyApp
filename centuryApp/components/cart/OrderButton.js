@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
+import axios from 'axios';
 import AllInOneSDKManager from 'paytm_allinone_react-native';
 
 import {Button, Icon} from 'react-native-elements';
@@ -18,6 +19,8 @@ const OrderButton = ({
   address,
   setIsLoading,
   disabled,
+  toggleOverlay,
+  setIndicator,
 }) => {
   const userID = auth().currentUser.uid;
   var finalCart = {};
@@ -35,71 +38,78 @@ const OrderButton = ({
   });
 
   const updateOrders = async () => {
+    toggleOverlay();
+    setIndicator(true);
     try {
-      AllInOneSDKManager.startTransaction(
-        '6754432634215',
+      const orderID = makeID();
+      const resp = await axios.get(
+        `http://127.0.0.1:4000/order?orderID=${orderID}&custID=${
+          auth().currentUser.uid
+        }&amount=${totalAmount}`,
+      );
+      const result = await AllInOneSDKManager.startTransaction(
+        orderID,
         process.env.MID,
-        'd152df6bf8a048e1afe64084f31cf5d11625415997473',
-        '1.00',
-        'https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=6754432634215',
+        resp.data.body.txnToken,
+        totalAmount.toString(),
+        `https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=${orderID}`,
         true,
         true,
-      )
-        .then(result => {
-          console.log(result);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      );
+      if (result.STATUS !== 'TXN_SUCCESS')
+        throw new Error('Transaction Failed');
 
-      // // to delete if the item in cart has 0 quantity.
-      // Object.keys(finalCart).map(dat => {
-      //   Object.keys(finalCart[dat]).map(data => {
-      //     finalCart[dat][data].quantity === 0
-      //       ? delete finalCart[dat][data]
-      //       : null;
-      //   });
-      //   // to delete if the meal has no variant ordered
-      //   Object.keys(finalCart[dat]).length === 0 ? delete finalCart[dat] : null;
-      // });
-      // //making document to set in the databse
-      // var doc = {
-      //   amount: totalAmount,
-      //   meals: finalCart,
-      //   userID: userID,
-      //   createdAt: firestore.Timestamp.now(),
-      //   status: false,
-      //   type: type === 'takeAway' ? 'takeAway' : 'delivery',
-      //   isAccept: false,
-      //   isCancel: false,
-      //   address: address ? address : {},
-      // };
-      // if (Object.keys(finalCart).length === 0) {
-      //   showMessage({
-      //     message: 'ERROR !!!!!!!',
-      //     description: 'Please Add meals to Order..',
-      //     type: 'danger',
-      //   });
-      // } else {
-      //   await firestore().collection('orders').doc(makeID(16)).set(doc);
-      //   if (address && type !== 'takeAway') {
-      //     await firestore().collection('users').doc(userID).update({
-      //       cart: {},
-      //       address: address,
-      //     });
-      //   } else {
-      //     await firestore().collection('users').doc(userID).update({
-      //       cart: {},
-      //     });
-      //   }
-      //   showMessage({
-      //     message: 'Order Done',
-      //     description: 'Order Placed successfully!!!!',
-      //     type: 'success',
-      //   });
-      //   setIsLoading(false);
-      // }
+      // to delete if the item in cart has 0 quantity.
+      Object.keys(finalCart).map(dat => {
+        Object.keys(finalCart[dat]).map(data => {
+          finalCart[dat][data].quantity === 0
+            ? delete finalCart[dat][data]
+            : null;
+        });
+        // to delete if the meal has no variant ordered
+        Object.keys(finalCart[dat]).length === 0 ? delete finalCart[dat] : null;
+      });
+      //making document to set in the databse
+      var doc = {
+        amount: totalAmount,
+        meals: finalCart,
+        userID: userID,
+        createdAt: firestore.Timestamp.now(),
+        status: false,
+        type: type === 'takeAway' ? 'takeAway' : 'delivery',
+        isAccept: false,
+        isCancel: false,
+        address: address ? address : {},
+      };
+      if (Object.keys(finalCart).length === 0) {
+        showMessage({
+          message: 'ERROR !!!!!!!',
+          description: 'Please Add meals to Order..',
+          type: 'danger',
+        });
+      } else {
+        await firestore().collection('orders').doc(makeID(16)).set(doc);
+        if (address && type !== 'takeAway') {
+          await firestore().collection('users').doc(userID).update({
+            cart: {},
+            address: address,
+          });
+        } else {
+          await firestore().collection('users').doc(userID).update({
+            cart: {},
+          });
+        }
+        setIndicator(false);
+        showMessage({
+          message: 'Order Done',
+          description: 'Order Placed successfully!!!!',
+          type: 'success',
+        });
+        setIsLoading(false);
+      }
     } catch (err) {
+      console.log(err);
+      setIndicator(false);
       showMessage({
         message: 'ERROR !!!!!!!',
         description: err.message,

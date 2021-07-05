@@ -24,7 +24,14 @@ const AddressValidator = Yup.object().shape({
     .max(99999999999, 'Not a valid Phone Number'),
 });
 
-const Address = ({cartItems, totalAmount, type, setIsLoading}) => {
+const Address = ({
+  cartItems,
+  totalAmount,
+  type,
+  setIsLoading,
+  toggleOverlay,
+  setIndicator,
+}) => {
   const userID = auth().currentUser.uid;
   const [oldAddress, setAddress] = useState({});
   const [loading, setLoading] = useState(true);
@@ -116,9 +123,11 @@ const Address = ({cartItems, totalAmount, type, setIsLoading}) => {
                       Object.keys(errors).length > 0 ||
                         Object.keys(touched).length === 0,
                     )}
+                    toggleOverlay={toggleOverlay}
                     totalAmount={totalAmount * 1.05}
                     type={type}
                     setIsLoading={setIsLoading}
+                    setIndicator={setIndicator}
                     address={{
                       address: values.address,
                       locality: values.locality,

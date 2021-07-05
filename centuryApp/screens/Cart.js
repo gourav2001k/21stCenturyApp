@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Button, ScrollView} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -11,6 +12,7 @@ import Summary from '../components/cart/Summary';
 
 const Cart = props => {
   const [isLoading, setIsLoading] = useState(false);
+  const [indicator, setIndicator] = useState(false);
   const [cartItems, setCartItems] = useState();
   const [images, setImages] = useState();
   const userId = auth().currentUser.uid;
@@ -84,6 +86,10 @@ const Cart = props => {
         }}
       />
     </View>
+  ) : indicator ? (
+    <View style={styles.indicator}>
+      <ActivityIndicator animating={true} size="large" color="blue" />
+    </View>
   ) : (
     <View style={styles.screen}>
       <ScrollView
@@ -103,6 +109,7 @@ const Cart = props => {
         totalValue={totalValue}
         cartItems={cartItems}
         setIsLoading={setIsLoading}
+        setIndicator={setIndicator}
       />
     </View>
   );
@@ -112,6 +119,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
+  indicator: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   emptyScreen: {
     flex: 1,
     justifyContent: 'center',
