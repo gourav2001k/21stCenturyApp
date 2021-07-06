@@ -9,6 +9,7 @@ import storage from '@react-native-firebase/storage';
 import AppLoading from '../hooks/AppLoading';
 import CartCard from '../components/cart/CartCard';
 import Summary from '../components/cart/Summary';
+import EmptyCart from '../components/cart/EmptyCart';
 
 const Cart = props => {
   const [isLoading, setIsLoading] = useState(false);
