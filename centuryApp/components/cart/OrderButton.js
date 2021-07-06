@@ -43,7 +43,7 @@ const OrderButton = ({
     try {
       const orderID = makeID();
       const resp = await axios.get(
-        `http://127.0.0.1:4000/order?orderID=${orderID}&custID=${
+        `http://127.0.0.1:4000/startTransaction?orderID=${orderID}&custID=${
           auth().currentUser.uid
         }&amount=${totalAmount}`,
       );
