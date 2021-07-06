@@ -4,7 +4,7 @@ dotenv.config();
 
 const generateCheckSum = require("../utils/generateCheckSum");
 
-exports.getOrders = async (req, res, next) => {
+module.exports = async (req, res, next) => {
   try {
     const { orderID, custID, amount } = req.query;
     var paytmParams = {};
