@@ -6,22 +6,12 @@ const generateCheckSum = require("../utils/generateCheckSum");
 
 exports.verify = async (req, res, next) => {
   try {
-    const { orderID, custID, amount } = req.query;
+    const { orderID } = req.query;
     var paytmParams = {};
 
     paytmParams.body = {
-      requestType: "Payment",
       mid: process.env.MID,
-      websiteName: "WEBSTAGING",
       orderId: orderID,
-      callbackUrl: `https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=${orderID}`,
-      txnAmount: {
-        value: amount.toString(),
-        currency: "INR",
-      },
-      userInfo: {
-        custId: custID,
-      },
     };
 
     const checkSum = await generateCheckSum(paytmParams.body);
@@ -36,7 +26,7 @@ exports.verify = async (req, res, next) => {
       },
     };
     const resp = await axios.post(
-      `https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction?mid=${process.env.MID}&orderId=${orderID}`,
+      `https://securegw-stage.paytm.in//v3/order/status`,
       paytmParams,
       axiosConfig
     );

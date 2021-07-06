@@ -41,24 +41,6 @@ const OrderButton = ({
     toggleOverlay();
     setIndicator(true);
     try {
-      const orderID = makeID();
-      const resp = await axios.get(
-        `http://127.0.0.1:4000/startTransaction?orderID=${orderID}&custID=${
-          auth().currentUser.uid
-        }&amount=${totalAmount}`,
-      );
-      const result = await AllInOneSDKManager.startTransaction(
-        orderID,
-        process.env.MID,
-        resp.data.body.txnToken,
-        totalAmount.toString(),
-        `https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=${orderID}`,
-        true,
-        true,
-      );
-      if (result.STATUS !== 'TXN_SUCCESS')
-        throw new Error('Transaction Failed');
-
       // to delete if the item in cart has 0 quantity.
       Object.keys(finalCart).map(dat => {
         Object.keys(finalCart[dat]).map(data => {
@@ -88,7 +70,31 @@ const OrderButton = ({
           type: 'danger',
         });
       } else {
-        await firestore().collection('orders').doc(makeID(16)).set(doc);
+        // Payment Starts
+        const orderID = makeID();
+        const resp = await axios.get(
+          `http://127.0.0.1:4000/startTransaction?orderID=${orderID}&custID=${
+            auth().currentUser.uid
+          }&amount=${totalAmount}`,
+        );
+        const result = await AllInOneSDKManager.startTransaction(
+          orderID,
+          process.env.MID,
+          resp.data.body.txnToken,
+          totalAmount.toString(),
+          `https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=${orderID}`,
+          true,
+          true,
+        );
+        if (result.STATUS !== 'TXN_SUCCESS')
+          throw new Error('Transaction Failed');
+        const serResp = await axios.get(
+          `http://127.0.0.1:4000/verifyTransaction?orderID=${orderID}`,
+        );
+        if (serResp.data.body.resultInfo.resultStatus !== 'TXN_SUCCESS')
+          throw new Error('Transaction Failed');
+        // Update DB
+        await firestore().collection('orders').doc(orderID).set(doc);
         if (address && type !== 'takeAway') {
           await firestore().collection('users').doc(userID).update({
             cart: {},
