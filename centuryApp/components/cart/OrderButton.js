@@ -41,6 +41,7 @@ const OrderButton = ({
     toggleOverlay();
     setIndicator(true);
     try {
+      var token = await auth().currentUser.getIdToken();
       // to delete if the item in cart has 0 quantity.
       Object.keys(finalCart).map(dat => {
         Object.keys(finalCart[dat]).map(data => {
@@ -73,9 +74,7 @@ const OrderButton = ({
         // Payment Starts
         const orderID = makeID();
         const resp = await axios.get(
-          `http://127.0.0.1:4000/startTransaction?orderID=${orderID}&custID=${
-            auth().currentUser.uid
-          }&amount=${totalAmount}`,
+          `http://127.0.0.1:4000/startTransaction?orderID=${orderID}&token=${token}`,
         );
         const result = await AllInOneSDKManager.startTransaction(
           orderID,
@@ -88,11 +87,12 @@ const OrderButton = ({
         );
         if (result.STATUS !== 'TXN_SUCCESS')
           throw new Error('Transaction Failed');
+        token = await auth().currentUser.getIdToken();
         const serResp = await axios.get(
-          `http://127.0.0.1:4000/verifyTransaction?orderID=${orderID}`,
+          `http://127.0.0.1:4000/verifyTransaction?orderID=${orderID}&token=${token}&txnAmount=${totalAmount}`,
         );
-        if (serResp.data.body.resultInfo.resultStatus !== 'TXN_SUCCESS')
-          throw new Error('Transaction Failed');
+        console.log(serResp.data);
+        if (serResp.data.valid !== true) throw new Error('Transaction Failed');
         // Update DB
         await firestore().collection('orders').doc(orderID).set(doc);
         if (address && type !== 'takeAway') {

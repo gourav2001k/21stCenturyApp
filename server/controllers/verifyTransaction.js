@@ -3,12 +3,18 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const generateCheckSum = require("../utils/generateCheckSum");
+const verifyToken = require("../utils/verifyToken");
+const calculateAmount = require("../utils/calcaluteAmount");
 
 exports.verify = async (req, res, next) => {
   try {
-    const { orderID } = req.query;
-    var paytmParams = {};
+    const { orderID, token, txnAmount } = req.query;
+    const uid = await verifyToken(token);
+    if (uid === false) throw new Error("Invalid Token");
+    const amount = await calculateAmount(uid);
+    if (amount != txnAmount) throw new Error("Amount Mismatch");
 
+    var paytmParams = {};
     paytmParams.body = {
       mid: process.env.MID,
       orderId: orderID,
@@ -30,8 +36,12 @@ exports.verify = async (req, res, next) => {
       paytmParams,
       axiosConfig
     );
-    console.log(resp.data);
-    res.status(200).json(resp.data);
+    if (
+      resp.data.body.resultInfo.resultStatus === "TXN_SUCCESS" &&
+      resp.data.body.orderId === orderID
+    )
+      res.status(200).json({ valid: true });
+    else res.status(200).json({ valid: false });
   } catch (err) {
     res.status(400).json({ error: true });
   }

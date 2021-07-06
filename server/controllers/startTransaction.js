@@ -1,15 +1,20 @@
 const axios = require("axios");
 const dotenv = require("dotenv");
+const calculateAmount = require("../utils/calcaluteAmount");
 dotenv.config();
 
 const generateCheckSum = require("../utils/generateCheckSum");
+const verifyToken = require("../utils/verifyToken");
 
 exports.start = async (req, res, next) => {
   try {
-    const { orderID, custID, amount } = req.query;
-    var paytmParams = {};
+    const { orderID, token } = req.query;
+    const uid = await verifyToken(token);
+    if (uid === false) throw new Error("Invalid Token");
+    const amount = await calculateAmount(uid);
 
-    paytmParams.body = {
+    var paytmParams = {};
+    paytmParams["body"] = {
       requestType: "Payment",
       mid: process.env.MID,
       websiteName: "WEBSTAGING",
@@ -20,13 +25,13 @@ exports.start = async (req, res, next) => {
         currency: "INR",
       },
       userInfo: {
-        custId: custID,
+        custId: uid,
       },
     };
 
     const checkSum = await generateCheckSum(paytmParams.body);
 
-    paytmParams.head = {
+    paytmParams["head"] = {
       signature: checkSum,
     };
     var axiosConfig = {
@@ -40,7 +45,6 @@ exports.start = async (req, res, next) => {
       paytmParams,
       axiosConfig
     );
-    console.log(resp.data);
     res.status(200).json(resp.data);
   } catch (err) {
     res.status(400).json({ error: true });
