@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, Button, Dimensions, Alert} from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -14,10 +15,21 @@ const ForeGroundNotify = props => {
   // });
 
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      // console.log(remoteMessage);
-      Alert.alert('New Notification', remoteMessage.data.message);
-    });
+    const local = message => {
+      PushNotification.localNotification({
+        channelId: 'android',
+        bigText: message.data.message,
+        title: message.data.title,
+        message: '',
+        color: 'red',
+        vibrate: true,
+        vibration: 100,
+        playSound: true,
+        soundName: 'default',
+      });
+    };
+
+    const unsubscribe = messaging().onMessage(mess => local(mess));
     return unsubscribe;
   }, []);
 
