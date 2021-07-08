@@ -60,6 +60,7 @@ const MenuOption = ({finalOrder, index, setIndex}) => {
                   : styles.inactiveTextContainer
               }
               button
+              buttonStyle={{paddingVertical: 4}}
               onPress={() => {
                 setIndex(item.id);
               }}
@@ -73,23 +74,16 @@ const MenuOption = ({finalOrder, index, setIndex}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
-    paddingBottom: 10,
+    marginTop: 10,
+    paddingVertical: 5,
     flexDirection: 'row',
     backgroundColor: 'rgba(0,0,0,0)',
-    marginBottom: 20,
+    marginBottom: 15,
     marginLeft: 10,
   },
   flatlistContainer: {
     width: '92%',
     paddingVertical: 2,
-  },
-  arrowContainer: {
-    width: '8%',
-    borderWidth: 0.001,
-    elevation: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   activeCategoryContainer: {
     marginHorizontal: 10,
@@ -103,20 +97,14 @@ const styles = StyleSheet.create({
   },
   activeTextContainer: {
     color: 'white',
+    paddingHorizontal: 10,
+    paddingRight: 25,
+    fontSize: 20,
   },
   inactiveTextContainer: {
     borderColor: 'blue',
     color: Colors['Star Command Blue'],
-  },
-  text: {
-    color: 'white',
-    fontSize: 13,
-    fontWeight: 'bold',
-  },
-  selectedText: {
-    color: 'black',
-    fontSize: 17,
-    fontWeight: 'normal',
+    paddingHorizontal: 10,
   },
 });
 

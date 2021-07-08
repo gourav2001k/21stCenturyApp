@@ -20,24 +20,26 @@ const AboutMeal = props => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    marginTop: -10,
   },
   nameContainer: {
+    paddingVertical: 5,
+    paddingTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 5,
+    // marginBottom: 5,
   },
   name: {
     fontSize: 25,
     fontWeight: 'bold',
   },
   descriptionContainer: {
-    marginBottom: 2,
+    // marginBottom: 2,
   },
   descriptionTextContainer: {},
   descriptionText: {
-    fontSize: 14,
+    fontSize: 15,
     textAlign: 'center',
+    paddingVertical: 5,
   },
 });
 

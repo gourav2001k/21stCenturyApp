@@ -1,4 +1,5 @@
 import PushNotification from 'react-native-push-notification';
+import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 
 PushNotification.configure({
@@ -28,15 +29,17 @@ PushNotification.configure({
   requestPermissions: true,
 });
 
-PushNotification.createChannel(
-  {
-    channelId: 'android', // (required)
-    channelName: 'My channel', // (required)
-    channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
-    playSound: true, // (optional) default: true
-    soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
-    importance: 4, // (optional) default: 4. Int value of the Android notification importance
-    vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-  },
-  //   created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-);
+if (auth().currentUser) {
+  PushNotification.createChannel(
+    {
+      channelId: auth().currentUser.uid, // (required)
+      channelName: 'My channel', // (required)
+      channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+      playSound: true, // (optional) default: true
+      soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+      importance: 4, // (optional) default: 4. Int value of the Android notification importance
+      vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+    },
+    // created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+  );
+}

@@ -100,14 +100,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 30,
     overflow: 'hidden',
-    width: '55%',
-    elevation: 2,
+    marginTop: 10,
   },
   button: {
-    width: '120%',
     paddingLeft: 30,
     paddingRight: 50,
-    backgroundColor: Colors['Star Command Blue'],
+    backgroundColor: 'hsl(200,90%,30%)',
   },
 });
 

@@ -20,6 +20,9 @@ const CategoryTile = props => {
           onPress={props.onPress}
           type="clear"
           titleStyle={{...styles.textContainer, ...props.textStyle}}
+          buttonStyle={{
+            ...props.buttonStyle,
+          }}
         />
       ) : (
         <Text style={{...styles.textContainer, ...props.textStyle}}>

@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, Button, Dimensions, Alert} from 'react-native';
 
+import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
 
@@ -17,7 +18,7 @@ const ForeGroundNotify = props => {
   useEffect(() => {
     const local = message => {
       PushNotification.localNotification({
-        channelId: 'android',
+        channelId: auth().currentUser.uid,
         bigText: message.data.message,
         title: message.data.title,
         message: '',
