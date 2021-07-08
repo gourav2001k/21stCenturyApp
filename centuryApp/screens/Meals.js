@@ -10,6 +10,7 @@ import AppLoading from '../hooks/AppLoading';
 import CategoryList from '../components/categoryList/CategoryList';
 import MealCard from '../components/mealCard/MealCard';
 import ForeGroundNotify from '../components/notification/ForeGroundNotify';
+import useNotification from '../hooks/useNotification';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
