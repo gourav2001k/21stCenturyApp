@@ -21,17 +21,18 @@ const CartIcon = ({navigation}) => {
       setCurrentNum(Object.keys(fetchedCart.data().cart).length);
     }
   };
-
   useEffect(async () => {
-    const onResult = () => {
-      setIsLoading(false);
-    };
-    const unsubscribe = firestore()
-      .collection('users')
-      .doc(auth().currentUser.uid)
-      .onSnapshot(onResult);
+    if (auth().currentUser) {
+      const onResult = () => {
+        setIsLoading(false);
+      };
+      const unsubscribe = firestore()
+        .collection('users')
+        .doc(auth().currentUser.uid)
+        .onSnapshot(onResult);
 
-    return () => unsubscribe();
+      return () => unsubscribe();
+    }
   }, []);
 
   if (!isLoading) {

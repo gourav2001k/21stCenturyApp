@@ -3,18 +3,34 @@ import {View, Text, StyleSheet, ScrollView, Dimensions} from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import messaging from '@react-native-firebase/messaging';
+import auth from '@react-native-firebase/auth';
 import AppLoading from '../hooks/AppLoading';
 
 import CategoryList from '../components/categoryList/CategoryList';
 import MealCard from '../components/mealCard/MealCard';
+import ForeGroundNotify from '../components/notification/ForeGroundNotify';
+import useNotification from '../hooks/useNotification';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const Meals = props => {
+  // const token1 = async () => {
+  //   const t = await auth().currentUser.getIdToken();
+  //   console.log(t);
+  // };
+  // token1();
   const [allMeal, setAllMeal] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('Cake');
+
+  const updateTokenOnfirestore = async () => {
+    const tokenDat = await messaging().getToken();
+    await firestore().collection('users').doc(auth().currentUser.uid).update({
+      token: tokenDat,
+    });
+  };
 
   const fetchItems = async () => {
     try {
@@ -41,12 +57,19 @@ const Meals = props => {
   };
 
   useEffect(() => {
+    if (auth().currentUser) {
+      updateTokenOnfirestore();
+    }
     const onResult = () => {
       setIsLoading(false);
     };
-    const unsubscribe = firestore().collection('meals').onSnapshot(onResult);
+    const unsubscribeMeal = firestore()
+      .collection('meals')
+      .onSnapshot(onResult);
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribeMeal();
+    };
   }, []);
 
   if (!isLoading) {
@@ -86,6 +109,7 @@ const Meals = props => {
           </View>
         ) : null}
       </ScrollView>
+      {auth().currentUser ? <ForeGroundNotify /> : null}
     </View>
   );
 };
