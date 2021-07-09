@@ -94,6 +94,8 @@ const OrderButton = ({
         );
         console.log(serResp.data);
         if (serResp.data.valid !== true) throw new Error('Transaction Failed');
+        // Add Payment Info to Order
+        doc['payment'] = result;
         // Update DB
         await firestore().collection('orders').doc(orderID).set(doc);
         if (address && type !== 'takeAway') {

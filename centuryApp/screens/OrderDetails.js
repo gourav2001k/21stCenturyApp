@@ -5,6 +5,8 @@ import firestore from '@react-native-firebase/firestore';
 
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
+import axios from 'axios';
+import {showMessage} from 'react-native-flash-message';
 import AppLoading from '../hooks/AppLoading';
 
 import OrderDetailCard from '../components/Order/OrderDetailCard';
@@ -35,9 +37,34 @@ const OrderDetails = props => {
         fetchedOrderData['meals'][dat]['rating'] = mealData.rating;
       }),
     );
+    // Updating Refund Status
+    if (fetchedOrderData.isCancel) {
+      const token = await auth().currentUser.getIdToken();
+      const serResponse = await axios.get(
+        `http://127.0.0.1:4000/transactionStatus?orderID=${orderID}&token=${token}&refund=true`,
+      );
+      console.log(serResponse.data);
+    }
     setOrderData(fetchedOrderData);
     setDate(fetchedOrderData.createdAt);
     setStatus(fetchedOrderData.status);
+  };
+
+  const cancelOrder = async () => {
+    try {
+      const token = await auth().currentUser.getIdToken();
+      const serResponse = await axios.get(
+        `http://127.0.0.1:4000/refundTransaction?orderID=${orderID}&token=${token}`,
+      );
+      console.log(serResponse.data);
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        message: 'Order Cancelled',
+        description: 'Order Cancel successfully!!!!',
+        type: 'success',
+      });
+    }
   };
 
   useEffect(() => {
@@ -77,6 +104,9 @@ const OrderDetails = props => {
         <View style={{marginBottom: 10}}></View>
       </ScrollView>
       <View style={styles.bottomContainer}>
+        {!(orderData.isAccept || orderData.isCancel) ? (
+          <Button title="Cancel" onPress={cancelOrder} />
+        ) : null}
         <View>
           <Text style={styles.bottomText}>
             Total :
