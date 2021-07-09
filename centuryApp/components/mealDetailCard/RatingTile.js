@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    marginVertical: 20,
+    marginTop: 20,
   },
 });
 

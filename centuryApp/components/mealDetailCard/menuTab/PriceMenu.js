@@ -23,11 +23,13 @@ const PriceMenu = ({finalOrder, setFinalOrder, setCurrentCounter}) => {
     <View style={styles.container}>
       <MenuOption index={index} setIndex={setIndex} finalOrder={finalOrder} />
       {finalOrder[index].available ? (
-        <View>
-          <View style={styles.priceContainer}>
+        <View style={styles.priceContainer}>
+          <View style={styles.priceTextContainer}>
             <Text style={styles.priceText}>
               Price : ₹ {finalOrder[index].price}
             </Text>
+          </View>
+          <View style={styles.detailCounterContainer}>
             <DetailCounter
               index={index}
               finalOrder={finalOrder}
@@ -49,12 +51,6 @@ const styles = StyleSheet.create({
     width: '100%',
     // backgroundColor: 'rgba(0,165,255,0.1)',
   },
-  textContainer: {
-    marginBottom: 10,
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   textUnavilableContainer: {
     // height: height / 6.5,
     justifyContent: 'center',
@@ -67,16 +63,16 @@ const styles = StyleSheet.create({
   },
   priceContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  priceTextContainer: {
+    width: '60%',
+    paddingLeft: '10%',
   },
   priceText: {
     fontSize: 25,
     color: Colors.lightBackground,
-  },
-  border: {
-    borderTopWidth: 1,
-    marginTop: 3,
-    marginBottom: 1,
   },
 });
 

@@ -59,8 +59,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors['Star Command Blue'],
     borderRadius: 50,
-    marginBottom: 20,
-    marginTop: -10,
   },
 });
 
