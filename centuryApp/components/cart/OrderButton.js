@@ -114,12 +114,6 @@ const OrderButton = ({
           description: 'Order Placed successfully!!!!',
           type: 'success',
         });
-        const noti = useNotification({
-          type: 'orderPlaced',
-          admin: false,
-          adminType: '',
-        });
-        noti();
         setIsLoading(false);
       }
     } catch (err) {

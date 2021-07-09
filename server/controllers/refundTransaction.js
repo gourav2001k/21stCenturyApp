@@ -4,6 +4,7 @@ const adminSDK = require("../utils/adminSDK");
 dotenv.config();
 
 const generateCheckSum = require("../utils/generateCheckSum");
+const notify = require("../utils/notify");
 const orderInfo = require("../utils/orderInfo");
 const verifyToken = require("../utils/verifyToken");
 
@@ -57,6 +58,11 @@ exports.refund = async (req, res, next) => {
       .collection("orders")
       .doc(orderID)
       .update({ refund: resp.data.body, isCancel: true });
+    const notiStatus = await notify(
+      uid,
+      "Order Cancelled",
+      "Your Order was Cancelled Successfully"
+    );
     res.status(200).json(resp.data.body);
   } catch (err) {
     res.status(400).json({ error: true });

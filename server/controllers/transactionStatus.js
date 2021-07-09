@@ -28,7 +28,6 @@ exports.status = async (req, res, next) => {
 
     if (refund)
       paytmParams.body["refId"] = orderID.split("").reverse().join("");
-    console.log(paytmParams);
     const checkSum = await generateCheckSum(paytmParams.body);
 
     paytmParams.head = {

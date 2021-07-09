@@ -5,6 +5,7 @@ dotenv.config();
 const generateCheckSum = require("../utils/generateCheckSum");
 const verifyToken = require("../utils/verifyToken");
 const calculateAmount = require("../utils/calcaluteAmount");
+const notify = require("../utils/notify");
 
 exports.verify = async (req, res, next) => {
   try {
@@ -39,9 +40,14 @@ exports.verify = async (req, res, next) => {
     if (
       resp.data.body.resultInfo.resultStatus === "TXN_SUCCESS" &&
       resp.data.body.orderId === orderID
-    )
+    ) {
+      const notiStatus = await notify(
+        uid,
+        "Order Placed",
+        "Your Order was Placed Successfully"
+      );
       res.status(200).json({ valid: true });
-    else res.status(200).json({ valid: false });
+    } else res.status(200).json({ valid: false });
   } catch (err) {
     res.status(400).json({ error: true });
   }

@@ -1,4 +1,5 @@
 const adminsdk = require("../utils/adminSDK");
+const notify = require("../utils/notify");
 const verifyToken = require("../utils/verifyToken");
 
 exports.send = async (req, res, next) => {
@@ -7,10 +8,6 @@ exports.send = async (req, res, next) => {
 
     const uid = await verifyToken(token);
     if (uid === false) throw new Error("Invalid Token");
-
-    const user = await adminsdk.firestore().collection("users").doc(uid).get();
-    const messageToken = user.data().token;
-    if (messageToken === "") throw new Error("Message Token is empty!!!");
 
     var sendMessageDataUser;
     var userTypeText;
@@ -30,6 +27,12 @@ exports.send = async (req, res, next) => {
       sendMessageDataUser = "You have picked your order ";
       userTypeText = "Order Taken!!";
     }
+
+    const notiStatus = await notify(uid, type, sendMessageDataUser);
+    if (!notiStatus) throw new Error("Notification Not sent");
+    res.status(200).json({
+      message: "done",
+    });
     // birthday messages
 
     //   if (admin) {
@@ -55,26 +58,6 @@ exports.send = async (req, res, next) => {
     //       }
     //     );
     //   }
-    await adminsdk.messaging().sendToDevice(
-      [messageToken],
-      {
-        notification: {
-          title: type,
-          body: sendMessageDataUser,
-        },
-        data: {
-          message: sendMessageDataUser,
-          title: type,
-        },
-      },
-      {
-        contentAvailable: true,
-        priority: "high",
-      }
-    );
-    res.status(200).json({
-      message: "done",
-    });
   } catch (err) {
     res.status(400).json({
       error: err,
