@@ -2,12 +2,15 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
 import {FAB, Colors} from 'react-native-paper';
 
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import messaging from '@react-native-firebase/messaging';
 import AppLoading from '../hooks/AppLoading';
 
 import CategoryList from '../components/categoryList/CategoryList';
 import MealCard from '../components/mealCard/MealCard';
+import ForeGroundNotify from '../components/notification/ForeGroundNotify';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -17,7 +20,22 @@ const Meals = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('Cake');
 
+  // const token1 = async () => {
+  //   const t = await auth().currentUser.getIdToken();
+  //   console.log(t);
+  // };
+  // token1();
+  const updateTokenOnfirestore = async () => {
+    const tokenDat = await messaging().getToken();
+    await firestore().collection('users').doc(auth().currentUser.uid).update({
+      token: tokenDat,
+    });
+  };
+
   const fetchItems = async () => {
+    if (auth().currentUser) {
+      updateTokenOnfirestore();
+    }
     try {
       const onResult = () => setIsLoading(false);
       firestore().collection('meals').onSnapshot(onResult, console.warn);
@@ -93,6 +111,7 @@ const Meals = props => {
         style={styles.fab}
         onPress={() => props.navigation.navigate('Add Meal')}
       />
+      {auth().currentUser ? <ForeGroundNotify /> : null}
     </View>
   );
 };

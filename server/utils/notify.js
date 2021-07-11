@@ -22,6 +22,7 @@ const notify = async (uid, type, sendMessageDataUser) => {
         priority: "high",
       }
     );
+    return true;
   } catch (err) {
     console.log(err);
     return false;
