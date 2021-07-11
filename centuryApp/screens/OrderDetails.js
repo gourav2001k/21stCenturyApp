@@ -138,7 +138,7 @@ const OrderDetails = props => {
         <View style={{flexDirection: 'row', height: '20%', marginTop: -5}}>
           <View
             style={{
-              width: '50%',
+              width: '60%',
               marginLeft: 20,
               justifyContent: 'center',
               alignItems: 'center',
