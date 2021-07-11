@@ -29,7 +29,9 @@ exports.send = async (req, res, next) => {
     }
 
     const notiStatus = await notify(uid, userTypeText, sendMessageDataUser);
+
     if (!notiStatus) throw new Error("Notification Not sent");
+
     res.status(200).json({
       message: "done",
     });
@@ -60,7 +62,7 @@ exports.send = async (req, res, next) => {
     //   }
   } catch (err) {
     res.status(400).json({
-      error: err,
+      error: err.message,
     });
   }
 };
