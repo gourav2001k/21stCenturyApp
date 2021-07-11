@@ -45,7 +45,7 @@ const StoreChoose = ({
       <ListItem bottomDivider>
         <ListItem.Content>
           <ListItem.Title>BJS Colony, Jodhpur</ListItem.Title>
-          <ListItem.Subtitle>8114485947</ListItem.Subtitle>
+          <ListItem.Subtitle>7413075925</ListItem.Subtitle>
         </ListItem.Content>
         <CheckBox
           center
@@ -65,7 +65,7 @@ const StoreChoose = ({
           setIndicator={setIndicator}
           address={{
             address: check ? 'New Jaljog Circle, Sardarpura' : 'BJS Colony',
-            phone: check ? '8114485947' : '8114485947',
+            phone: check ? '8114485947' : '7413075925',
             city: 'Jodhpur',
           }}
         />

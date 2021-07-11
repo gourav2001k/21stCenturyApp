@@ -6,6 +6,10 @@ import {Avatar, Drawer} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Logo from '../assets/logo.png';
 import auth from '@react-native-firebase/auth';
+import onShare from '../components/Share';
+import Rate from '../components/Rate';
+import ReportBug from '../components/ReportBug';
+import Support from '../components/Support';
 
 const logOut = async () => {
   if (auth().currentUser)
@@ -57,36 +61,28 @@ const DrawerContent = props => {
               <Icon name="share-variant" color={color} size={size} />
             )}
             label="Share Us"
-            onPress={() => {
-              console.log('Share');
-            }}
+            onPress={onShare}
           />
           <DrawerItem
             icon={({color, size}) => (
               <Icon name="star-outline" color={color} size={size} />
             )}
             label="Rate Us"
-            onPress={() => {
-              console.log('Rate');
-            }}
+            onPress={Rate}
           />
           <DrawerItem
             icon={({color, size}) => (
               <Icon name="human-greeting" color={color} size={size} />
             )}
             label="Contact / Support"
-            onPress={() => {
-              console.log('Contact');
-            }}
+            onPress={Support}
           />
           <DrawerItem
             icon={({color, size}) => (
               <Icon name="bug" color={color} size={size} />
             )}
             label="Report Bug"
-            onPress={() => {
-              console.log('Bug');
-            }}
+            onPress={ReportBug}
           />
         </Drawer.Section>
       </DrawerContentScrollView>

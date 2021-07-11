@@ -8,7 +8,6 @@ import {showMessage} from 'react-native-flash-message';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import Colors from '../../constants/Colors';
-import useNotification from '../../hooks/useNotification';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
