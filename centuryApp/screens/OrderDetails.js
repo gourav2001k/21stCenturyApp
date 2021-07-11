@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Button, ScrollView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  ScrollView,
+  Image,
+  Alert,
+} from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
 
@@ -12,6 +20,9 @@ import AppLoading from '../hooks/AppLoading';
 import OrderDetailCard from '../components/Order/OrderDetailCard';
 import greenTick from '../assets/greenTick.jpg';
 import yellowTick from '../assets/yellowTick.jpg';
+import ProgressBar from '../components/Order/ProgressBar';
+import CategoryTile from '../components/CategoryTile';
+import SummaryDetails from '../components/Order/SummaryDetails';
 
 const OrderDetails = props => {
   const {orderID, total} = props.route.params;
@@ -43,7 +54,7 @@ const OrderDetails = props => {
       const serResponse = await axios.get(
         `http://127.0.0.1:4000/transactionStatus?orderID=${orderID}&token=${token}&refund=true`,
       );
-      console.log(serResponse.data);
+      // console.log(serResponse.data);
     }
     setOrderData(fetchedOrderData);
     setDate(fetchedOrderData.createdAt);
@@ -56,7 +67,7 @@ const OrderDetails = props => {
       const serResponse = await axios.get(
         `http://127.0.0.1:4000/refundTransaction?orderID=${orderID}&token=${token}`,
       );
-      console.log(serResponse.data);
+      // console.log(serResponse.data);
     } catch (err) {
       console.log(err);
       showMessage({
@@ -104,43 +115,101 @@ const OrderDetails = props => {
         <View style={{marginBottom: 10}}></View>
       </ScrollView>
       <View style={styles.bottomContainer}>
-        {!(orderData.isAccept || orderData.isCancel) ? (
-          <Button title="Cancel" onPress={cancelOrder} />
-        ) : null}
-        <View>
-          <Text style={styles.bottomText}>
-            Total :
-            <Text
-              style={{
-                fontFamily: 'robotoRegular',
-                fontSize: 20,
-              }}>
-              ₹ {total}
-            </Text>
-          </Text>
-          <View style={styles.date}>
-            <Text style={{fontSize: 15, fontFamily: 'robotoLight'}}>
-              Date/Time :
-            </Text>
-            <Text style={styles.dateText}>{date.toDate().toDateString()}</Text>
-            <Text style={styles.dateText}>
-              {date.toDate().toLocaleTimeString()}
-            </Text>
-          </View>
+        <View style={{width: '100%', height: '25%', margin: 5, marginTop: 5}}>
+          <ProgressBar
+            isAccept={orderData.isAccept}
+            isCancel={orderData.isCancel}
+            status={status}
+            refund={
+              orderData.isCancel
+                ? orderData.refund.resultInfo.resultStatus
+                : false
+            }
+          />
         </View>
         <View
           style={{
+            height: '45%',
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text>Final Status </Text>
-          <Image
-            source={status ? greenTick : yellowTick}
-            style={{width: 40, height: 40, margin: 5}}
-          />
-          <Text style={{fontFamily: 'roboto-regular', fontWeight: 'bold'}}>
-            {status ? 'Completed' : 'Processing'}
-          </Text>
+          <SummaryDetails totalValue={total / 1.05} />
+        </View>
+        <View style={{flexDirection: 'row', height: '20%', marginTop: -5}}>
+          <View
+            style={{
+              width: '50%',
+              marginLeft: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={styles.bottomText}>
+              Total :{'  '}
+              <Text
+                style={{
+                  fontFamily: 'robotoRegular',
+                  fontSize: 25,
+                }}>
+                ₹ {total}
+              </Text>
+            </Text>
+          </View>
+
+          {!(orderData.isAccept || orderData.isCancel) ? (
+            <CategoryTile
+              button
+              text="Cancel"
+              containerStyle={{
+                marginHorizontal: 10,
+                borderColor: 'red',
+                backgroundColor: 'rgba(255,0,0,0.1)',
+              }}
+              textStyle={{
+                color: 'red',
+                paddingHorizontal: 10,
+                fontSize: 15, // color: Colors['Orange Pantone'],
+              }}
+              onPress={() => {
+                Alert.alert(
+                  'Confirm Cancel ',
+                  'Are yoy sure Your want to Cancel?',
+                  [
+                    {
+                      text: 'Yes',
+                      onPress: () => cancelOrder(),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'No',
+                      style: 'cancel',
+                    },
+                  ],
+                );
+              }}
+            />
+          ) : (
+            <CategoryTile
+              text={
+                orderData.isCancel
+                  ? 'Cancelled'
+                  : status
+                  ? 'Completed'
+                  : 'Accepted'
+              }
+              containerStyle={{
+                marginHorizontal: 10,
+                borderColor: !orderData.isCancel ? 'green' : 'red',
+                backgroundColor: !orderData.isCancel
+                  ? 'rgba(0,210,0,0.1)'
+                  : 'rgba(255,0,0,0.1)',
+              }}
+              textStyle={{
+                paddingHorizontal: 10,
+                color: !orderData.isCancel ? 'green' : 'red',
+                fontSize: 15,
+              }}
+            />
+          )}
         </View>
       </View>
     </View>
@@ -152,26 +221,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomContainer: {
-    height: '20%',
-    width: '105%',
-    borderRadius: 5,
-    // elevation: 2,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: 'rgba(0,165,255,0.1)',
+    height: '30%',
+    backgroundColor: 'rgba(255,255,255,0.6)',
   },
   bottomText: {
-    margin: 15,
     textAlign: 'left',
-    fontSize: 18,
-  },
-  date: {
-    marginTop: -10,
-    marginLeft: 15,
-  },
-  dateText: {
-    fontSize: 16,
-    fontFamily: 'roboto-regular',
+    fontSize: 20,
+    fontFamily: 'robotoLight',
   },
 });
 

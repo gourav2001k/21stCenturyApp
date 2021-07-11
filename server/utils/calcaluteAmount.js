@@ -10,7 +10,7 @@ const calculateAmount = async (uid) => {
     }
     // incorporating Taxes
     amount *= 1.05;
-    return amount;
+    return Math.round(amount * 100) / 100;
   } catch (err) {
     console.log(err);
     return false;

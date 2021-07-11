@@ -26,6 +26,7 @@ const MealDetailCard = props => {
   Object.keys(variants).map(dat => {
     variants[dat]['quantity'] = 0;
     variants[dat]['mealName'] = name;
+    variants[dat]['category'] = category;
   });
 
   const [finalOrder, setFinalOrder] = useState({

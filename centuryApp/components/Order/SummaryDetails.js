@@ -4,38 +4,16 @@ import {View, Text, StyleSheet, Button, Dimensions} from 'react-native';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const SummaryDetails = ({totalValue, type}) => {
-  var grandTotal =
-    totalValue + (totalValue * 5) / 100 + (type === 'delivery' ? 40 : 0);
+const SummaryDetails = ({totalValue}) => {
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
-        <Text style={{fontFamily: 'robotoRegular', fontSize: 20}}>
+        <Text style={{fontFamily: 'robotoRegular', fontSize: 15}}>
           Item Total
         </Text>
-        <View style={{width: '35%'}}>
-          <Text style={{fontFamily: 'robotoLight', fontSize: 20}}>
+        <View style={{width: '25%'}}>
+          <Text style={{fontFamily: 'robotoLight', fontSize: 17}}>
             ₹ {totalValue}
-          </Text>
-        </View>
-      </View>
-      <View style={styles.textContainer}>
-        <Text
-          style={{
-            fontFamily: 'robotoRegular',
-            fontSize: 17,
-            color: 'rgba(0,0,0,0.6)',
-          }}>
-          Delivery Charge
-        </Text>
-        <View style={{width: '35%'}}>
-          <Text
-            style={{
-              fontFamily: 'robotoLight',
-              fontSize: 20,
-              color: 'rgba(0,0,0,0.6)',
-            }}>
-            ₹ {type === 'takeAway' ? '0' : '40'}
           </Text>
         </View>
       </View>
@@ -48,7 +26,7 @@ const SummaryDetails = ({totalValue, type}) => {
           }}>
           Taxes
         </Text>
-        <View style={{width: '35%'}}>
+        <View style={{width: '25%'}}>
           <Text
             style={{
               fontFamily: 'robotoLight',
@@ -59,7 +37,6 @@ const SummaryDetails = ({totalValue, type}) => {
           </Text>
         </View>
       </View>
-
       <Text
         numberOfLines={1}
         ellipsizeMode="clip"
@@ -69,37 +46,19 @@ const SummaryDetails = ({totalValue, type}) => {
         - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         - - - - - -
       </Text>
-
-      <View style={styles.textContainer}>
-        <Text
-          style={{
-            fontFamily: 'robotoRegular',
-            fontSize: 20,
-            color: 'rgba(0,0,0,1)',
-          }}>
-          Grand Total
-        </Text>
-        <View style={{width: '35%'}}>
-          <Text
-            style={{
-              fontFamily: 'robotRegular',
-              fontSize: 20,
-              color: 'rgba(0,0,0,1)',
-            }}>
-            ₹ {grandTotal}
-          </Text>
-        </View>
-      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  totalContainer: {},
+  container: {
+    marginTop: 5,
+  },
   textContainer: {
+    paddingHorizontal: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 5,
+    paddingBottom: 2,
   },
   text: {},
 });

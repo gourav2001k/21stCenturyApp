@@ -17,7 +17,7 @@ import yellowTick from '../../assets/yellowTick.jpg';
 const screenWidth = Dimensions.get('window').width;
 
 const OrdersTile = ({orderData, navigation, orderID}) => {
-  const {amount, status, createdAt} = orderData;
+  const {amount, status, createdAt, isAccept, isCancel, type} = orderData;
   const Openable = () => {
     navigation.navigate('OrderDetails', {
       orderID: orderID,
@@ -27,42 +27,89 @@ const OrdersTile = ({orderData, navigation, orderID}) => {
     });
   };
 
+  const decisionMake = (isAccept, isCancel, status, type) => {
+    var renderText;
+    var renderColor;
+    if (isCancel) {
+      renderText = 'Cancelled';
+      renderColor = 'red';
+    } else {
+      if (!isAccept) {
+        renderText = 'Confirming';
+        renderColor = '#ffa500';
+      } else {
+        if (!status) {
+          renderText = 'Processing';
+          renderColor = '#ffa500';
+        } else {
+          renderText = type === 'takeAway' ? 'Take Away' : 'Delievery';
+          renderColor = 'rgba(0,150,0,1)';
+        }
+      }
+    }
+    return {renderText, renderColor};
+  };
+
+  const {renderText, renderColor} = decisionMake(
+    isAccept,
+    isCancel,
+    status,
+    type,
+  );
   return (
     <Touchable
       onPress={Openable}
       activeScale={0.9}
       friction={8}
       style={styles.container}>
-      <View style={{width: '55%', marginLeft: 10}}>
-        <View style={styles.order}>
-          <Text>OrderID:</Text>
-          <Text style={styles.orderText}>{orderID}</Text>
+      <View style={{width: '90%', marginLeft: 10}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={styles.tag}>{renderText}</Text>
         </View>
+        <View
+          style={{
+            borderTopWidth: 1,
+            marginVertical: 5,
+            borderTopColor: renderColor,
+          }}></View>
+        <View style={styles.order}>
+          <View style={{width: '75%'}}>
+            <Text style={{fontSize: 18, fontFamily: 'robotoLight'}}>
+              OrderID:
+            </Text>
+            <Text style={styles.orderText}>{orderID}</Text>
+          </View>
+          <View>
+            <Text style={{fontSize: 18, fontFamily: 'robotoLight'}}>
+              Total:
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'robotoRegular',
+                fontSize: 22,
+              }}>
+              ₹ {amount}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            borderTopWidth: 1,
+            marginVertical: 5,
+            borderTopColor: renderColor,
+          }}></View>
         <View style={styles.date}>
-          <Text>Date/Time :</Text>
           <Text style={styles.dateText}>
             {createdAt.toDate().toDateString()}
           </Text>
           <Text style={styles.dateText}>
             {createdAt.toDate().toLocaleTimeString()}
           </Text>
-        </View>
-      </View>
-      <View>
-        <Text style={{marginLeft: 15}}>Total:</Text>
-        <CategoryTile
-          text={`Rs ${amount}`}
-          containerStyle={{
-            backgroundColor: 'rgba(0,65,255,0.2)',
-            borderColor: Colors['Navy Blue'],
-          }}
-          textStyle={{color: Colors['Navy Blue']}}
-        />
-        <View style={{marginLeft: 10}}>
-          <Image
-            source={status ? greenTick : yellowTick}
-            style={{width: 50, height: 50}}
-          />
         </View>
       </View>
     </Touchable>
@@ -82,16 +129,26 @@ const styles = StyleSheet.create({
     elevation: 2,
     alignItems: 'center',
   },
+  tag: {
+    fontSize: 20,
+    fontFamily: 'robotoRegular',
+    textAlign: 'center',
+  },
+  order: {
+    flexDirection: 'row',
+  },
   orderText: {
-    fontSize: 17,
+    fontSize: 18,
     fontFamily: 'robotoRegular',
   },
   date: {
-    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 5,
   },
   dateText: {
-    fontSize: 15,
-    fontFamily: 'robotoRegular',
+    fontSize: 18,
+    fontFamily: 'robotoLight',
   },
 });
 

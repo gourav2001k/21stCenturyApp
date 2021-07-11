@@ -8,12 +8,14 @@ import RightIcon from './RightIcon';
 import DetailCounter from './DetailCounter';
 import CategoryTile from '../CategoryTile';
 import Colors from '../../constants/Colors';
+import EditButton from './EditButton';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const CartCard = ({cartMealID, details, imageURL, setCartItems}) => {
-  const {available, mealID, name, price, quantity, mealName} = details;
+  const {available, mealID, name, price, quantity, mealName, category} =
+    details;
 
   return (
     <View style={styles.container}>
@@ -28,12 +30,16 @@ const CartCard = ({cartMealID, details, imageURL, setCartItems}) => {
             fontSize: 18,
             fontFamily: 'robotoRegular',
             fontWeight: 'bold',
+            paddingHorizontal: 3,
           }}
           numberOfLines={2}>
           {mealName}
         </Text>
         <Text
-          style={{fontSize: 17, fontFamily: 'robotoLight'}}
+          style={{
+            fontSize: 17,
+            fontFamily: 'robotoLight',
+          }}
           numberOfLines={2}>
           {name}
         </Text>
@@ -53,12 +59,19 @@ const CartCard = ({cartMealID, details, imageURL, setCartItems}) => {
           details={details}
           quantity={quantity}
         />
-        <RightIcon
-          cartMealID={cartMealID}
-          setCartItems={setCartItems}
-          details={details}
-          quantity={quantity}
-        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          {category === 'Cake' ? <EditButton cartMealID={cartMealID} /> : null}
+          <RightIcon
+            cartMealID={cartMealID}
+            setCartItems={setCartItems}
+            details={details}
+            quantity={quantity}
+          />
+        </View>
       </View>
     </View>
   );
@@ -74,17 +87,18 @@ const styles = StyleSheet.create({
     elevation: 2,
     flexDirection: 'row',
     padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textContainer: {
-    width: '48%',
+    width: '45%',
     justifyContent: 'space-around',
     alignItems: 'center',
   },
   detailContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    // marginLeft: -20,
-    // backgroundColor: 'black',
+    marginBottom: -10,
   },
 });
 
