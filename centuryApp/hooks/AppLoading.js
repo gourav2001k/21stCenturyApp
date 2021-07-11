@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {Icon} from 'react-native-elements';
-const AppLoading = ({fetchItems, onFinish, onError, cart}) => {
+const AppLoading = ({fetchItems, onFinish, onError, cart, edit}) => {
   const startAscync = async () => {
     try {
       await fetchItems();
@@ -16,12 +16,12 @@ const AppLoading = ({fetchItems, onFinish, onError, cart}) => {
   }, []);
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      {cart ? (
+      {cart || edit ? (
         <Icon
           size={25}
-          title="Cart"
-          type="ionicon"
-          name="ios-cart-outline"
+          title={cart ? 'Cart' : 'edit'}
+          type={cart ? 'ionicon' : 'font-awesome'}
+          name={cart ? 'ios-cart-outline' : 'edit'}
           color="white"
           containerStyle={{marginRight: 20}}
         />

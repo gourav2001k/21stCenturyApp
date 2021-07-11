@@ -33,7 +33,7 @@ const OrderDetailCard = ({orderData, orderID, mealID, status}) => {
         </View>
         <View style={styles.totalContainer}>
           <Text style={{}}>Total</Text>
-          <Text style={{fontSize: 22}}>₹ {totalValue}</Text>
+          <Text style={{fontSize: 18}}>₹ {totalValue}</Text>
         </View>
       </View>
       <View style={styles.borderContainer}>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mealName: {
-    fontSize: 25,
+    fontSize: 20,
     fontFamily: 'robotoRegular',
   },
   totalContainer: {

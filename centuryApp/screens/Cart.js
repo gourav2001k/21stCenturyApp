@@ -79,13 +79,7 @@ const Cart = props => {
 
   return Object.keys(cartItems).length === 0 ? (
     <View style={styles.emptyScreen}>
-      <Text>Cart Is Empty....</Text>
-      <Button
-        title="Go to Meals"
-        onPress={() => {
-          props.navigation.navigate('Meals');
-        }}
-      />
+      <EmptyCart navigation={props.navigation} />
     </View>
   ) : indicator ? (
     <View style={styles.indicator}>

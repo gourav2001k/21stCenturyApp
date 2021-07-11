@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     borderColor: 'blue',
     color: Colors['Star Command Blue'],
     paddingHorizontal: 10,
+    paddingVertical: 3,
   },
 });
 

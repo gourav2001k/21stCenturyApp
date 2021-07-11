@@ -28,7 +28,7 @@ exports.send = async (req, res, next) => {
       userTypeText = "Order Taken!!";
     }
 
-    const notiStatus = await notify(uid, type, sendMessageDataUser);
+    const notiStatus = await notify(uid, userTypeText, sendMessageDataUser);
     if (!notiStatus) throw new Error("Notification Not sent");
     res.status(200).json({
       message: "done",
