@@ -6,7 +6,7 @@ const useNotification = ({type, admin, adminType}) => {
   const notifyServer = async () => {
     try {
       const token1 = await auth().currentUser.getIdToken();
-      await axios.post('http://127.0.0.1:4000/notification', {
+      await axios.post(`${process.env.SERVER_URL}/notification`, {
         token: token1,
         type: type,
         admin: admin,

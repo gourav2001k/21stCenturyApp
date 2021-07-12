@@ -52,7 +52,7 @@ const OrderDetails = props => {
     if (fetchedOrderData.isCancel) {
       const token = await auth().currentUser.getIdToken();
       const serResponse = await axios.get(
-        `http://127.0.0.1:4000/transactionStatus?orderID=${orderID}&token=${token}&refund=true`,
+        `${process.env.SERVER_URL}/transactionStatus?orderID=${orderID}&token=${token}&refund=true`,
       );
       // console.log(serResponse.data);
     }
@@ -65,7 +65,7 @@ const OrderDetails = props => {
     try {
       const token = await auth().currentUser.getIdToken();
       const serResponse = await axios.get(
-        `http://127.0.0.1:4000/refundTransaction?orderID=${orderID}&token=${token}`,
+        `${process.env.SERVER_URL}/refundTransaction?orderID=${orderID}&token=${token}`,
       );
       // console.log(serResponse.data);
     } catch (err) {

@@ -76,7 +76,7 @@ const OrderButton = ({
         // Payment Starts
         const orderID = makeID();
         const resp = await axios.get(
-          `http://127.0.0.1:4000/startTransaction?orderID=${orderID}&token=${token}`,
+          `${process.env.SERVER_URL}/startTransaction?orderID=${orderID}&token=${token}`,
         );
         const result = await AllInOneSDKManager.startTransaction(
           orderID,
@@ -91,7 +91,7 @@ const OrderButton = ({
           throw new Error('Transaction Failed');
         token = await auth().currentUser.getIdToken();
         const serResp = await axios.get(
-          `http://127.0.0.1:4000/verifyTransaction?orderID=${orderID}&token=${token}&txnAmount=${totalAmount}`,
+          `${process.env.SERVER_URL}/verifyTransaction?orderID=${orderID}&token=${token}&txnAmount=${totalAmount}`,
         );
         console.log(serResp.data);
         if (serResp.data.valid !== true) throw new Error('Transaction Failed');
