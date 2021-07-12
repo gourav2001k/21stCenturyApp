@@ -7,9 +7,11 @@ import {showMessage} from 'react-native-flash-message';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import RNBootSplash from 'react-native-bootsplash';
+import VersionCheck from 'react-native-version-check';
 
 import Logo from '../assets/logo.png';
 import CategoryTile from '../components/CategoryTile';
+import Update from '../components/ForcedUpdate';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -17,9 +19,15 @@ const width = Dimensions.get('screen').width;
 const Login = props => {
   useEffect(() => {
     const init = async () => {
-      auth().onAuthStateChanged(user => {
-        if (user) props.navigation.navigate('MealsNavigator');
-      });
+      let appV = await firestore().collection('others').doc('appVersion').get();
+      appV = appV.data();
+      if (appV.version === VersionCheck.getCurrentVersion()) {
+        auth().onAuthStateChanged(user => {
+          if (user) props.navigation.navigate('MealsNavigator');
+        });
+      } else {
+        Update();
+      }
     };
     init().finally(async () => {
       await RNBootSplash.hide({fade: true});
