@@ -53,12 +53,14 @@ const ProgressBar = ({isAccept, isCancel, status, refund}) => {
   };
 
   return (
-    <StepIndicator
-      customStyles={customStyles}
-      currentPosition={currentPosition}
-      labels={labels}
-      stepCount={3}
-    />
+    <View style={{width: '100%'}}>
+      <StepIndicator
+        customStyles={customStyles}
+        currentPosition={currentPosition}
+        labels={labels}
+        stepCount={3}
+      />
+    </View>
   );
 };
 

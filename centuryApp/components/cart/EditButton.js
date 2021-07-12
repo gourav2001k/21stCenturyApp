@@ -35,13 +35,15 @@ const EditButton = ({cartMealID}) => {
       .collection('users')
       .doc(auth().currentUser.uid)
       .get();
-    setServerData(currentData.data().cart[cartMealID]);
-    setOverlayText(
-      currentData.data().cart[cartMealID].displayName
-        ? currentData.data().cart[cartMealID].displayName
-        : '',
-    );
-    setQuantity(currentData.data().cart[cartMealID].quantity);
+    if (Object.keys(currentData.data().cart).length !== 0) {
+      setServerData(currentData.data().cart[cartMealID]);
+      setOverlayText(
+        currentData.data().cart[cartMealID].displayName
+          ? currentData.data().cart[cartMealID].displayName
+          : '',
+      );
+      setQuantity(currentData.data().cart[cartMealID].quantity);
+    }
   };
 
   const updateName = async () => {
