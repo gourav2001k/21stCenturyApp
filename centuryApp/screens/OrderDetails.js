@@ -16,6 +16,7 @@ import SummaryDetails from '../components/Order/SummaryDetails';
 import AddressType from '../components/Order/AddressType';
 import CancelButton from '../components/Order/CancelButton';
 import TotalText from '../components/Order/TotalText';
+
 const OrderDetails = props => {
   const {orderID, total} = props.route.params;
 
