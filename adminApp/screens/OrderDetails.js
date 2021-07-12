@@ -1,15 +1,20 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Button, ScrollView, Image} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
-import Touchable from 'react-native-touchable-scale';
+
+import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
+import axios from 'axios';
 import {showMessage} from 'react-native-flash-message';
 import AppLoading from '../hooks/AppLoading';
 
 import OrderDetailCard from '../components/Order/OrderDetailCard';
-import greenTick from '../assets/greenTick.jpg';
-import yellowTick from '../assets/yellowTick.jpg';
+import ProgressBar from '../components/Order/ProgressBar';
+import SummaryDetails from '../components/Order/SummaryDetails';
+import AddressType from '../components/Order/AddressType';
+import CancelButton from '../components/Order/CancelButton';
+import TotalText from '../components/Order/TotalText';
 
 const OrderDetails = props => {
   const {orderID, total} = props.route.params;
@@ -35,9 +40,34 @@ const OrderDetails = props => {
         fetchedOrderData['meals'][dat]['rating'] = mealData.rating;
       }),
     );
+    // Updating Refund Status
+    if (fetchedOrderData.isCancel) {
+      const token = await auth().currentUser.getIdToken();
+      const serResponse = await axios.get(
+        `${process.env.SERVER_URL}/transactionStatus?orderID=${orderID}&token=${token}&refund=true`,
+      );
+      // console.log(serResponse.data);
+    }
     setOrderData(fetchedOrderData);
     setDate(fetchedOrderData.createdAt);
     setStatus(fetchedOrderData.status);
+  };
+
+  const cancelOrder = async () => {
+    try {
+      const token = await auth().currentUser.getIdToken();
+      const serResponse = await axios.get(
+        `${process.env.SERVER_URL}/refundTransaction?orderID=${orderID}&token=${token}`,
+      );
+      // console.log(serResponse.data);
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        message: 'Order Cancelled',
+        description: 'Order Cancel successfully!!!!',
+        type: 'success',
+      });
+    }
   };
 
   useEffect(() => {
@@ -60,23 +90,6 @@ const OrderDetails = props => {
       />
     );
   }
-
-  const handleStatus = async () => {
-    try {
-      await firestore()
-        .collection('orders')
-        .doc(orderID)
-        .update({status: true});
-      setStatus(true);
-    } catch (err) {
-      showMessage({
-        description: 'SOmething wrong Happened',
-        message: err.message,
-        type: 'danger',
-      });
-    }
-  };
-
   return (
     <View style={styles.screen}>
       <ScrollView>
@@ -94,48 +107,26 @@ const OrderDetails = props => {
         <View style={{marginBottom: 10}}></View>
       </ScrollView>
       <View style={styles.bottomContainer}>
-        <View>
-          <Text style={styles.bottomText}>
-            Total :
-            <Text
-              style={{
-                fontFamily: 'robotoRegular',
-                fontSize: 20,
-              }}>
-              ₹ {total}
-            </Text>
-          </Text>
-          <View style={styles.date}>
-            <Text style={{fontSize: 15, fontFamily: 'robotoLight'}}>
-              Date/Time :
-            </Text>
-            <Text style={styles.dateText}>{date.toDate().toDateString()}</Text>
-            <Text style={styles.dateText}>
-              {date.toDate().toLocaleTimeString()}
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text>Final Status </Text>
-          <Touchable
-            disabled={status}
-            onPress={handleStatus}
-            activeScale={0.9}
-            friction={8}>
-            <View>
-              <Image
-                source={status ? greenTick : yellowTick}
-                style={{width: 40, height: 40, margin: 5}}
-              />
-              <Text style={{fontFamily: 'roboto-regular', fontWeight: 'bold'}}>
-                {status ? 'Completed' : 'Processing'}
-              </Text>
-            </View>
-          </Touchable>
+        <AddressType type={orderData.type} />
+        <ProgressBar
+          isAccept={orderData.isAccept}
+          isCancel={orderData.isCancel}
+          status={status}
+          refund={
+            orderData.isCancel
+              ? orderData.refund.resultInfo.resultStatus
+              : false
+          }
+        />
+        <SummaryDetails totalValue={total / 1.05} />
+        <View style={styles.totalContainer}>
+          <TotalText total={total} />
+          <CancelButton
+            isAccept={orderData.isAccept}
+            isCancel={orderData.isCancel}
+            status={status}
+            cancelOrder={cancelOrder}
+          />
         </View>
       </View>
     </View>
@@ -147,25 +138,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomContainer: {
-    height: '20%',
-    width: '105%',
-    borderRadius: 5,
-    elevation: 2,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    height: '40%',
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    alignItems: 'center',
   },
   bottomText: {
-    margin: 15,
     textAlign: 'left',
-    fontSize: 18,
+    fontSize: 20,
+    fontFamily: 'robotoLight',
   },
-  date: {
-    marginTop: -10,
-    marginLeft: 15,
-  },
-  dateText: {
-    fontSize: 16,
-    fontFamily: 'roboto-regular',
+  totalContainer: {
+    flexDirection: 'row',
+    height: '15%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

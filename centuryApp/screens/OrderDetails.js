@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 
-import {Icon} from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 
 import auth from '@react-native-firebase/auth';

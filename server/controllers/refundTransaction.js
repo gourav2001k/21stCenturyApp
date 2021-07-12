@@ -12,6 +12,7 @@ const verifyToken = require("../utils/verifyToken");
 exports.refund = async (req, res, next) => {
   try {
     const { orderID, amount, token } = req.query;
+    let isAdmin = false;
     const uid = await verifyToken(token);
     if (uid === false) throw new Error("Invalid Token");
     const order = await orderInfo(orderID);
@@ -24,6 +25,7 @@ exports.refund = async (req, res, next) => {
       const admin = await adminSDK.auth().getUser(uid);
       if (!process.env.ADMIN_PHONES.includes(admin.phoneNumber))
         throw new Error("Access Denied");
+      isAdmin = true;
     }
     var paytmParams = {};
 
@@ -59,11 +61,20 @@ exports.refund = async (req, res, next) => {
       .collection("orders")
       .doc(orderID)
       .update({ refund: resp.data.body, isCancel: true });
-    notify(
-      uid,
-      "Order Cancelled",
-      "Your Order was Cancelled Successfully and refund Initiated."
-    );
+    if (isAdmin) {
+      notify(
+        order.userID,
+        "Order Cancelled",
+        "We regret to inform you. Your Order was cancelled by Admin. Refund is initiated"
+      );
+    } else {
+      notify(
+        uid,
+        "Order Cancelled",
+        "Your Order was Cancelled Successfully and refund Initiated."
+      );
+    }
+
     findAdmins()
       .then((res) => {
         if (res !== false)

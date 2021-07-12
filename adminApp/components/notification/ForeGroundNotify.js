@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, Button, Dimensions, Alert} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
@@ -9,12 +9,6 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const ForeGroundNotify = props => {
-  // const noti = useNotification({
-  //   type: 'orderPlaced',
-  //   admin: false,
-  //   adminType: '',
-  // });
-
   useEffect(() => {
     const local = message => {
       PushNotification.localNotification({

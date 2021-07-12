@@ -10,17 +10,11 @@ import AppLoading from '../hooks/AppLoading';
 import CategoryList from '../components/categoryList/CategoryList';
 import MealCard from '../components/mealCard/MealCard';
 import ForeGroundNotify from '../components/notification/ForeGroundNotify';
-import useNotification from '../hooks/useNotification';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const Meals = props => {
-  // const token1 = async () => {
-  //   const t = await auth().currentUser.getIdToken();
-  //   console.log(t);
-  // };
-  // token1();
   const [allMeal, setAllMeal] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('Cake');
