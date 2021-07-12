@@ -172,7 +172,7 @@ const OrderDetails = props => {
               onPress={() => {
                 Alert.alert(
                   'Confirm Cancel ',
-                  'Are yoy sure Your want to Cancel?',
+                  'Are you sure you want to cancel your Order?',
                   [
                     {
                       text: 'Yes',

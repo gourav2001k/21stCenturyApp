@@ -21,7 +21,7 @@ const findAdmins = async () => {
     await Promise.all(
       admins.map(async (phone) => {
         const user = await adminSDK.auth().getUserByPhoneNumber(phone);
-        adminUIDS.push(user.uid);
+        adminUIDs.push(user.uid);
       })
     );
     return adminUIDs;

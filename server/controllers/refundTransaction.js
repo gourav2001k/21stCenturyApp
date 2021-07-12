@@ -1,6 +1,7 @@
 const axios = require("axios");
 const dotenv = require("dotenv");
 const adminSDK = require("../utils/adminSDK");
+const findAdmins = require("../utils/findAdmins");
 dotenv.config();
 
 const generateCheckSum = require("../utils/generateCheckSum");
@@ -58,11 +59,23 @@ exports.refund = async (req, res, next) => {
       .collection("orders")
       .doc(orderID)
       .update({ refund: resp.data.body, isCancel: true });
-    const notiStatus = await notify(
+    notify(
       uid,
       "Order Cancelled",
-      "Your Order was Cancelled Successfully"
+      "Your Order was Cancelled Successfully and refund Initiated."
     );
+    findAdmins()
+      .then((res) => {
+        if (res !== false)
+          res.map((uIDs) =>
+            notify(
+              uIDs,
+              "Order Cancelled",
+              `Order with orderID ${orderID} was cancelled.`
+            )
+          );
+      })
+      .catch((err) => console.log(err));
     res.status(200).json(resp.data.body);
   } catch (err) {
     res.status(400).json({ error: true });

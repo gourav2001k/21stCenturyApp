@@ -6,6 +6,7 @@ const generateCheckSum = require("../utils/generateCheckSum");
 const verifyToken = require("../utils/verifyToken");
 const calculateAmount = require("../utils/calcaluteAmount");
 const notify = require("../utils/notify");
+const findAdmins = require("../utils/findAdmins");
 
 exports.verify = async (req, res, next) => {
   try {
@@ -41,11 +42,19 @@ exports.verify = async (req, res, next) => {
       resp.data.body.resultInfo.resultStatus === "TXN_SUCCESS" &&
       resp.data.body.orderId === orderID
     ) {
-      const notiStatus = await notify(
-        uid,
-        "Order Placed",
-        "Your Order was Placed Successfully"
-      );
+      notify(uid, "Order Placed", "Your Order was Placed Successfully");
+      findAdmins()
+        .then((res) => {
+          if (res !== false)
+            res.map((uIDs) =>
+              notify(
+                uIDs,
+                "Order Recieved",
+                `Order with orderID ${orderID} recieved. Please Confirm it`
+              )
+            );
+        })
+        .catch((err) => console.log(err));
       res.status(200).json({ valid: true });
     } else res.status(200).json({ valid: false });
   } catch (err) {
