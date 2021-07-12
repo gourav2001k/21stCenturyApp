@@ -4,12 +4,14 @@ const bodyParser = require("body-parser");
 
 const app = express();
 const transactionRoutes = require("./router/transactions");
+const notificationRoutes = require("./router/notifications");
 const Birthdays = require("./utils/birthdays");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use("", notificationRoutes);
 app.use("", transactionRoutes);
 
 // Birthdays call
