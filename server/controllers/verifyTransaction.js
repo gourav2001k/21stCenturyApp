@@ -14,7 +14,8 @@ exports.verify = async (req, res, next) => {
     const uid = await verifyToken(token);
     if (uid === false) throw new Error("Invalid Token");
     const amount = await calculateAmount(uid);
-    if (amount != txnAmount) throw new Error("Amount Mismatch");
+    const txnAMT = Math.round(txnAmount * 100) / 100;
+    if (amount != txnAMT) throw new Error("Amount Mismatch");
 
     var paytmParams = {};
     paytmParams.body = {
@@ -58,6 +59,7 @@ exports.verify = async (req, res, next) => {
       res.status(200).json({ valid: true });
     } else res.status(200).json({ valid: false });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ error: true });
   }
 };

@@ -1,18 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableNativeFeedback,
-  Image,
-} from 'react-native';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import Touchable from 'react-native-touchable-scale';
-
-import Colors from '../../constants/Colors';
-import CategoryTile from '../CategoryTile';
-import greenTick from '../../assets/greenTick.jpg';
-import yellowTick from '../../assets/yellowTick.jpg';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -42,7 +30,7 @@ const OrdersTile = ({orderData, navigation, orderID}) => {
           renderText = 'Processing';
           renderColor = '#ffa500';
         } else {
-          renderText = type === 'takeAway' ? 'Take Away' : 'Delievery';
+          renderText = type === 'takeAway' ? 'Take Away' : 'Delivered';
           renderColor = 'rgba(0,150,0,1)';
         }
       }

@@ -19,7 +19,7 @@ const AddressType = ({type}) => {
         }}
       />
       <Text style={styles.text}>
-        {type === 'takeAway' ? 'Take Away' : 'Delievery'}
+        {type === 'takeAway' ? 'Take Away' : 'Delivered'}
       </Text>
       <Icon
         raised

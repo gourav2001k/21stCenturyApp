@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
   },
   bottomText: {
     fontFamily: 'robotoLight',
-    fontSize: 20,
+    fontSize: 16,
   },
   rupeeText: {
     fontFamily: 'robotoRegular',
-    fontSize: 25,
+    fontSize: 18,
   },
 });
 

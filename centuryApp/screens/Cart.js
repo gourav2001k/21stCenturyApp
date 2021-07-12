@@ -76,6 +76,7 @@ const Cart = props => {
   Object.keys(cartItems).map(dat => {
     totalValue += cartItems[dat].quantity * cartItems[dat].price;
   });
+  totalValue = Math.round(totalValue * 100) / 100;
 
   return Object.keys(cartItems).length === 0 ? (
     <View style={styles.emptyScreen}>

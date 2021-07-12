@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomContainer: {
-    height: '35%',
+    height: '40%',
     backgroundColor: 'rgba(255,255,255,0.6)',
     alignItems: 'center',
   },

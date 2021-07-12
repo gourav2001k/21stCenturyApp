@@ -1,18 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableNativeFeedback,
-  Image,
-} from 'react-native';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import Touchable from 'react-native-touchable-scale';
-
-import Colors from '../../constants/Colors';
-import CategoryTile from '../CategoryTile';
-import greenTick from '../../assets/greenTick.jpg';
-import yellowTick from '../../assets/yellowTick.jpg';
 
 const screenWidth = Dimensions.get('window').width;
 

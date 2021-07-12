@@ -49,7 +49,7 @@ const CancelButton = ({isAccept, isCancel, status, cancelOrder}) => {
           textStyle={{
             paddingHorizontal: 10,
             color: !isCancel ? 'green' : 'red',
-            fontSize: 22,
+            fontSize: 16,
           }}
         />
       )}
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   cancelText: {
     color: 'red',
     paddingHorizontal: 10,
-    fontSize: 22, // color: Colors['Orange Pantone'],
+    fontSize: 16, // color: Colors['Orange Pantone'],
   },
 });
 
