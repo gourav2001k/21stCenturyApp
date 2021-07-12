@@ -1,14 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  ScrollView,
-  Image,
-  Alert,
-} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 
+import {Icon} from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
 
 import auth from '@react-native-firebase/auth';
@@ -18,12 +11,11 @@ import {showMessage} from 'react-native-flash-message';
 import AppLoading from '../hooks/AppLoading';
 
 import OrderDetailCard from '../components/Order/OrderDetailCard';
-import greenTick from '../assets/greenTick.jpg';
-import yellowTick from '../assets/yellowTick.jpg';
 import ProgressBar from '../components/Order/ProgressBar';
-import CategoryTile from '../components/CategoryTile';
 import SummaryDetails from '../components/Order/SummaryDetails';
-
+import AddressType from '../components/Order/AddressType';
+import CancelButton from '../components/Order/CancelButton';
+import TotalText from '../components/Order/TotalText';
 const OrderDetails = props => {
   const {orderID, total} = props.route.params;
 
@@ -115,101 +107,26 @@ const OrderDetails = props => {
         <View style={{marginBottom: 10}}></View>
       </ScrollView>
       <View style={styles.bottomContainer}>
-        <View style={{width: '100%', height: '25%', margin: 5, marginTop: 5}}>
-          <ProgressBar
+        <AddressType type={orderData.type} />
+        <ProgressBar
+          isAccept={orderData.isAccept}
+          isCancel={orderData.isCancel}
+          status={status}
+          refund={
+            orderData.isCancel
+              ? orderData.refund.resultInfo.resultStatus
+              : false
+          }
+        />
+        <SummaryDetails totalValue={total / 1.05} />
+        <View style={styles.totalContainer}>
+          <TotalText total={total} />
+          <CancelButton
             isAccept={orderData.isAccept}
             isCancel={orderData.isCancel}
             status={status}
-            refund={
-              orderData.isCancel
-                ? orderData.refund.resultInfo.resultStatus
-                : false
-            }
+            cancelOrder={cancelOrder}
           />
-        </View>
-        <View
-          style={{
-            height: '45%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <SummaryDetails totalValue={total / 1.05} />
-        </View>
-        <View style={{flexDirection: 'row', height: '20%', marginTop: -5}}>
-          <View
-            style={{
-              width: '60%',
-              marginLeft: 20,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={styles.bottomText}>
-              Total :{'  '}
-              <Text
-                style={{
-                  fontFamily: 'robotoRegular',
-                  fontSize: 25,
-                }}>
-                ₹ {total}
-              </Text>
-            </Text>
-          </View>
-
-          {!(orderData.isAccept || orderData.isCancel) ? (
-            <CategoryTile
-              button
-              text="Cancel"
-              containerStyle={{
-                marginHorizontal: 10,
-                borderColor: 'red',
-                backgroundColor: 'rgba(255,0,0,0.1)',
-              }}
-              textStyle={{
-                color: 'red',
-                paddingHorizontal: 10,
-                fontSize: 15, // color: Colors['Orange Pantone'],
-              }}
-              onPress={() => {
-                Alert.alert(
-                  'Confirm Cancel ',
-                  'Are you sure you want to cancel your Order?',
-                  [
-                    {
-                      text: 'Yes',
-                      onPress: () => cancelOrder(),
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'No',
-                      style: 'cancel',
-                    },
-                  ],
-                );
-              }}
-            />
-          ) : (
-            <CategoryTile
-              text={
-                orderData.isCancel
-                  ? 'Cancelled'
-                  : status
-                  ? 'Completed'
-                  : 'Accepted'
-              }
-              containerStyle={{
-                marginHorizontal: 10,
-                borderColor: !orderData.isCancel ? 'green' : 'red',
-                backgroundColor: !orderData.isCancel
-                  ? 'rgba(0,210,0,0.1)'
-                  : 'rgba(255,0,0,0.1)',
-              }}
-              textStyle={{
-                paddingHorizontal: 10,
-                color: !orderData.isCancel ? 'green' : 'red',
-                fontSize: 15,
-              }}
-            />
-          )}
         </View>
       </View>
     </View>
@@ -221,13 +138,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomContainer: {
-    height: '30%',
+    height: '35%',
     backgroundColor: 'rgba(255,255,255,0.6)',
+    alignItems: 'center',
   },
   bottomText: {
     textAlign: 'left',
     fontSize: 20,
     fontFamily: 'robotoLight',
+  },
+  totalContainer: {
+    flexDirection: 'row',
+    height: '15%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -91,7 +91,7 @@ const Orders = props => {
 
     // addlogic for week/month/older
   });
-  console.log(-sequence[1][0].toDate().getDate() + today.getDate());
+
   const timeList = [
     {
       name: 'today',
