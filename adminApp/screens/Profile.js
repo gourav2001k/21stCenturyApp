@@ -1,10 +1,18 @@
-import React from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {showMessage} from 'react-native-flash-message';
+import {Button, Icon, Overlay} from 'react-native-elements';
+
+import Notification from '../components/notification/Notification';
 
 const Profile = props => {
+  const [visible, setVisible] = useState(false);
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   const logOut = async () => {
     try {
       await firestore()
@@ -23,8 +31,22 @@ const Profile = props => {
   };
   return (
     <View style={styles.screen}>
-      <Text>This is Profile Screen!!!</Text>
+      <Button
+        title="Send Notifications"
+        onPress={toggleOverlay}
+        buttonStyle={styles.button}
+        titleStyle={styles.titleButton}
+      />
       <Button title="LogOut" onPress={logOut} />
+      <Overlay
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+        overlayStyle={styles.overlayContainer}>
+        <View style={styles.crossIcon}>
+          <Icon name="cross" type="entypo" raised onPress={toggleOverlay} />
+        </View>
+        <Notification toggleOverlay={toggleOverlay} />
+      </Overlay>
     </View>
   );
 };
@@ -33,6 +55,19 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {margin: 20},
+  overlayContainer: {
+    width: '105%',
+    height: '75%',
+    position: 'absolute',
+    bottom: -10,
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
+  crossIcon: {
+    height: '20%',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
 });
