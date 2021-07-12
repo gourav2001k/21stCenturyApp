@@ -35,31 +35,6 @@ exports.send = async (req, res, next) => {
     res.status(200).json({
       message: "done",
     });
-    // birthday messages
-
-    //   if (admin) {
-    // var sendMessageDataAdmin;
-    // var adminTypeText;
-    // if (adminType === "orderRecieved") {
-    //   sendMessageDataAdmin = "Your have a new order!!!";
-    // adminTypeText = "Order Recieved!!!";
-    // } else if (adminType === "orderCanceled") {
-    //   sendMessageDataAdmin = "User have canceled order!!";
-    // adminTypeText = "Order Canceled!!!";
-    // }
-    //     adminsdk.messaging().sendToDevice(
-    //       [], //add token for admin account
-    //       {
-    //         data: {
-    //           her: "hell",
-    //         },
-    //       },
-    //       {
-    //         contentAvailable: true,
-    //         priority: "high",
-    //       }
-    //     );
-    //   }
   } catch (err) {
     res.status(400).json({
       error: err.message,

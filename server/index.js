@@ -4,12 +4,16 @@ const bodyParser = require("body-parser");
 
 const app = express();
 const transactionRoutes = require("./router/transactions");
+const Birthdays = require("./utils/birthdays");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("", transactionRoutes);
+
+// Birthdays call
+Birthdays;
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

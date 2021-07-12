@@ -70,6 +70,8 @@ const OrderButton = ({
           description: 'Please Add meals to Order..',
           type: 'danger',
         });
+      } else if (new Date().getHours() < 10 || new Date().getHours() > 17) {
+        throw new Error('You can only Order Between 10 AM to 5 PM');
       } else {
         // Payment Starts
         const orderID = makeID();

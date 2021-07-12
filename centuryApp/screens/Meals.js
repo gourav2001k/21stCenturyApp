@@ -24,7 +24,6 @@ const Meals = props => {
   const [allMeal, setAllMeal] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('Cake');
-
   const updateTokenOnfirestore = async () => {
     const tokenDat = await messaging().getToken();
     await firestore().collection('users').doc(auth().currentUser.uid).update({

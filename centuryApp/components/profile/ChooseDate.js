@@ -52,7 +52,7 @@ const ChooseDate = ({date, setDate}) => {
         date={date}
         onConfirm={onConfirmSingle}
         validRange={{
-          startDate: new Date(1900, 1, 2), // optional
+          startDate: new Date(1950, 1, 2), // optional
           endDate: new Date(), // optional
         }}
       />

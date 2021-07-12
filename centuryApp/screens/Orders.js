@@ -6,7 +6,6 @@ import auth from '@react-native-firebase/auth';
 import AppLoading from '../hooks/AppLoading';
 
 import OrdersTile from '../components/Order/OrderTile';
-import {ListItem} from 'react-native-elements';
 import {List} from 'react-native-paper';
 
 const Orders = props => {
