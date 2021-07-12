@@ -18,15 +18,15 @@ const TotalText = ({total}) => {
 const styles = StyleSheet.create({
   container: {},
   totalTextContainer: {
-    width: '50%',
+    width: '30%',
   },
   bottomText: {
     fontFamily: 'robotoLight',
-    fontSize: 20,
+    fontSize: 16,
   },
   rupeeText: {
     fontFamily: 'robotoRegular',
-    fontSize: 25,
+    fontSize: 18,
   },
 });
 

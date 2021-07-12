@@ -1,4 +1,4 @@
-const adminsdk = require("../utils/adminSDK");
+const adminSDK = require("../utils/adminSDK");
 const notify = require("../utils/notify");
 const verifyToken = require("../utils/verifyToken");
 
@@ -19,6 +19,7 @@ exports.send = async (req, res, next) => {
       message: "done",
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       error: err.message,
     });

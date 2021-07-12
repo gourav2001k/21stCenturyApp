@@ -6,22 +6,7 @@ import CategoryTile from './../CategoryTile';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const CompletedButton = ({isAccept, isCancel, status, cancelOrder}) => {
-  // make sure copy this style in totaltext
-  // totalTextContainer: {
-  //     width: '50%',
-  //   },
-  //   bottomText: {
-  //     fontFamily: 'robotoLight',
-  //     fontSize: 20,
-  //   },
-  //   rupeeText: {
-  //     fontFamily: 'robotoRegular',
-  //     fontSize: 25,
-  //   },
-  const completeOrder = () => {
-    console.log('ready');
-  };
+const CompletedButton = ({isAccept, isCancel, status, completeOrder}) => {
   return (
     <View style={styles.container}>
       {!status ? (
@@ -53,7 +38,7 @@ const styles = StyleSheet.create({
   completeText: {
     paddingHorizontal: 10,
     color: 'green',
-    fontSize: 22,
+    fontSize: 14,
   },
 });
 

@@ -41,10 +41,7 @@ const Orders = props => {
       const onResult = () => {
         setIsLoading(false);
       };
-      const unsubscribe = firestore()
-        .collection('orders')
-        .where('userID', '==', auth().currentUser.uid)
-        .onSnapshot(onResult);
+      const unsubscribe = firestore().collection('orders').onSnapshot(onResult);
 
       return () => unsubscribe();
     }

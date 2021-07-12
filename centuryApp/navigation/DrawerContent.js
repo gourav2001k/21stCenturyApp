@@ -6,17 +6,29 @@ import {Avatar, Drawer} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Logo from '../assets/logo.png';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import onShare from '../components/Share';
 import Rate from '../components/Rate';
 import ReportBug from '../components/ReportBug';
 import Support from '../components/Support';
 
 const logOut = async () => {
-  if (auth().currentUser)
-    await auth()
-      .signOut()
-      .then(() => console.log('User signed out!'));
-};
+    try {
+        if(auth().currentUser){
+            await firestore()
+		.collection('users')
+		.doc(auth().currentUser.uid)
+		.update({token: ''});
+	    await auth().signOut();
+	}
+    } catch (err) {
+      showMessage({
+        message: 'Error',
+        description: err.message,
+        type: 'danger',
+      });
+    }
+  };
 const DrawerContent = props => {
   return (
     <View style={{flex: 1}}>

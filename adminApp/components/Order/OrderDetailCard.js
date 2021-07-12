@@ -7,7 +7,6 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import AppLoading from '../../hooks/AppLoading';
 import RenderList from './RenderList';
-import RatingOption from './RatingOption';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -47,15 +46,6 @@ const OrderDetailCard = ({orderData, orderID, mealID, status}) => {
           <RenderList mealData={orderData[dat]} key={dat} />
         ),
       )}
-      {status ? (
-        <View style={styles.ratingContainer}>
-          <RatingOption
-            orderID={orderID}
-            mealID={mealID}
-            intialRating={orderData.rating}
-          />
-        </View>
-      ) : null}
     </View>
   );
 };

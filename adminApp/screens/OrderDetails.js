@@ -13,8 +13,10 @@ import OrderDetailCard from '../components/Order/OrderDetailCard';
 import ProgressBar from '../components/Order/ProgressBar';
 import SummaryDetails from '../components/Order/SummaryDetails';
 import AddressType from '../components/Order/AddressType';
-import CancelButton from '../components/Order/CancelButton';
 import TotalText from '../components/Order/TotalText';
+import AcceptReject from '../components/Order/AcceptReject';
+import useNotification from '../hooks/useNotification';
+import CompletedButton from '../components/Order/CompletedButton';
 
 const OrderDetails = props => {
   const {orderID, total} = props.route.params;
@@ -59,13 +61,81 @@ const OrderDetails = props => {
       const serResponse = await axios.get(
         `${process.env.SERVER_URL}/refundTransaction?orderID=${orderID}&token=${token}`,
       );
-      // console.log(serResponse.data);
-    } catch (err) {
-      console.log(err);
       showMessage({
         message: 'Order Cancelled',
         description: 'Order Cancel successfully!!!!',
         type: 'success',
+      });
+      // console.log(serResponse.data);
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        message: 'ERROR',
+        description: err.message,
+        type: 'danger',
+      });
+    }
+  };
+
+  const acceptOrder = async () => {
+    try {
+      await firestore()
+        .collection('orders')
+        .doc(orderID)
+        .update({isAccept: true});
+      showMessage({
+        message: 'Status Updated',
+        description: 'Order Status Updated successfully!!!!',
+        type: 'success',
+      });
+      const notify = useNotification({
+        title: 'Order Accepted',
+        message: 'Your Order was accepted by the Admin',
+        to: orderData.userID,
+      });
+      notify();
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        message: 'ERROR',
+        description: err.message,
+        type: 'danger',
+      });
+    }
+  };
+
+  const completeOrder = async () => {
+    try {
+      await firestore()
+        .collection('orders')
+        .doc(orderID)
+        .update({status: true});
+      showMessage({
+        message: 'Status Updated',
+        description: 'Order Status Updated successfully!!!!',
+        type: 'success',
+      });
+      if (orderData.type === 'takeAway') {
+        const notify = useNotification({
+          title: 'Order Taken',
+          message: 'You have pickedup your Order from our Store',
+          to: orderData.userID,
+        });
+        notify();
+      } else {
+        const notify = useNotification({
+          title: 'Order Delivered',
+          message: 'Your Order was delivered to you',
+          to: orderData.userID,
+        });
+        notify();
+      }
+    } catch (err) {
+      console.log(err);
+      showMessage({
+        message: 'ERROR',
+        description: err.message,
+        type: 'danger',
       });
     }
   };
@@ -121,12 +191,23 @@ const OrderDetails = props => {
         <SummaryDetails totalValue={total / 1.05} />
         <View style={styles.totalContainer}>
           <TotalText total={total} />
-          <CancelButton
-            isAccept={orderData.isAccept}
-            isCancel={orderData.isCancel}
-            status={status}
-            cancelOrder={cancelOrder}
-          />
+          {orderData.isCancel || orderData.isAccept ? null : (
+            <AcceptReject
+              isAccept={orderData.isAccept}
+              isCancel={orderData.isCancel}
+              status={status}
+              acceptOrder={acceptOrder}
+              cancelOrder={cancelOrder}
+            />
+          )}
+          {orderData.isAccept ? (
+            <CompletedButton
+              isAccept={orderData.isAccept}
+              isCancel={orderData.isCancel}
+              status={status}
+              completeOrder={completeOrder}
+            />
+          ) : null}
         </View>
       </View>
     </View>

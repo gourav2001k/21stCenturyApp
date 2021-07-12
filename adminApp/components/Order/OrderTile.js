@@ -42,7 +42,7 @@ const OrdersTile = ({orderData, navigation, orderID}) => {
           renderText = 'Processing';
           renderColor = '#ffa500';
         } else {
-          renderText = type === 'takeAway' ? 'Take Away' : 'Delievery';
+          renderText = type === 'takeAway' ? 'Take Away' : 'Delivered';
           renderColor = 'rgba(0,150,0,1)';
         }
       }

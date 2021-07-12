@@ -1,20 +1,25 @@
 import React from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {showMessage} from 'react-native-flash-message';
 
 const Profile = props => {
   const logOut = async () => {
-    auth()
-      .signOut()
-      .then(() => props.navigation.replace('Login'))
-      .catch(err => {
-        showMessage({
-          message: 'Error',
-          description: err.message,
-          type: 'danger',
-        });
+    try {
+      await firestore()
+        .collection('users')
+        .doc(auth().currentUser.uid)
+        .update({token: ''});
+      await auth().signOut();
+      props.navigation.replace('Login');
+    } catch (err) {
+      showMessage({
+        message: 'Error',
+        description: err.message,
+        type: 'danger',
       });
+    }
   };
   return (
     <View style={styles.screen}>

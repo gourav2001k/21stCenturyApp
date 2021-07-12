@@ -6,25 +6,13 @@ import CategoryTile from './../CategoryTile';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-const AcceptReject = ({isAccept, isCancel, status, cancelOrder}) => {
-  // make sure copy this style in totaltext
-  //   totalTextContainer: {
-  // width: '50%',
-  //   },
-  //   bottomText: {
-  //     fontFamily: 'robotoLight',
-  //     fontSize: 15,
-  //   },
-  //   rupeeText: {
-  //     fontFamily: 'robotoRegular',
-  //     fontSize: 20,
-  //   },
-  const acceptOrder = () => {
-    console.log('accept');
-  };
-  const rejectOrder = () => {
-    console.log('reject');
-  };
+const AcceptReject = ({
+  isAccept,
+  isCancel,
+  status,
+  acceptOrder,
+  cancelOrder,
+}) => {
   return (
     <View style={styles.container}>
       <CategoryTile
@@ -41,7 +29,7 @@ const AcceptReject = ({isAccept, isCancel, status, cancelOrder}) => {
         buttonStyle={{paddingVertical: 0}}
         containerStyle={styles.rejectContainer}
         textStyle={styles.rejectText}
-        onPress={rejectOrder}
+        onPress={cancelOrder}
       />
     </View>
   );
@@ -50,6 +38,7 @@ const AcceptReject = ({isAccept, isCancel, status, cancelOrder}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    width: '50%',
   },
 
   acceptContainer: {
@@ -60,7 +49,7 @@ const styles = StyleSheet.create({
   acceptText: {
     paddingHorizontal: 10,
     color: 'green',
-    fontSize: 22,
+    fontSize: 14,
   },
   rejectContainer: {
     marginHorizontal: 5,
@@ -70,7 +59,7 @@ const styles = StyleSheet.create({
   rejectText: {
     color: 'red',
     paddingHorizontal: 10,
-    fontSize: 22, // color: Colors['Orange Pantone'],
+    fontSize: 14, // color: Colors['Orange Pantone'],
   },
 });
 
