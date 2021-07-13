@@ -20,7 +20,6 @@ const OrderDetailCard = ({orderData, orderID, mealID, status}) => {
       ? null
       : (totalValue += orderData[dat].quantity * orderData[dat].price);
   });
-
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>

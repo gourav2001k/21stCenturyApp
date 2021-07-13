@@ -18,7 +18,7 @@ const TotalText = ({total}) => {
 const styles = StyleSheet.create({
   container: {},
   totalTextContainer: {
-    width: '30%',
+    // width: '30%',
   },
   bottomText: {
     fontFamily: 'robotoLight',

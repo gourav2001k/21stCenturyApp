@@ -13,22 +13,22 @@ import ReportBug from '../components/ReportBug';
 import Support from '../components/Support';
 
 const logOut = async () => {
-    try {
-        if(auth().currentUser){
-            await firestore()
-		.collection('users')
-		.doc(auth().currentUser.uid)
-		.update({token: ''});
-	    await auth().signOut();
-	}
-    } catch (err) {
-      showMessage({
-        message: 'Error',
-        description: err.message,
-        type: 'danger',
-      });
+  try {
+    if (auth().currentUser) {
+      await firestore()
+        .collection('users')
+        .doc(auth().currentUser.uid)
+        .update({token: ''});
+      await auth().signOut();
     }
-  };
+  } catch (err) {
+    showMessage({
+      message: 'Error',
+      description: err.message,
+      type: 'danger',
+    });
+  }
+};
 const DrawerContent = props => {
   return (
     <View style={{flex: 1}}>
@@ -42,6 +42,7 @@ const DrawerContent = props => {
         </View>
         <Drawer.Section style={styles.drawerSection}>
           <DrawerItem
+            labelStyle={{fontSize: 16}}
             icon={({color, size}) => (
               <Icon name="home-outline" color={color} size={size} />
             )}
@@ -51,6 +52,7 @@ const DrawerContent = props => {
             }}
           />
           <DrawerItem
+            labelStyle={{fontSize: 16}}
             icon={({color, size}) => (
               <Icon name="account-outline" color={color} size={size} />
             )}
@@ -60,6 +62,7 @@ const DrawerContent = props => {
             }}
           />
           <DrawerItem
+            labelStyle={{fontSize: 16}}
             icon={({color, size}) => (
               <Icon name="format-list-checkbox" color={color} size={size} />
             )}
@@ -69,6 +72,7 @@ const DrawerContent = props => {
             }}
           />
           <DrawerItem
+            labelStyle={{fontSize: 16}}
             icon={({color, size}) => (
               <Icon name="share-variant" color={color} size={size} />
             )}
@@ -76,6 +80,7 @@ const DrawerContent = props => {
             onPress={onShare}
           />
           <DrawerItem
+            labelStyle={{fontSize: 16}}
             icon={({color, size}) => (
               <Icon name="star-outline" color={color} size={size} />
             )}
@@ -83,6 +88,7 @@ const DrawerContent = props => {
             onPress={Rate}
           />
           <DrawerItem
+            labelStyle={{fontSize: 16}}
             icon={({color, size}) => (
               <Icon name="human-greeting" color={color} size={size} />
             )}
@@ -90,6 +96,7 @@ const DrawerContent = props => {
             onPress={Support}
           />
           <DrawerItem
+            labelStyle={{fontSize: 16}}
             icon={({color, size}) => (
               <Icon name="bug" color={color} size={size} />
             )}
@@ -101,6 +108,7 @@ const DrawerContent = props => {
 
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
+          labelStyle={{fontSize: 16}}
           icon={({color, size}) => (
             <Icon name="exit-to-app" color={color} size={size} />
           )}
@@ -130,20 +138,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  row: {
-    marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  section: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 15,
-  },
-  paragraph: {
-    fontWeight: 'bold',
-    marginRight: 3,
-  },
   drawerSection: {
     marginTop: 15,
   },
@@ -151,12 +145,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderTopColor: '#f4f4f4',
     borderTopWidth: 1,
-  },
-  preference: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
   },
 });
 

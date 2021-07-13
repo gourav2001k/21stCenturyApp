@@ -17,18 +17,9 @@ const width = Dimensions.get('screen').width;
 
 const MealImage = props => {
   return (
-    <ImageBackground
-      source={{uri: props.imageURL}}
-      style={{
-        ...styles.bgImage,
-      }}>
+    <ImageBackground source={{uri: props.imageURL}} style={styles.bgImage}>
       {props.available ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            marginTop: 5,
-          }}>
+        <View style={styles.timeContainer}>
           <TimePatch time={props.time} />
         </View>
       ) : null}
@@ -56,8 +47,13 @@ const styles = StyleSheet.create({
   ratingContainer: {
     alignItems: 'flex-end',
   },
+  timeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 5,
+  },
   titleContainer: {
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: 'rgba(0,0,0,0.7)',
     paddingVertical: 5,
     flexDirection: 'row',
     justifyContent: 'center',

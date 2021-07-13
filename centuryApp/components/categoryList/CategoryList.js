@@ -48,9 +48,11 @@ const CategoryList = props => {
             <CategoryTile
               text={item.name}
               button
+              buttonStyle={{paddingVertical: 8}}
               containerStyle={styles.categoryContainer}
               textStyle={{
-                fontSize: 15,
+                fontSize: 18,
+                color: 'white',
               }}
               onPress={() => props.setCurrentCategory(item.name)}
             />
@@ -58,14 +60,15 @@ const CategoryList = props => {
             <CategoryTile
               text={item.name}
               button
+              buttonStyle={{paddingVertical: 8}}
               containerStyle={{
                 marginHorizontal: 10,
-                borderColor: Colors.blueJeans,
-                backgroundColor: 'rgba(0,65,255,0.1)',
+                borderColor: Colors['Blue Green'],
+                backgroundColor: 'rgba(0,165,255,0.1)',
               }}
               textStyle={{
-                fontSize: 15,
-                color: Colors['Orange Pantone'],
+                fontSize: 16,
+                color: Colors['Blue Green'],
               }}
               onPress={() => props.setCurrentCategory(item.name)}
             />
@@ -85,12 +88,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: width,
     overflow: 'scroll',
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(255,255,255,0.5)',
   },
   categoryContainer: {
     marginHorizontal: 10,
-    borderColor: Colors.blueJeans,
-    backgroundColor: Colors.blueJeans,
+    borderColor: Colors['Dark Cornflower Blue'],
+    backgroundColor: Colors['Dark Cornflower Blue'],
   },
 });
 

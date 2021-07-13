@@ -11,16 +11,8 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const MealCard = props => {
-  const {
-    available,
-    category,
-    rating,
-    name,
-    imageURL,
-    variants,
-    time,
-    mealID,
-  } = props.meal;
+  const {available, category, rating, name, imageURL, variants, time, mealID} =
+    props.meal;
 
   var renderPrice = Infinity;
   Object.keys(variants).map(dat => {
@@ -52,7 +44,7 @@ const MealCard = props => {
             text={category}
             containerStyle={{
               marginHorizontal: 10,
-              borderColor: Colors.blueJeans,
+              borderColor: Colors['Dark Cornflower Blue'],
               backgroundColor: Colors['Star Command Blue'],
             }}
             textStyle={{
@@ -64,7 +56,7 @@ const MealCard = props => {
             text={`₹ ${renderPrice}`}
             containerStyle={{
               marginHorizontal: 10,
-              borderColor: Colors.blueJeans,
+              borderColor: Colors['Dark Cornflower Blue'],
               backgroundColor: Colors['Star Command Blue'],
             }}
             textStyle={{
@@ -80,7 +72,7 @@ const MealCard = props => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    marginTop: 10,
+    marginVertical: 5,
     borderTopStartRadius: 35,
     borderTopEndRadius: 35,
     borderBottomEndRadius: 30,
