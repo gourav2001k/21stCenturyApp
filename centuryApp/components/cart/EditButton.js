@@ -102,9 +102,12 @@ const EditButton = ({cartMealID}) => {
         isVisible={visible}
         onBackdropPress={toggleOverlay}
         overlayStyle={styles.overlayContainer}>
-        <Text style={styles.title}>Add Name</Text>
-        <Text style={{...styles.subtitle, fontWeight: 'bold'}}>#names</Text>
+        <Text style={styles.title}>Add Words To Your Cake</Text>
+        <Text style={{...styles.subtitle, fontWeight: 'bold'}}>
+          #names #messages #quotation
+        </Text>
         <Tags
+          createTagOnString={[',']}
           initialText="Name"
           initialTags={[]}
           onChangeTags={tags => setOverlayText(tags)}
@@ -129,8 +132,8 @@ const EditButton = ({cartMealID}) => {
           )}
         />
 
-        <Text style={styles.subtitle}>➢ To add multiple names use space.</Text>
-        <Text style={styles.subtitle}>➢ To remove , Click the name !!</Text>
+        <Text style={styles.subtitle}>➢ To add multiple tags use comma.</Text>
+        <Text style={styles.subtitle}>➢ To remove , Click them !!</Text>
         <View style={styles.buttonContainer}>
           <Button
             title="DONE"

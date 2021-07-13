@@ -12,6 +12,7 @@ import Logo from '../assets/logo.png';
 
 import ChooseDate from '../components/profile/ChooseDate';
 import {ScrollView} from 'react-native-gesture-handler';
+import CopyRight from '../components/CopyRight';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -104,41 +105,56 @@ const Profile = props => {
   return (
     <View style={styles.screen}>
       <Image source={Logo} style={styles.image} />
-      <ScrollView
+      <View
         style={{
           width: '100%',
-        }}
-        contentContainerStyle={{
-          alignItems: 'center',
+          height: '65%',
         }}>
-        {renderList.map((dat, idx) => (
-          <ListItem key={idx} bottomDivider style={{width: '95%'}}>
-            <ListItem.Content
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-              }}>
-              <Icon name={dat.icon} type={dat.type} />
-              <ListItem.Title style={{marginLeft: 20}}>
-                {dat.title}
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Content>
-              <ListItem.Subtitle>{dat.name}</ListItem.Subtitle>
-            </ListItem.Content>
-            {dat.leftIcon ? <ChooseDate date={date} setDate={setDate} /> : null}
-          </ListItem>
-        ))}
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Update Profile"
-            onPress={toggleOverlay}
-            buttonStyle={styles.button}
-            titleStyle={styles.titleButton}
-          />
-        </View>
-      </ScrollView>
-
+        <ScrollView
+          contentContainerStyle={{
+            alignItems: 'center',
+          }}>
+          {renderList.map((dat, idx) => (
+            <ListItem key={idx} bottomDivider style={{width: '95%'}}>
+              <ListItem.Content
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                }}>
+                <Icon name={dat.icon} type={dat.type} />
+                <ListItem.Title style={{marginLeft: 20}}>
+                  {dat.title}
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Content>
+                <ListItem.Subtitle>{dat.name}</ListItem.Subtitle>
+              </ListItem.Content>
+              {dat.leftIcon ? (
+                <ChooseDate date={date} setDate={setDate} />
+              ) : null}
+            </ListItem>
+          ))}
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Update Profile"
+              onPress={toggleOverlay}
+              buttonStyle={styles.button}
+              titleStyle={styles.titleButton}
+            />
+          </View>
+        </ScrollView>
+      </View>
+      <View
+        style={{
+          width: '115%',
+          // height: '8%',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          borderWidth: 0.2,
+          borderColor: 'grey',
+        }}>
+        <CopyRight />
+      </View>
       <Overlay
         isVisible={visible}
         onBackdropPress={toggleOverlay}
@@ -156,28 +172,29 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     marginHorizontal: 10,
-    marginTop: 20,
+    marginTop: 5,
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   image: {
-    width: width / 2,
+    width: width / 2.5,
     height: height / 5,
     marginBottom: 10,
   },
   buttonContainer: {
     overflow: 'hidden',
     borderRadius: 30,
-    width: '65%',
-    marginTop: 20,
+    // width: '65%',
+    marginTop: 10,
   },
   button: {
     backgroundColor: Colors['Star Command Blue'],
   },
   titleButton: {
     color: 'white',
-    marginLeft: 20,
+    paddingHorizontal: 10,
     fontSize: 22,
-    fontFamily: 'robotoRegular',
+    fontFamily: 'robotoLight',
   },
   overlayContainer: {
     width: '105%',

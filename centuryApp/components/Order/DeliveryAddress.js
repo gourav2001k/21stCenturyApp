@@ -15,9 +15,11 @@ const DeliveryAddress = ({order}) => {
             textAlign: 'center',
             fontFamily: 'robotoRegular',
             marginTop: 20,
-            marginBottom: 40,
+            marginBottom: 30,
           }}>
-          {order.type === 'takeAway' ? 'TakeAway Location' : 'Delivery Address'}
+          {order.type === 'takeAway'
+            ? 'Take Away Location'
+            : 'Delivery Address'}
         </Text>
         <Input
           label="Address"
@@ -57,13 +59,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
-    elevation: 1,
   },
   contain: {
     paddingTop: 10,
     paddingLeft: 10,
   },
-  button: {paddingHorizontal: '20%', marginTop: 10, borderRadius: 10},
+  button: {
+    paddingHorizontal: '20%',
+    marginTop: 10,
+    borderRadius: 10,
+  },
 });
 
 export default DeliveryAddress;

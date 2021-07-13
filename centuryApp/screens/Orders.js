@@ -139,7 +139,6 @@ const Orders = props => {
   return (
     <View style={styles.screen}>
       <ScrollView style={styles.scrollContainer}>
-        {}
         {timeList.map((dat, idx) => {
           return (
             <List.Accordion
@@ -166,6 +165,7 @@ const Orders = props => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.3)',
   },
   scrollContainer: {},
 });

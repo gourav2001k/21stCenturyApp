@@ -53,7 +53,7 @@ const AddressType = ({order}) => {
         onBackdropPress={toggleOverlay2}
         overlayStyle={{
           ...styles.overlayContainer,
-          height: order.type === 'takeAway' ? '75%' : '100%',
+          // height: order.type === 'takeAway' ? '75%' : '100%',
         }}>
         <View style={styles.crossIcon}>
           <Icon name="cross" type="entypo" raised onPress={toggleOverlay2} />
