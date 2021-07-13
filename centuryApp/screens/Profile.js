@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image, Dimensions} from 'react-native';
+import {View, StyleSheet, Image, Dimensions} from 'react-native';
 
 import {Button, Icon, Overlay, ListItem} from 'react-native-elements';
 import auth from '@react-native-firebase/auth';

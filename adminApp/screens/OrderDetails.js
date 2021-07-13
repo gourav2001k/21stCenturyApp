@@ -177,7 +177,7 @@ const OrderDetails = props => {
         <View style={{marginBottom: 10}}></View>
       </ScrollView>
       <View style={styles.bottomContainer}>
-        <AddressType type={orderData.type} />
+        <AddressType order={orderData} />
         <ProgressBar
           isAccept={orderData.isAccept}
           isCancel={orderData.isCancel}

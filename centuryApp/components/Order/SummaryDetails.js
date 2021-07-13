@@ -13,7 +13,7 @@ const SummaryDetails = ({totalValue}) => {
         </Text>
         <View style={{width: '25%'}}>
           <Text style={{fontFamily: 'robotoLight', fontSize: 17}}>
-            ₹ {totalValue}
+            ₹ {totalValue.toFixed(2)}
           </Text>
         </View>
       </View>
@@ -33,7 +33,7 @@ const SummaryDetails = ({totalValue}) => {
               fontSize: 17,
               color: 'rgba(0,0,0,0.6)',
             }}>
-            ₹ {(totalValue * 5) / 100}
+            ₹ {((totalValue * 5) / 100).toFixed(2)}
           </Text>
         </View>
       </View>
