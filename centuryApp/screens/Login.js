@@ -6,6 +6,7 @@ import {
   Dimensions,
   StyleSheet,
   Text,
+  Image,
 } from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {Overlay, Button} from 'react-native-elements';
@@ -13,10 +14,6 @@ import Input from 'react-native-input-style';
 
 import {showMessage} from 'react-native-flash-message';
 import messaging from '@react-native-firebase/messaging';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import RNBootSplash from 'react-native-bootsplash';
-import VersionCheck from 'react-native-version-check';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -24,10 +21,8 @@ import firestore from '@react-native-firebase/firestore';
 import Logo from '../assets/logo.png';
 import CategoryTile from '../components/CategoryTile';
 
-import Update from '../components/ForcedUpdate';
-import {useKeyboard} from '../hooks/useKeyboardHeight';
 import Colors from '../constants/Colors';
-import {Image} from 'react-native';
+
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
@@ -202,6 +197,7 @@ const Login = props => {
             borderColor={Colors['Star Command Blue']}
             fontSize={11}
             fontFamily="robotoLight"
+            clearButtonMode="always"
           />
         ) : null}
       </View>
@@ -250,10 +246,10 @@ const styles = StyleSheet.create({
   },
   logoImage: {
     width: '35%',
-    height: '45%',
+    height: '48%',
     position: 'absolute',
     bottom: -50,
-    right: 15,
+    right: 1,
   },
   buttonContainer: {
     marginVertical: 10,
@@ -268,8 +264,8 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   skipContainer: {
-    width: 80,
-    height: 40,
+    width: width / 4.5,
+    height: height / 20,
     marginRight: 15,
     marginTop: 10,
     borderColor: 'black',

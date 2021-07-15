@@ -110,26 +110,21 @@ const DrawerContent = props => {
         </Drawer.Section>
       </DrawerContentScrollView>
 
-      <Drawer.Section style={styles.bottomDrawerSection}>
-        <DrawerItem
-          labelStyle={{fontSize: 16}}
-          icon={({color, size}) => (
-            <Icon name="exit-to-app" color={color} size={size} />
-          )}
-          label="Log Out"
-          onPress={() => {
-            logOut();
-            props.navigation.navigate('Login');
-          }}
-        />
-        {/* <DrawerItem
-          icon={({color, size}) => (
-            <Icon name="copyright" color={color} size={size} />
-          )}
-          disabled={true}
-          label="GH Tek"
-        /> */}
-      </Drawer.Section>
+      {auth().currentUser ? (
+        <Drawer.Section style={styles.bottomDrawerSection}>
+          <DrawerItem
+            labelStyle={{fontSize: 16}}
+            icon={({color, size}) => (
+              <Icon name="exit-to-app" color={color} size={size} />
+            )}
+            label="Log Out"
+            onPress={() => {
+              logOut();
+              props.navigation.navigate('Login');
+            }}
+          />
+        </Drawer.Section>
+      ) : null}
     </View>
   );
 };
