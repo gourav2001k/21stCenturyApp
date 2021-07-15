@@ -61,7 +61,7 @@ const Login = props => {
     }
     try {
       if (!process.env.ADMIN_PHONES.includes(phone))
-        throw new Error('Not an Admin Email');
+        throw new Error('Not an Admin Phone');
       const confirmation = await auth().signInWithPhoneNumber('+91 ' + phone);
       setConfirmed(confirmation);
       setIsOTP(true);
@@ -71,6 +71,7 @@ const Login = props => {
         type: 'success',
       });
     } catch (error) {
+      console.log(error);
       showMessage({
         message: 'Error',
         description: error.message,

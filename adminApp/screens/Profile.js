@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import RNRestart from 'react-native-restart';
 import {showMessage} from 'react-native-flash-message';
 import {Button, Icon, Overlay} from 'react-native-elements';
 
@@ -20,7 +21,7 @@ const Profile = props => {
         .doc(auth().currentUser.uid)
         .update({token: ''});
       await auth().signOut();
-      props.navigation.replace('Login');
+      RNRestart.Restart();
     } catch (err) {
       showMessage({
         message: 'Error',
