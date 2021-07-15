@@ -5,6 +5,7 @@ import {Colors, ActivityIndicator} from 'react-native-paper';
 import {Input, Button} from 'react-native-elements';
 import {showMessage} from 'react-native-flash-message';
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
 import RNBootSplash from 'react-native-bootsplash';
 
 import Logo from '../assets/logo.png';
@@ -94,6 +95,10 @@ const Login = props => {
     try {
       await confirmed.confirm(OTP);
       var user = auth().currentUser;
+      const tokenDat = await messaging().getToken();
+      await firestore().collection('users').doc(user.uid).update({
+        token: tokenDat,
+      });
       props.navigation.replace('Home');
     } catch (error) {
       console.log(error);

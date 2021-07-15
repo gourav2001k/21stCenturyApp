@@ -5,7 +5,6 @@ import {FAB, Colors} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import messaging from '@react-native-firebase/messaging';
 import AppLoading from '../hooks/AppLoading';
 
 import CategoryList from '../components/categoryList/CategoryList';
@@ -20,29 +19,11 @@ const Meals = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('Cake');
 
-  // const token1 = async () => {
-  //   const t = await auth().currentUser.getIdToken();
-  //   console.log(t);
-  // };
-  // token1();
-  const updateTokenOnfirestore = async () => {
-    const tokenDat = await messaging().getToken();
-    await firestore().collection('users').doc(auth().currentUser.uid).update({
-      token: tokenDat,
-    });
-  };
-
   const fetchItems = async () => {
-    if (auth().currentUser) {
-      updateTokenOnfirestore();
-    }
     try {
       const onResult = () => setIsLoading(false);
       firestore().collection('meals').onSnapshot(onResult, console.warn);
       const fetchMeals = await firestore().collection('meals').get();
-      // fetchMeals.forEach(doc => {
-      //   console.log(doc.data());
-      // });
       const imageStore = storage().ref();
       const tempAllMeal = [];
 

@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, ScrollView, Dimensions} from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
 import AppLoading from '../hooks/AppLoading';
 
@@ -18,12 +17,6 @@ const Meals = props => {
   const [allMeal, setAllMeal] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('Cake');
-  const updateTokenOnfirestore = async () => {
-    const tokenDat = await messaging().getToken();
-    await firestore().collection('users').doc(auth().currentUser.uid).update({
-      token: tokenDat,
-    });
-  };
 
   const fetchItems = async () => {
     try {
@@ -50,9 +43,6 @@ const Meals = props => {
   };
 
   useEffect(() => {
-    if (auth().currentUser) {
-      updateTokenOnfirestore();
-    }
     const onResult = () => {
       setIsLoading(false);
     };

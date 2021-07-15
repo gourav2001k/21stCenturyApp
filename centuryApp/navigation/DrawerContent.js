@@ -15,10 +15,12 @@ import Support from '../components/Support';
 const logOut = async () => {
   try {
     if (auth().currentUser) {
-      await firestore()
+      const uid = auth().currentUser.uid;
+      firestore()
         .collection('users')
-        .doc(auth().currentUser.uid)
-        .update({token: ''});
+        .doc(uid)
+        .update({token: ''})
+        .then(console.log('Token Removed'));
       await auth().signOut();
     }
   } catch (err) {

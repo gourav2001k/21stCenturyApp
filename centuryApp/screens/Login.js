@@ -4,37 +4,22 @@ import {View, ImageBackground, Dimensions, StyleSheet} from 'react-native';
 import {Colors, ActivityIndicator} from 'react-native-paper';
 import {Input, Button} from 'react-native-elements';
 import {showMessage} from 'react-native-flash-message';
+import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import RNBootSplash from 'react-native-bootsplash';
-import VersionCheck from 'react-native-version-check';
 
 import Logo from '../assets/logo.png';
 import CategoryTile from '../components/CategoryTile';
-import Update from '../components/ForcedUpdate';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const Login = props => {
   useEffect(() => {
-    const init = async () => {
-      let appV = await firestore().collection('others').doc('appVersion').get();
-      appV = appV.data();
-      if (appV.version === VersionCheck.getCurrentVersion()) {
-        auth().onAuthStateChanged(user => {
-          if (user) props.navigation.navigate('MealsNavigator');
-        });
-      } else {
-        Update();
-      }
-    };
-    init().finally(async () => {
-      await RNBootSplash.hide({fade: true});
-      console.log('Bootsplash has been hidden successfully');
+    const listener = auth().onAuthStateChanged(user => {
+      if (user) props.navigation.replace('MealsNavigator');
     });
-
-    return () => init();
+    return () => listener();
   }, []);
   const [isClicked, setIsClicked] = useState(false);
   const [phone, setPhone] = useState();
@@ -43,7 +28,7 @@ const Login = props => {
   const [isOTP, setIsOTP] = useState(false);
 
   const onSkip = () => {
-    props.navigation.navigate('MealsNavigator');
+    props.navigation.replace('MealsNavigator');
   };
 
   const numParser = inputText => {
@@ -106,21 +91,24 @@ const Login = props => {
       reset();
       var user = auth().currentUser;
       var userDB = await firestore().collection('users').doc(user.uid).get();
+      const tokenDat = await messaging().getToken();
       userDB = userDB.data();
       if (!userDB) {
-        // await auth().currentUser.updateProfile({
-        //   photoURL: 'images/blankProfile.png',
-        // });
         await firestore()
           .collection('users')
           .doc(user.uid)
           .set({
             cart: {},
-            token: '',
+            token: tokenDat,
             isComplete: false,
             address: {locality: 'JJC'},
           });
         console.log('Data Writen successfully');
+      } else {
+        await firestore().collection('users').doc(user.uid).update({
+          token: tokenDat,
+        });
+        console.log('TOken Updated');
       }
     } catch (error) {
       console.log(error);
