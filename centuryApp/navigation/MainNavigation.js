@@ -19,7 +19,11 @@ const MainNavigation = () => {
       screenOptions={{
         headerShown: true,
       }}>
-      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="MealsNavigator"
         component={MealsNavigator}

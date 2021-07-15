@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Image, Dimensions} from 'react-native';
+import {View, StyleSheet, Image, Dimensions, ScrollView} from 'react-native';
 
 import {Button, Icon, Overlay, ListItem} from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
@@ -11,7 +11,6 @@ import Address from '../components/profile/Address';
 import Logo from '../assets/logo.png';
 
 import ChooseDate from '../components/profile/ChooseDate';
-import {ScrollView} from 'react-native-gesture-handler';
 import CopyRight from '../components/CopyRight';
 
 const height = Dimensions.get('screen').height;
@@ -61,6 +60,13 @@ const Profile = props => {
     );
   }
 
+  if (!auth().currentUser) {
+    return (
+      <View>
+        <Text>Redirecting....</Text>
+      </View>
+    );
+  }
   const renderList = [
     {
       name: auth().currentUser.displayName
@@ -102,6 +108,7 @@ const Profile = props => {
       icon: 'call',
     },
   ];
+
   return (
     <View style={styles.screen}>
       <Image source={Logo} style={styles.image} />

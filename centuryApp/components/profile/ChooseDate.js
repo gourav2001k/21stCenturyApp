@@ -41,6 +41,13 @@ const ChooseDate = ({date, setDate}) => {
       });
     }
   };
+  if (!auth().currentUser) {
+    return (
+      <View>
+        <Text>Redirecting....</Text>
+      </View>
+    );
+  }
   return (
     <>
       <Icon name="edit" type="font-awesome" onPress={() => setOpen(true)} />

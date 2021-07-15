@@ -8,6 +8,7 @@ import {
   FlatList,
   Pressable,
 } from 'react-native';
+import {Icon} from 'react-native-elements';
 import Colors from '../../constants/Colors';
 
 import CategoryTile from '../CategoryTile';
@@ -26,55 +27,55 @@ const CategoryList = props => {
     {id: 4, name: 'Chocolates'},
     {id: 5, name: 'Breads'},
   ];
-  useEffect(() => {
-    setTimeout(() => {
-      setRefresh(true);
-    }, 50);
-
+  const listToEnd = () => {
     flatlistRef.current.scrollToEnd({animating: true});
-    setTimeout(
-      () => flatlistRef.current.scrollToIndex({animating: true, index: 0}),
-      300,
-    );
-  }, [refresh]);
+  };
   return (
     <View style={styles.container}>
-      <FlatList
-        horizontal={true}
-        data={List}
-        ref={flatlistRef}
-        renderItem={({item}) => {
-          return item.name === props.currentCategory ? (
-            <CategoryTile
-              text={item.name}
-              button
-              buttonStyle={{paddingVertical: 8}}
-              containerStyle={styles.categoryContainer}
-              textStyle={{
-                fontSize: 18,
-                color: 'white',
-              }}
-              onPress={() => props.setCurrentCategory(item.name)}
-            />
-          ) : (
-            <CategoryTile
-              text={item.name}
-              button
-              buttonStyle={{paddingVertical: 8}}
-              containerStyle={{
-                marginHorizontal: 10,
-                borderColor: Colors['Blue Green'],
-                backgroundColor: 'rgba(0,165,255,0.1)',
-              }}
-              textStyle={{
-                fontSize: 16,
-                color: Colors['Blue Green'],
-              }}
-              onPress={() => props.setCurrentCategory(item.name)}
-            />
-          );
-        }}
-      />
+      <View style={{width: '90%'}}>
+        <FlatList
+          horizontal={true}
+          data={List}
+          ref={flatlistRef}
+          renderItem={({item}) => {
+            return item.name === props.currentCategory ? (
+              <CategoryTile
+                text={item.name}
+                button
+                buttonStyle={{paddingVertical: 8}}
+                containerStyle={styles.activeCategoryContainer}
+                textStyle={{
+                  fontSize: 18,
+                  color: 'white',
+                }}
+                onPress={() => props.setCurrentCategory(item.name)}
+              />
+            ) : (
+              <CategoryTile
+                text={item.name}
+                button
+                buttonStyle={{paddingVertical: 10}}
+                containerStyle={styles.inactiveCategoryContainer}
+                textStyle={{
+                  fontSize: 16,
+                  color: Colors['Blue Green'],
+                }}
+                onPress={() => props.setCurrentCategory(item.name)}
+              />
+            );
+          }}
+        />
+      </View>
+      <View>
+        <Icon
+          name="chevron-right"
+          type="entypo"
+          color={Colors['Star Command Blue']}
+          onPress={() => {
+            listToEnd();
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -85,15 +86,21 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     width: width,
-    overflow: 'scroll',
+    // overflow: 'scroll',
     backgroundColor: 'rgba(255,255,255,0.5)',
   },
-  categoryContainer: {
+  activeCategoryContainer: {
     marginHorizontal: 10,
-    borderColor: Colors['Dark Cornflower Blue'],
-    backgroundColor: Colors['Dark Cornflower Blue'],
+    borderColor: Colors['Star Command Blue'],
+    backgroundColor: Colors['Star Command Blue'],
+    borderWidth: 1.5,
+  },
+  inactiveCategoryContainer: {
+    marginHorizontal: 10,
+    borderColor: 'white',
+    backgroundColor: 'rgba(0,165,255,0.1)',
   },
 });
 

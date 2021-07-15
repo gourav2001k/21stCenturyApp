@@ -34,6 +34,7 @@
     "react-native-exit-app": "^1.1.0",
     "react-native-flash-message": "^0.1.23",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-input-style": "^1.0.2",
     "react-native-paper": "^4.9.1",
     "react-native-paper-dates": "^0.4.6",
     "react-native-push-notification": "^7.4.0",

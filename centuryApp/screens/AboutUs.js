@@ -4,49 +4,41 @@ import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import HeaderButtonss from '../components/HeaderButtonss';
+import AboutUsCard from '../components/aboutUs/AboutUsCard';
+import {ScrollView} from 'react-native';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const AboutUs = props => {
+  const renderList = [
+    {
+      line1: 'New jaljog circle, sardarpura, jodhpur',
+      phone: '+91 8114 485947',
+      image: require('../assets/store1.jpeg'),
+    },
+    {
+      line1: 'Bjs colony, jodhpur',
+      phone: '+91 7413 075925',
+      image: require('../assets/store2.jpeg'),
+    },
+  ];
   return (
-    <View style={styles.screen}>
-      <Text>This is AboutUs Screen!!!</Text>
-    </View>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.screen}>
+        {renderList.map(({line1, phone, image}, idx) => (
+          <AboutUsCard key={idx} line1={line1} phone={phone} image={image} />
+        ))}
+      </View>
+    </ScrollView>
   );
 };
-
-// const Stack = createStackNavigator();
-
-// const AboutNav = () => {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen
-//         name="About Us"
-//         component={AboutUs}
-//         options={({navigation, route}) => ({
-//           headerLeft: () => (
-//             <HeaderButtons HeaderButtonComponent={HeaderButtonss}>
-//               <Item
-//                 title="Menu"
-//                 iconName="ios-menu"
-//                 onPress={() => {
-//                   navigation.toggleDrawer();
-//                 }}
-//               />
-//             </HeaderButtons>
-//           ),
-//         })}
-//       />
-//     </Stack.Navigator>
-//   );
-// };
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 20,
   },
 });
 
