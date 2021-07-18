@@ -61,7 +61,7 @@ const OrderDetails = props => {
       );
       // console.log(serResponse.data);
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
       showMessage({
         message: 'Order Cancelled',
         description: 'Order Cancel successfully!!!!',
