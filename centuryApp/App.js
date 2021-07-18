@@ -4,6 +4,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import VersionCheck from 'react-native-version-check';
 import AppNavigator from './navigation/AppNavigator';
 import Update from './components/ForcedUpdate';
+import Push from './Push';
 
 const App = () => {
   useEffect(() => {
