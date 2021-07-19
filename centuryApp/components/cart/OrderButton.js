@@ -78,6 +78,9 @@ const OrderButton = ({
         const resp = await axios.get(
           `${process.env.SERVER_URL}/startTransaction?orderID=${orderID}&token=${token}`,
         );
+        if (resp.data.error) {
+          throw new Error(resp.data.message);
+        }
         const result = await AllInOneSDKManager.startTransaction(
           orderID,
           process.env.MID,
