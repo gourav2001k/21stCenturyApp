@@ -169,7 +169,9 @@ const Login = props => {
       <View>
         <Input
           autoFocus
-          clearButtonMode="always"
+          inputStyle={{
+            color: 'black',
+          }}
           id="Phone"
           keyboardType="phone-pad"
           outlined
@@ -185,8 +187,10 @@ const Login = props => {
         />
         {isOTP ? (
           <Input
+            value={OTP}
             id="OTP"
             label="OTP"
+            inputStyle={{color: 'black'}}
             outlined
             keyboardType="phone-pad"
             initialValue=""
@@ -205,7 +209,7 @@ const Login = props => {
         <View
           style={{
             ...styles.specificButtonContainer,
-            width: !isOTP ? '50%' : '40%',
+            width: !isOTP ? '50%' : '50%',
           }}>
           {!isOTP ? (
             <Button raised={true} title="Send OTP" onPress={sendOTP} />
@@ -213,16 +217,18 @@ const Login = props => {
             <Button raised={true} title="Verify OTP" onPress={verifyOTP} />
           )}
         </View>
-        {!isOTP ? null : (
+        {/* {!isOTP ? null : (
           <View style={{width: '40%', elevation: 10}}>
             <Button
               raised={true}
               type="outline"
               title="Reset"
-              onPress={reset}
+              onPress={() => {
+                setOTP('');
+              }}
             />
           </View>
-        )}
+        )} */}
       </View>
       <Overlay
         isVisible={visible}
